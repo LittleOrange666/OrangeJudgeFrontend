@@ -1,0 +1,15 @@
+node_modules
+.git
+.gitignore
+
+.DS_Store
+*.swp
+.vscode/
+
+dist
+build
+
+Dockerfile
+*.conf
+*.yml
+*.sh
