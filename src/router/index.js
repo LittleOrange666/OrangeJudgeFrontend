@@ -44,7 +44,11 @@ router.beforeEach(async (to) => {
         await authStore.checkLoginStatus();
     }
     if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-        return { name: 'login' };
+        return { name: 'login',
+            query: {
+                redirect: to.fullPath
+            }
+        };
     }
     if (to.meta.redirectIfLoggedIn && authStore.isLoggedIn) {
         return { name: 'home' };
