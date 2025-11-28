@@ -28,8 +28,8 @@ const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
 })
-// eslint-disable-next-line no-unused-vars
-router.beforeEach(async (to, from) => {
+
+router.beforeEach(async (to) => {
     const authStore = useAuthStore();
     if (!authStore.statusChecked) {
         await authStore.checkLoginStatus();

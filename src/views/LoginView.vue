@@ -1,0 +1,24 @@
+<template>
+  <form method="post" action="/api/login">
+    <div class="mb-3 col-5 offset-2">
+      <label for="user_id" class="form-label">User Id</label>
+      <input type="text" class="form-control" id="user_id" name="user_id" placeholder="user id" required>
+    </div>
+    <div class="mb-3 col-5 offset-2">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+    </div>
+    <div class="mb-3 col-5 offset-2">
+      <button class="btn btn-primary submitter" data-msg-type-403="return" id="do_login_btn">登入</button>
+      <a href="/signup" class="btn btn-secondary">註冊</a>
+      <a href="/forget_password" class="btn btn-warning">忘記密碼</a>
+    </div>
+  </form>
+</template>
+
+<script>
+export default {
+  name: 'LoginView',
+  components: {}
+}
+</script>
