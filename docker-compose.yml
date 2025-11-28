@@ -103,5 +103,7 @@ services:
                 condition: service_healthy
         ports:
           - "0.0.0.0:8080:80"
+        environment:
+          - VUE_APP_TITLE=OrangeJudge
 volumes:
     sandbox:

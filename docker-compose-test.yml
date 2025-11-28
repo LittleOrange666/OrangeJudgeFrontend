@@ -3,3 +3,5 @@ services:
     build: ./
     ports:
       - "8090:80"
+    environment:
+      VUE_APP_TITLE: OrangeJudge
