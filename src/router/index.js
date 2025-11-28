@@ -21,6 +21,15 @@ const routes = [
         meta: {
             pageTitle: '關於'
         }
+    },
+    {
+        path: "/login",
+        name: "login",
+        component: () => import("../views/LoginView.vue"),
+        meta:{
+            pageTitle: "登入",
+            redirectIfLoggedIn: true
+        }
     }
 ]
 

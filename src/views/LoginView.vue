@@ -2,7 +2,7 @@
   <form method="post" action="/api/login">
     <div class="mb-3 col-5 offset-2">
       <label for="user_id" class="form-label">User Id</label>
-      <input type="text" class="form-control" id="user_id" name="user_id" placeholder="user id" required>
+      <input type="text" class="form-control" id="user_id" name="username" placeholder="user id" required>
     </div>
     <div class="mb-3 col-5 offset-2">
       <label for="password" class="form-label">Password</label>
