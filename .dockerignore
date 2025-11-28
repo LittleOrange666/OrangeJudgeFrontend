@@ -10,6 +10,5 @@ dist
 build
 
 Dockerfile
-*.conf
 *.yml
 *.sh
