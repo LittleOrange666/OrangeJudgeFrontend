@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import {onMounted, ref} from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import {useRoute, useRouter} from "vue-router";
 
@@ -32,18 +32,24 @@ const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
-const handleLogin = async () => {
-  isLoading.value = true;
-  error.value = null;
-
-  try {
-    await authStore.login(username.value, password.value);
+const goNext = async () => {
+  if (authStore.isLoggedIn){
     const redirectPath = route.query.redirect;
     if (redirectPath) {
       await router.push(redirectPath);
     } else {
       await router.push({name: 'home'});
     }
+  }
+}
+
+const handleLogin = async () => {
+  isLoading.value = true;
+  error.value = null;
+
+  try {
+    await authStore.login(username.value, password.value);
+    await goNext();
   } catch (err) {
     error.value = err.response?.data?.message || '帳號或密碼錯誤，請重新嘗試。';
     console.error('Login Error:', err);
@@ -51,4 +57,8 @@ const handleLogin = async () => {
     isLoading.value = false;
   }
 };
+
+onMounted(()=>{
+  goNext();
+});
 </script>
