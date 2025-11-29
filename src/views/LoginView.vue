@@ -9,20 +9,22 @@
       <input type="password" class="form-control" id="password" v-model="password" placeholder="Password" required>
     </div>
     <div class="mb-3 col-5 offset-2">
-      <button class="btn btn-primary" type="submit">登入</button>
+      <button type="submit" class="btn btn-primary" :disabled="isLoading">登入</button>
       <span> </span>
-      <a href="/signup" class="btn btn-secondary">註冊</a>
+      <router-link to="/signup" class="btn btn-secondary">註冊</router-link>
       <span> </span>
-      <a href="/forget_password" class="btn btn-warning">忘記密碼</a>
+      <router-link to="/forget_password" class="btn btn-secondary">忘記密碼</router-link>
     </div>
+    <div v-if="error" class="alert alert-danger col-5 offset-2">{{ error }}</div>
   </form>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import axios from "axios";
 import {useRoute, useRouter} from "vue-router";
+import { toForm } from "@/tools";
 
 const username = ref('');
 const password = ref('');
@@ -32,16 +34,15 @@ const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
-// eslint-disable-next-line
 const handleLogin = async () => {
   isLoading.value = true;
   error.value = null;
 
   try {
-    const response = await axios.post("/api/login", {
+    const response = await axios.post("/api/login", toForm({
       username: username.value,
       password: password.value,
-    });
+    }));
     if (response.status === 200 || response.data.success) {
       await authStore.checkLoginStatus();
       const redirectPath = route.query.redirect;
@@ -50,17 +51,14 @@ const handleLogin = async () => {
       } else {
         await router.push({name: 'home'});
       }
+    } else {
+      error.value = response.data.message || '帳號或密碼錯誤，請重新嘗試。';
     }
   } catch (err) {
-    error.value = '帳號或密碼錯誤，請重新嘗試。';
+    error.value = err.response?.data?.message || '登入時發生錯誤，請稍後再試。';
     console.error('Login Error:', err);
   } finally {
     isLoading.value = false;
   }
 };
-
-export default {
-  name: 'LoginView',
-  components: {}
-}
 </script>
