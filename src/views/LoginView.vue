@@ -22,9 +22,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import axios from "axios";
 import {useRoute, useRouter} from "vue-router";
-import { toForm } from "@/tools";
 
 const username = ref('');
 const password = ref('');
@@ -39,23 +37,15 @@ const handleLogin = async () => {
   error.value = null;
 
   try {
-    const response = await axios.post("/api/login", toForm({
-      username: username.value,
-      password: password.value,
-    }));
-    if (response.status === 200 || response.data.success) {
-      await authStore.checkLoginStatus();
-      const redirectPath = route.query.redirect;
-      if (redirectPath) {
-        await router.push(redirectPath);
-      } else {
-        await router.push({name: 'home'});
-      }
+    await authStore.login(username.value, password.value);
+    const redirectPath = route.query.redirect;
+    if (redirectPath) {
+      await router.push(redirectPath);
     } else {
-      error.value = response.data.message || '帳號或密碼錯誤，請重新嘗試。';
+      await router.push({name: 'home'});
     }
   } catch (err) {
-    error.value = err.response?.data?.message || '登入時發生錯誤，請稍後再試。';
+    error.value = err.response?.data?.message || '帳號或密碼錯誤，請重新嘗試。';
     console.error('Login Error:', err);
   } finally {
     isLoading.value = false;

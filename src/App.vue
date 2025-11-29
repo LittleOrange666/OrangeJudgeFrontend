@@ -40,8 +40,11 @@
             </li>
           </ul>
           <ul class="navbar-nav navbar-text">
-            <li class="nav-item">
+            <li class="nav-item" v-if="!useAuthStore().isLoggedIn">
               <router-link to="/login" class="nav-link active">登入</router-link>
+            </li>
+            <li class="nav-item" v-else>
+              <a v-on:click="authStore.logout()" class="nav-link active">登出</a>
             </li>
           </ul>
         </div>
@@ -71,5 +74,7 @@
   width: 80%;
 }
 </style>
-<script setup lang="ts">
+<script setup>
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
 </script>
