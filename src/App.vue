@@ -32,7 +32,7 @@
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
-                  <router-link to="/about_judge" class="dropdown-item">評測系統</router-link>
+                  <router-link to="/about" class="dropdown-item">評測系統</router-link>
                 </li>
                 <li><a class="dropdown-item" href="https://LittleOrange666.github.io/orangejudge/">教程</a></li>
                 <li><a class="dropdown-item" href="/api/api-docs">API</a></li>
@@ -44,7 +44,7 @@
               <router-link to="/login" class="nav-link active">登入</router-link>
             </li>
             <li class="nav-item" v-else>
-              <a v-on:click="authStore.logout()" class="nav-link active">登出</a>
+              <a v-on:click="authStore.logout()" href="#" class="nav-link active">登出</a>
             </li>
           </ul>
         </div>

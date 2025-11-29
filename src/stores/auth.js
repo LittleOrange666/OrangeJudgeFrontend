@@ -54,11 +54,11 @@ export const useAuthStore = defineStore('auth', {
                     password
                 }));
                 this.isLoggedIn = true;
+                if (response.data["status"] !== "success"){
+                    throw new Error(response.data["message"]);
+                }
                 this.username = response.data["data"]["username"];
                 await this.checkLoginStatus(true);
-                if (!this.isLoggedIn){
-                    throw new Error('Login failed');
-                }
             } catch (error) {
                 console.error('Login failed:', error);
                 throw error; // Re-throw the error to be caught by the component

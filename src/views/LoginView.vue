@@ -10,9 +10,9 @@
     </div>
     <div class="mb-3 col-5 offset-2">
       <button type="submit" class="btn btn-primary" :disabled="isLoading">登入</button>
-      <span> </span>
+      <span>&nbsp;</span>
       <router-link to="/signup" class="btn btn-secondary">註冊</router-link>
-      <span> </span>
+      <span>&nbsp;</span>
       <router-link to="/forget_password" class="btn btn-secondary">忘記密碼</router-link>
     </div>
     <div v-if="error" class="alert alert-danger col-5 offset-2">{{ error }}</div>
