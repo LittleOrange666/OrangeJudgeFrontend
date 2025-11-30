@@ -24,8 +24,9 @@ import {useJudgeInfoStore} from '@/stores/judgeInfo';
 import {storeToRefs} from 'pinia';
 import {api} from "@/utils/tools";
 import {useRouter} from "vue-router";
+import {default_lang} from "@/utils/constants";
 
-const lang = ref('C++17');
+const lang = ref(localStorage.getItem('lang') || default_lang);
 const code = ref('');
 const input = ref('');
 const error = ref(null);
@@ -35,6 +36,7 @@ const router = useRouter();
 
 const handleSubmit = async () => {
   try{
+    localStorage.setItem('lang', lang.value);
     const data = await api.post("/submission",{
       lang: lang.value,
       code: code.value,

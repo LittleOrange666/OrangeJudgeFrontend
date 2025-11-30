@@ -47,10 +47,10 @@
                aria-expanded="false">{{ authStore.display_name }}</a>
             <ul class="dropdown-menu">
               <li>
-                <router-link class="dropdown-item" to="/user/{{ authStore.username }}">個人頁面</router-link>
+                <router-link class="dropdown-item" :to="`/user/${authStore.username}`">個人頁面</router-link>
               </li>
               <li>
-                <router-link class="dropdown-item" to="/status?user={{ authStore.username }}">解題列表</router-link>
+                <router-link class="dropdown-item" :to="`/status?user=${authStore.username}`">解題列表</router-link>
               </li>
               <li>
                 <router-link class="dropdown-item" to="/settings">帳號設定</router-link>
@@ -58,19 +58,19 @@
               <li>
                 <router-link class="dropdown-item" to="/preferences">偏好設定</router-link>
               </li>
-              <li v-if="hasProblem">
+              <li v-if="hasProblemPermission">
                 <hr class="dropdown-divider">
               </li>
-              <li v-if="hasProblem">
+              <li v-if="hasProblemPermission">
                 <router-link class="dropdown-item" to="/problemsetting/my">我的題目</router-link>
               </li>
-              <li v-if="hasAdmin">
+              <li v-if="hasAdminPermission">
                 <router-link class="dropdown-item" to="/problemsetting">所有題目</router-link>
               </li>
-              <li v-if="hasRoot">
+              <li v-if="hasRootPermission">
                 <hr class="dropdown-divider">
               </li>
-              <li v-if="hasRoot">
+              <li v-if="hasRootPermission">
                 <router-link class="dropdown-item" to="/admin">管理介面</router-link>
               </li>
             </ul>
@@ -85,12 +85,8 @@
 </template>
 
 <script setup>
-import {computed} from 'vue';
 import {useAuthStore} from '@/stores/auth';
+import {isLoggedIn, hasRootPermission, hasAdminPermission, hasProblemPermission} from "@/utils/accounts";
 
 const authStore = useAuthStore();
-const isLoggedIn = computed(() => authStore.isLoggedIn);
-const hasProblem = computed(() => authStore.permissions.includes("make_problems") || authStore.permissions.includes("admin") || authStore.permissions.includes("root"));
-const hasAdmin = computed(() => authStore.permissions.includes("admin") || authStore.permissions.includes("root"));
-const hasRoot = computed(() => authStore.permissions.includes("root"));
 </script>

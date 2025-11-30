@@ -6,6 +6,7 @@
     <router-view/>
   </div>
   <MyModal />
+  <CheckingModal />
 </template>
 
 <style>
@@ -30,4 +31,5 @@
 <script setup>
 import NavBar from '@/components/NavBar.vue';
 import MyModal from "@/components/MyModal.vue";
+import CheckingModal from "@/components/CheckingModal.vue";
 </script>

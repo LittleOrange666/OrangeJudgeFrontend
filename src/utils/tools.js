@@ -30,7 +30,7 @@ async function send_request(func, path, obj){
     if (!path.startsWith("/")) path = "/" + path;
     const response = await func(API_BASE_URL + path, toForm(obj));
     if (response.data["status"] !== "success") {
-        throw new Error(response.data["description"]);
+        throw new Error(response.data["description"] || response.data["message"]);
     }
     return response.data["data"];
 }
@@ -46,7 +46,14 @@ export const api = {
      * @returns {Promise<any>} A promise that resolves with the response data.
      */
     get: async function (path, obj){
-        return send_request(axios.get, path, obj);
+        if (!path.startsWith("/")) path = "/" + path;
+        const response = await axios.get(API_BASE_URL + path, {
+            params: obj
+        });
+        if (response.data["status"] !== "success") {
+            throw new Error(response.data["description"] || response.data["message"]);
+        }
+        return response.data["data"];
     },
     /**
      * Sends a POST request to the specified path.
@@ -76,3 +83,8 @@ export const api = {
         return send_request(axios.delete, path, obj);
     }
 };
+
+
+export function timestamp_to_str(i) {
+    return new Date(+i * 1000).toLocaleString()
+}

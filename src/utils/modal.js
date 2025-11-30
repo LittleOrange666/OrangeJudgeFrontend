@@ -52,3 +52,60 @@ export function show_modal(title, text, timeout) {
     myModal.show();
   });
 }
+
+/**
+ * Displays a confirmation modal and returns a promise that resolves with the user's choice.
+ * This function requires a modal with the ID 'checkingModal' and a confirm button with the ID 'checkingModalEnter' to be present in the DOM.
+ * @param {string} title - The title of the confirmation modal.
+ * @param {string} [subtitle] - The body text of the modal. If not provided, a default message will be used.
+ * @returns {Promise<boolean>} A promise that resolves to `true` if the user confirms, and `false` if the user cancels or dismisses the modal.
+ */
+export function double_check(title, subtitle){
+    return new Promise((resolve) =>{
+        const modalElement = document.getElementById('checkingModal');
+        if (!modalElement) {
+            console.error('Modal element #checkingModal not found in the DOM.');
+            return resolve(false); // Resolve with false if modal doesn't exist
+        }
+
+        const checkModal = Modal.getOrCreateInstance(modalElement);
+        const modalTitleEl = modalElement.querySelector('.modal-title');
+        const modalBodyEl = modalElement.querySelector('.modal-body');
+        const enterButton = document.getElementById('checkingModalEnter');
+
+        if (!enterButton) {
+            console.error('Enter button #checkingModalEnter not found in the DOM.');
+            return resolve(false);
+        }
+
+        if (modalTitleEl) modalTitleEl.textContent = title;
+        if (modalBodyEl) modalBodyEl.textContent = subtitle || "請確認是否要繼續進行此操作。";
+        
+        let closed = false;
+
+        const cleanUp = () => {
+            enterButton.removeEventListener("click", enterClickHandler);
+            modalElement.removeEventListener('hidden.bs.modal', cancelClickHandler);
+        };
+
+        const enterClickHandler = () => {
+            if (closed) return;
+            closed = true;
+            cleanUp();
+            resolve(true);
+            checkModal.hide();
+        };
+
+        const cancelClickHandler = () => {
+            if (closed) return;
+            closed = true;
+            cleanUp();
+            resolve(false);
+        };
+
+        enterButton.addEventListener("click", enterClickHandler, { once: true });
+        modalElement.addEventListener('hidden.bs.modal', cancelClickHandler, { once: true });
+        
+        checkModal.show();
+    });
+}

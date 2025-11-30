@@ -47,6 +47,18 @@ const routes = [
         }
     },
     {
+        path: "/status",
+        name: "status",
+        component: () => import( "@/views/StatusView.vue"),
+        meta: {
+            pageTitle: "解題動態"
+        }
+    },
+    {
+        path: "/problem/test",
+        redirect: "/test"
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),
