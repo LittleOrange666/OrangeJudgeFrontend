@@ -76,7 +76,7 @@ const problem_name = ref("???");
 onMounted(async () => {
   const pid = props.result.pid;
   try {
-    const data = api.get("/problem/" + pid);
+    const data = await api.get("/problem/" + pid);
     problem_name.value = data.title;
   } catch (err) {
     console.log("無法載入題目名稱")
@@ -84,9 +84,3 @@ onMounted(async () => {
 });
 
 </script>
-
-<style scoped>
-.test-case {
-  font-size: 1.1rem;
-}
-</style>

@@ -26,6 +26,28 @@
   float: left;
   width: 80%;
 }
+
+.copy_btn {
+  background-color: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 10px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.test-case {
+  font-size: 1.1rem;
+}
+
+.test-case pre {
+  border: 1px solid #aaa;
+  background-color: #eee;
+  font-size: 0.9rem;
+}
+
 </style>
 
 <script setup>

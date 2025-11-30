@@ -4,32 +4,32 @@
     <div class="test-case">Lang: {{ result.lang }}</div>
     <div class="test-case">
       <div>Source:</div>
-      <pre><code v-highlight>{{ result.source_code }}</code></pre>
+      <pre><code v-highlight v-can-copy>{{ result.source_code }}</code></pre>
     </div>
     <div class="test-case">
       <div>Input:</div>
-      <pre><code v-highlight>{{ result.input }}</code></pre>
+      <pre><code v-highlight v-can-copy>{{ result.input }}</code></pre>
     </div>
 
     <!-- Show Compilation Error if it exists -->
     <div class="test-case" v-if="result.result === 'CE'">
       <div>Compilation Error</div>
-      <pre><code v-highlight>{{ result.ce_msg }}</code></pre>
+      <pre><code v-highlight v-can-copy>{{ result.ce_msg }}</code></pre>
     </div>
 
     <!-- Show other results if not a compilation error -->
     <div v-else>
       <div class="test-case">
         <div>Output:</div>
-        <pre><code v-highlight>{{ result.output }}</code></pre>
+        <pre><code v-highlight v-can-copy>{{ result.output }}</code></pre>
       </div>
       <div class="test-case">
         <div>stderr:</div>
-        <pre><code v-highlight>{{ result.error }}</code></pre>
+        <pre><code v-highlight v-can-copy>{{ result.error }}</code></pre>
       </div>
       <div class="test-case">
         <div>Result:</div>
-        <pre><code v-highlight>{{ result.result }}</code></pre>
+        <pre><code v-highlight v-can-copy>{{ result.result }}</code></pre>
       </div>
     </div>
   </div>
@@ -45,13 +45,3 @@ defineProps({
   },
 });
 </script>
-
-<style scoped>
-.test-case {
-  font-size: 1.1rem;
-}
-pre {
-  background-color: #f8f9fa;
-  padding: 0.4rem;
-}
-</style>

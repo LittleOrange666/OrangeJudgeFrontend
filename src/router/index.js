@@ -67,6 +67,14 @@ const routes = [
         }
     },
     {
+        path: "/problem/:pid",
+        name: "problem",
+        component: () => import(/* webpackChunkName: "problem" */ "@/views/ProblemView.vue"),
+        meta: {
+            pageTitle: "題目"
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),
