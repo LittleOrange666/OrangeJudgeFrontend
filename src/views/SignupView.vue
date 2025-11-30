@@ -41,6 +41,7 @@ import {useRoute, useRouter} from "vue-router";
 import {api} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 
+
 const username = ref('');
 const password = ref('');
 const verify = ref('');
@@ -69,9 +70,9 @@ const getCode = async () => {
     await api.post("/accounts/get_code", {
       email: email.value
     });
-    show_modal("成功", "驗證碼已發送至'" + email.value + "'，十分鐘內有效");
+    await show_modal("成功", "驗證碼已發送至'" + email.value + "'，十分鐘內有效");
   } catch (error) {
-    show_modal("錯誤", "獲取失敗");
+    await show_modal("錯誤", "獲取失敗");
   }
 };
 
@@ -88,6 +89,7 @@ const handleSignup = async () => {
       verify: verify.value
     })
     await authStore.checkLoginStatus(true);
+    await show_modal("成功", "註冊成功");
     await goNext();
   } catch (err) {
     error.value = err.response?.data?.message || '帳號或密碼錯誤，請重新嘗試。';

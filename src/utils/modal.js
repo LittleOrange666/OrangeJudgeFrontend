@@ -1,4 +1,3 @@
-import router from '@/router';
 import { Modal } from 'bootstrap';
 
 /**
@@ -8,7 +7,10 @@ import { Modal } from 'bootstrap';
  * @param {number|null} timeout - Auto-hide timeout in milliseconds.
  * @returns {Promise<void>}
  */
-function async_show_modal(title, text, timeout) {
+export function show_modal(title, text, timeout) {
+    if (!timeout && title === "成功"){
+        timeout = 3000;
+    }
   return new Promise((resolve) => {
     const modalElement = document.getElementById('myModal');
     if (!modalElement) {
@@ -49,27 +51,4 @@ function async_show_modal(title, text, timeout) {
     modalElement.addEventListener("hide.bs.modal", hideHandler, { once: true });
     myModal.show();
   });
-}
-
-/**
- * A wrapper for async_show_modal that handles navigation and refresh.
- * @param {string} title - The modal title.
- * @param {string} text - The modal body text.
- * @param {boolean} refresh - Whether to refresh the page after closing.
- * @param {string|object} next_page - The route to navigate to after closing.
- * @param {boolean} skip - If true, performs the action without showing the modal.
- */
-export function show_modal(title, text, refresh, next_page, skip) {
-  const timeout = title === "成功" ? 3000 : null;
-  
-  const end_up = () => {
-    if (next_page) router.push(next_page);
-    else if (refresh) router.go(0);
-  };
-
-  if (skip) {
-    end_up();
-  } else {
-    async_show_modal(title, text, timeout).then(end_up);
-  }
 }

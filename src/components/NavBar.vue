@@ -58,6 +58,21 @@
               <li>
                 <router-link class="dropdown-item" to="/preferences">偏好設定</router-link>
               </li>
+              <li v-if="hasProblem">
+                <hr class="dropdown-divider">
+              </li>
+              <li v-if="hasProblem">
+                <router-link class="dropdown-item" to="/problemsetting/my">我的題目</router-link>
+              </li>
+              <li v-if="hasAdmin">
+                <router-link class="dropdown-item" to="/problemsetting">所有題目</router-link>
+              </li>
+              <li v-if="hasRoot">
+                <hr class="dropdown-divider">
+              </li>
+              <li v-if="hasRoot">
+                <router-link class="dropdown-item" to="/admin">管理介面</router-link>
+              </li>
             </ul>
           </li>
           <li class="nav-item" v-if="isLoggedIn">
@@ -75,4 +90,7 @@ import {useAuthStore} from '@/stores/auth';
 
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.isLoggedIn);
+const hasProblem = computed(() => authStore.permissions.includes("make_problems") || authStore.permissions.includes("admin") || authStore.permissions.includes("root"));
+const hasAdmin = computed(() => authStore.permissions.includes("admin") || authStore.permissions.includes("root"));
+const hasRoot = computed(() => authStore.permissions.includes("root"));
 </script>

@@ -38,6 +38,15 @@ const routes = [
         }
     },
     {
+        path: "/test",
+        name: "test",
+        component: () => import(/* webpackChunkName: "test" */ "@/views/TestView.vue"),
+        meta: {
+            pageTitle: "測試",
+            requiresAuth: true
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),

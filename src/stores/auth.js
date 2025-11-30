@@ -10,7 +10,8 @@ export const useAuthStore = defineStore('auth', {
         isLoggedIn: false,
         username: null,
         statusChecked: false,
-        display_name: null
+        display_name: null,
+        permissions: []
     }),
 
     actions: {
@@ -22,10 +23,12 @@ export const useAuthStore = defineStore('auth', {
                 this.isLoggedIn = data["logged_in"];
                 this.username = data["username"];
                 this.display_name = data["display_name"];
+                this.permissions = data["permissions"];
             } catch (error) {
                 this.isLoggedIn = false;
                 this.username = null;
                 this.display_name = null;
+                this.permissions = [];
             } finally {
                 this.statusChecked = true;
             }
@@ -37,6 +40,7 @@ export const useAuthStore = defineStore('auth', {
                 this.isLoggedIn = false;
                 this.username = null;
                 this.statusChecked = false;
+                this.permissions = [];
                 await this.checkLoginStatus();
                 await router.push('/');
             } catch (error) {

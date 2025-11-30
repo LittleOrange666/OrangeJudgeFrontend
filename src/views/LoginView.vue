@@ -23,6 +23,8 @@
 import {onMounted, ref} from 'vue';
 import {useAuthStore} from '@/stores/auth';
 import {useRoute, useRouter} from "vue-router";
+import {show_modal} from "@/utils/modal";
+
 
 const username = ref('');
 const password = ref('');
@@ -49,6 +51,7 @@ const handleLogin = async () => {
 
   try {
     await authStore.login(username.value, password.value);
+    await show_modal("成功", "登入成功");
     await goNext();
   } catch (err) {
     error.value = err.response?.data?.message || '帳號或密碼錯誤，請重新嘗試。';
