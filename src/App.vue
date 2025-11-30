@@ -1,10 +1,11 @@
 <template>
   <div id="top_area">
-    <NavBar />
+    <NavBar/>
   </div>
   <div id="main_area">
     <router-view/>
   </div>
+  <MyModal />
 </template>
 
 <style>
@@ -28,4 +29,5 @@
 
 <script setup>
 import NavBar from '@/components/NavBar.vue';
+import MyModal from "@/components/MyModal.vue";
 </script>

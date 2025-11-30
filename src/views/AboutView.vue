@@ -24,12 +24,12 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
-import { useJudgeInfoStore } from '@/stores/judgeInfo';
-import { storeToRefs } from 'pinia';
+import {onMounted} from 'vue';
+import {useJudgeInfoStore} from '@/stores/judgeInfo';
+import {storeToRefs} from 'pinia';
 
 const store = useJudgeInfoStore();
-const { lang_info } = storeToRefs(store);
+const {lang_info} = storeToRefs(store);
 
 onMounted(() => {
   store.fetchJudgeInfo();

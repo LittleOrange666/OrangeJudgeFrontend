@@ -21,7 +21,7 @@
 
 <script setup>
 import {onMounted, ref} from 'vue';
-import { useAuthStore } from '@/stores/auth';
+import {useAuthStore} from '@/stores/auth';
 import {useRoute, useRouter} from "vue-router";
 
 const username = ref('');
@@ -33,7 +33,7 @@ const router = useRouter();
 const route = useRoute();
 
 const goNext = async () => {
-  if (authStore.isLoggedIn){
+  if (authStore.isLoggedIn) {
     const redirectPath = route.query.redirect;
     if (redirectPath) {
       await router.push(redirectPath);
@@ -58,7 +58,7 @@ const handleLogin = async () => {
   }
 };
 
-onMounted(()=>{
-  goNext();
+onMounted(async () => {
+  await goNext();
 });
 </script>

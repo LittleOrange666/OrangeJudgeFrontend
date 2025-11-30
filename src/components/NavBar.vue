@@ -46,10 +46,18 @@
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                aria-expanded="false">{{ authStore.display_name }}</a>
             <ul class="dropdown-menu">
-              <li><router-link class="dropdown-item" to="/user/{{ authStore.username }}">個人頁面</router-link></li>
-              <li><router-link class="dropdown-item" to="/status?user={{ authStore.username }}">解題列表</router-link></li>
-              <li><router-link class="dropdown-item" to="/settings">帳號設定</router-link></li>
-              <li><router-link class="dropdown-item" to="/preferences">偏好設定</router-link></li>
+              <li>
+                <router-link class="dropdown-item" to="/user/{{ authStore.username }}">個人頁面</router-link>
+              </li>
+              <li>
+                <router-link class="dropdown-item" to="/status?user={{ authStore.username }}">解題列表</router-link>
+              </li>
+              <li>
+                <router-link class="dropdown-item" to="/settings">帳號設定</router-link>
+              </li>
+              <li>
+                <router-link class="dropdown-item" to="/preferences">偏好設定</router-link>
+              </li>
             </ul>
           </li>
           <li class="nav-item" v-if="isLoggedIn">
@@ -62,8 +70,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useAuthStore } from '@/stores/auth';
+import {computed} from 'vue';
+import {useAuthStore} from '@/stores/auth';
 
 const authStore = useAuthStore();
 const isLoggedIn = computed(() => authStore.isLoggedIn);

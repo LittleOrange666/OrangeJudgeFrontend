@@ -23,8 +23,17 @@ const routes = [
         path: "/login",
         name: "login",
         component: () => import(/* webpackChunkName: "login" */ "@/views/LoginView.vue"),
-        meta:{
+        meta: {
             pageTitle: "登入",
+            redirectIfLoggedIn: true
+        }
+    },
+    {
+        path: "/signup",
+        name: "signup",
+        component: () => import(/* webpackChunkName: "signup" */ "@/views/SignupView.vue"),
+        meta: {
+            pageTitle: "註冊",
             redirectIfLoggedIn: true
         }
     },
@@ -32,7 +41,7 @@ const routes = [
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),
-        meta:{
+        meta: {
             pageTitle: "找不到頁面"
         }
     }
@@ -49,14 +58,15 @@ router.beforeEach(async (to) => {
         await authStore.checkLoginStatus();
     }
     if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-        return { name: 'login',
+        return {
+            name: 'login',
             query: {
                 redirect: to.fullPath
             }
         };
     }
     if (to.meta.redirectIfLoggedIn && authStore.isLoggedIn) {
-        return { name: 'home' };
+        return {name: 'home'};
     }
     const pageName = to.meta.pageTitle || '找不到頁面';
     const appTitleBase = process.env.VUE_APP_TITLE || 'OrangeJudge';

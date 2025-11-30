@@ -1,11 +1,9 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import axios from 'axios';
 import router from "@/router";
-import {toForm} from "@/tools";
+import {api} from "@/utils/tools";
 
 axios.defaults.withCredentials = true;
-
-const API_BASE_URL = '/api';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -20,11 +18,10 @@ export const useAuthStore = defineStore('auth', {
             if (this.statusChecked && !force) return;
 
             try {
-                const response = await axios.get(`${API_BASE_URL}/login`);
-                this.isLoggedIn = response.data["data"]["logged_in"];
-                this.username = response.data["data"]["username"];
-                this.display_name = response.data["data"]["display_name"];
-
+                const data = await api.get("/login");
+                this.isLoggedIn = data["logged_in"];
+                this.username = data["username"];
+                this.display_name = data["display_name"];
             } catch (error) {
                 this.isLoggedIn = false;
                 this.username = null;
@@ -36,7 +33,7 @@ export const useAuthStore = defineStore('auth', {
 
         async logout() {
             try {
-                await axios.delete(`${API_BASE_URL}/login`);
+                await api.delete("/login");
                 this.isLoggedIn = false;
                 this.username = null;
                 this.statusChecked = false;
@@ -47,17 +44,14 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async login(username, password){
+        async login(username, password) {
             try {
-                const response = await axios.post(`${API_BASE_URL}/login`, toForm({
+                const data = await api.post("/login", {
                     username,
                     password
-                }));
+                });
                 this.isLoggedIn = true;
-                if (response.data["status"] !== "success"){
-                    throw new Error(response.data["message"]);
-                }
-                this.username = response.data["data"]["username"];
+                this.username = data["username"];
                 await this.checkLoginStatus(true);
             } catch (error) {
                 console.error('Login failed:', error);

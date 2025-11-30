@@ -1,29 +1,23 @@
 import {defineStore} from 'pinia';
 import {api} from "@/utils/tools";
 
-export const useJudgeInfoStore = defineStore('judgeInfo', {
+export const useServerInfoStore = defineStore('serverInfo', {
     state: () => ({
-        lang_info: [],
+        server_info: [],
         hasFetched: false, // 標記是否已經擷取過資料
         error: null,
     }),
     actions: {
-        async fetchJudgeInfo() {
+        async fetchServerInfo() {
             // 如果已經擷取過，就直接返回，不再發送請求
             if (this.hasFetched) {
                 return;
             }
 
             try {
-                const data = await api.get('/judge_info');
-                if (Array.isArray(data.langs)) {
-                    this.lang_info = data.langs;
-                    this.error = null;
-                } else {
-                    throw new Error('從 API 回傳的資料格式不正確');
-                }
+                this.server_info = await api.get('/server_info');
             } catch (err) {
-                console.error('無法取得 judge info:', err);
+                console.error('無法取得 server info:', err);
                 this.error = err.message || '發生未知錯誤';
             } finally {
                 // 無論成功或失敗，都標記為已擷取，避免重複發送無效請求

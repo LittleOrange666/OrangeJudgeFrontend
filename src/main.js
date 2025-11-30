@@ -1,8 +1,11 @@
-import {createApp} from 'vue'
-import App from './App.vue'
-import router from './router'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
 import { useAuthStore } from './stores/auth';
 import { createPinia } from 'pinia';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap';
 
 const app = createApp(App);
 const pinia = createPinia();
