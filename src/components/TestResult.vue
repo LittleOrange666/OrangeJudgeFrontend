@@ -4,32 +4,32 @@
     <div class="test-case">Lang: {{ result.lang }}</div>
     <div class="test-case">
       <div>Source:</div>
-      <pre>{{ result.source_code }}</pre>
+      <pre><code v-highlight>{{ result.source_code }}</code></pre>
     </div>
     <div class="test-case">
       <div>Input:</div>
-      <pre>{{ result.input }}</pre>
+      <pre><code v-highlight>{{ result.input }}</code></pre>
     </div>
 
     <!-- Show Compilation Error if it exists -->
-    <div class="test-case" v-if="result.result == 'CE'">
+    <div class="test-case" v-if="result.result === 'CE'">
       <div>Compilation Error</div>
-      <pre>{{ result.ce_msg }}</pre>
+      <pre><code v-highlight>{{ result.ce_msg }}</code></pre>
     </div>
 
     <!-- Show other results if not a compilation error -->
     <div v-else>
       <div class="test-case">
         <div>Output:</div>
-        <pre>{{ result.output }}</pre>
+        <pre><code v-highlight>{{ result.output }}</code></pre>
       </div>
       <div class="test-case">
         <div>stderr:</div>
-        <pre>{{ result.error }}</pre>
+        <pre><code v-highlight>{{ result.error }}</code></pre>
       </div>
       <div class="test-case">
         <div>Result:</div>
-        <pre>{{ result.result }}</pre>
+        <pre><code v-highlight>{{ result.result }}</code></pre>
       </div>
     </div>
   </div>
@@ -52,7 +52,6 @@ defineProps({
 }
 pre {
   background-color: #f8f9fa;
-  padding: 1rem;
-  border-radius: 0.25rem;
+  padding: 0.4rem;
 }
 </style>
