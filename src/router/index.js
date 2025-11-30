@@ -59,6 +59,14 @@ const routes = [
         redirect: "/test"
     },
     {
+        path: "/submission/:sub_id",
+        name: "submission",
+        component: () => import(/* webpackChunkName: "submission" */ "@/views/SubmissionView.vue"),
+        meta: {
+            pageTitle: "結果"
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),
