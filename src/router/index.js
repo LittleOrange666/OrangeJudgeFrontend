@@ -91,6 +91,14 @@ const routes = [
         }
     },
     {
+        path: "/contest/:cid",
+        name: "contest",
+        component: () => import(/* webpackChunkName: "contest" */ "@/views/ContestView.vue"),
+        meta: {
+            pageTitle: "競賽"
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),
@@ -104,6 +112,12 @@ const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
 })
+
+export function updateTitle(pageName){
+    pageName = pageName || '找不到頁面';
+    const appTitleBase = process.env.VUE_APP_TITLE || 'OrangeJudge';
+    document.title = `${pageName} - ${appTitleBase}`;
+}
 
 router.beforeEach(async (to) => {
     const authStore = useAuthStore();
@@ -121,9 +135,7 @@ router.beforeEach(async (to) => {
     if (to.meta.redirectIfLoggedIn && authStore.isLoggedIn) {
         return {name: 'home'};
     }
-    const pageName = to.meta.pageTitle || '找不到頁面';
-    const appTitleBase = process.env.VUE_APP_TITLE || 'OrangeJudge';
-    document.title = `${pageName} - ${appTitleBase}`;
+    updateTitle(to.meta.pageTitle);
 });
 
 export default router

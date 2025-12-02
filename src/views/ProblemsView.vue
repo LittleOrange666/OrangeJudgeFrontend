@@ -1,4 +1,5 @@
 <template>
+  <h1>公開題目</h1>
   <table class="table table-hover table-striped" v-if="ok">
     <thead>
     <tr>

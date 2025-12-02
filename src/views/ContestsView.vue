@@ -1,4 +1,5 @@
 <template>
+  <h1>競賽列表</h1>
   <form v-if="hasProblemPermission" @submit.prevent="handleCreate">
     <div class="row">
       <div class="col-auto">

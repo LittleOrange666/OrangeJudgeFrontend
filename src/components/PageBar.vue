@@ -3,7 +3,7 @@
     <p>Loading...</p>
   </div>
   <div v-else-if="error" class="alert alert-danger">
-    <p>無法載入資料：{{ error }}</p>
+    <p>無法載入頁面：{{ error }}</p>
   </div>
   <nav v-else>
     <ul class="pagination">
