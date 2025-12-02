@@ -28,20 +28,22 @@ export function usePage(path, args, on_load){
     // 使用 useLoader 來處理數據加載、錯誤和加載狀態
     const {data, error, load, loading} = useLoader();
     // 自定義的加載狀態，用於防止重複加載
-    const my_loading = ref(true);
+    const my_loading = ref(false);
     // 計算屬性，返回要顯示的頁碼陣列
     const show_pages = computed(()=>data && data.value && data.value["show_pages"] || []);
     // 計算屬性，返回當前頁的數據內容
     const contents = computed(()=>data && data.value && data.value["data"] || []);
     const ok = computed(()=>!loading.value && !error.value);
+    const page_cnt = computed(()=>data && data.value && data.value["page_cnt"] || []);
 
     /**
      * 加載指定頁碼的數據。
      * @param {string|number} page_val - 要加載的頁碼。
      */
     const do_load = async (page_val) => {
+        if (my_loading.value) return;
         my_loading.value = true;
-        page.value = page_val;
+        page.value = ""+page_val;
         // 構建 API 請求的查詢參數
         const get_args = {
             page: page.value,
@@ -56,7 +58,7 @@ export function usePage(path, args, on_load){
         // 調用加載器加載數據
         await load(path, get_args);
         // 如果 API 回應中包含頁碼，則更新當前頁碼
-        if (data && data.value && data.value["page"]) page.value = data.value["page"];
+        if (data && data.value && data.value["page"] && ""+page.value !== ""+data.value["page"]) page.value = data.value["page"];
         // 如果有回調函數，則在數據加載後執行
         if (on_load) await on_load(page.value);
         my_loading.value = false;
@@ -83,6 +85,7 @@ export function usePage(path, args, on_load){
         contents: contents, // 當前頁的數據
         page: page, // 當前頁碼
         show_pages: show_pages, // 要顯示的頁碼陣列
-        ok: ok // 是否加載成功
+        ok: ok, // 是否加載成功
+        page_cnt: page_cnt
     }
 }

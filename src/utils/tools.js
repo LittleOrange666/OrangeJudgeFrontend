@@ -94,6 +94,14 @@ export function timestamp_to_str(i) {
     return new Date(+i * 1000).toLocaleString()
 }
 
+export function minute_to_str(i) {
+    let t = Math.floor(+i);
+    let d = Math.floor(t / 1440);
+    let h = Math.floor((t % 1440) / 60);
+    let m = t % 60;
+    return (d > 0 ? d + ':' : '') + (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
+}
+
 /**
  * A Vue Composition API composable for asynchronously loading data from an API endpoint.
  * It provides reactive state for data, loading status, and errors.

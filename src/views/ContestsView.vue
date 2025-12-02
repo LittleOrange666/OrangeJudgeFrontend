@@ -23,8 +23,8 @@
     <tbody>
     <tr v-for="content in contents" :key="content.cid">
       <th scope="row"><router-link :to="`/contest/${content.cid}`">{{ content.name }}</router-link></th>
-      <td class="date-string">{{ content['start_time'] }}</td>
-      <td class="time-string">{{ content['elapsed'] }}</td>
+      <td class="date-string">{{ timestamp_to_str(content['start_time']) }}</td>
+      <td class="time-string">{{ minute_to_str(content['elapsed']) }}</td>
       <td>
         <div class="row">
           <div class="row">
@@ -49,7 +49,7 @@ import {usePage} from "@/utils/page";
 import PageBar from "@/components/PageBar.vue";
 import {onMounted, ref} from "vue";
 import {hasProblemPermission} from "@/utils/accounts";
-import {api} from "@/utils/tools";
+import {api, minute_to_str, timestamp_to_str} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 import router from "@/router";
 
