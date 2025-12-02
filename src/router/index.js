@@ -83,6 +83,14 @@ const routes = [
         }
     },
     {
+        path: "/contests",
+        name: "contests",
+        component: () => import(/* webpackChunkName: "contests" */ "@/views/ContestsView.vue"),
+        meta: {
+            pageTitle: "競賽列表"
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),
