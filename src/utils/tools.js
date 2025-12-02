@@ -1,4 +1,5 @@
 import axios from "axios";
+import {ref} from "vue";
 
 /**
  * Converts a plain JavaScript object into a FormData object.
@@ -20,7 +21,7 @@ const API_BASE_URL = '/api';
  * A helper function to send requests using axios and handle a standardized API response format.
  * It assumes the API returns a JSON object with "status" and "description" fields on failure,
  * and a "data" field on success.
- * @param {Function} func The axios method to call (e.g., axios.get, axios.post).
+ * @param {Function} func The axios method to call (e.g., axios.post, axios.put).
  * @param {string} path The API endpoint path.
  * @param {Object<string, any>} [obj] The data to be sent, which will be converted to FormData.
  * @returns {Promise<any>} A promise that resolves with the "data" field of the API response.
@@ -84,7 +85,53 @@ export const api = {
     }
 };
 
-
+/**
+ * Converts a Unix timestamp (in seconds) to a localized date-time string.
+ * @param {number|string} i The Unix timestamp in seconds.
+ * @returns {string} A localized string representation of the date and time.
+ */
 export function timestamp_to_str(i) {
     return new Date(+i * 1000).toLocaleString()
+}
+
+/**
+ * A Vue Composition API composable for asynchronously loading data from an API endpoint.
+ * It provides reactive state for data, loading status, and errors.
+ *
+ * @example
+ * // In a Vue component's setup()
+ * const { data, error, loading, load } = useLoader();
+ * onMounted(() => {
+ *   load('/api/my-data');
+ * });
+ *
+ * @returns {{
+ *   data: import('vue').Ref<any|null>,
+ *   error: import('vue').Ref<string|null>,
+ *   loading: import('vue').Ref<boolean>,
+ *   load: (path: string, obj?: Object<string, any>) => Promise<void>
+ * }} An object containing reactive refs and the load function.
+ */
+export function useLoader(){
+    const data = ref(null);
+    const error = ref(null);
+    const loading = ref(true);
+    async function load(path, obj){
+        loading.value = true;
+        error.value = null;
+        data.value = null;
+        try {
+            data.value = await api.get(path, obj);
+        } catch (err) {
+            error.value = err["message"];
+        } finally {
+            loading.value = false;
+        }
+    }
+    return {
+        data,
+        error,
+        load,
+        loading
+    }
 }

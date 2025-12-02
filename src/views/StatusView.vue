@@ -4,7 +4,7 @@
       <input type="text" class="form-control" placeholder="題目編號" v-model="pid">
     </div>
     <div class="col-auto">
-      <input type="text" class="form-control" placeholder="使用者id" v-model="username">
+      <input type="text" class="form-control" placeholder="使用者id" v-model="user">
     </div>
     <div class="col-auto">
       <select class="form-select" v-model="lang">
@@ -25,13 +25,7 @@
       <button class="btn btn-primary" v-on:click="rejudge" :disabled="loading">Rejudge</button>
     </div>
   </div>
-  <div v-if="loading" class="text-center">
-    <p>Loading...</p>
-  </div>
-  <div v-else-if="error" class="alert alert-danger">
-    <p>無法載入資料：{{ error }}</p>
-  </div>
-  <table class="table table-hover table-striped" v-if="!loading && !error">
+  <table class="table table-hover table-striped" v-if="ok">
     <thead>
     <tr>
       <th scope="col">解題編號</th>
@@ -44,22 +38,26 @@
     </thead>
     <tbody>
     <tr v-for="content in contents" :key="content['id']">
-      <th scope="row"><router-link :to="`/submission/${content['id']}`">{{ content["id"] }}</router-link></th>
+      <th scope="row">
+        <router-link :to="`/submission/${content['id']}`" v-if="content['can_see']">{{ content["id"] }}</router-link>
+        <span v-else>{{ content["id"] }}</span>
+      </th>
       <td>{{ timestamp_to_str(content["time"]) }}</td>
-      <td><router-link :to="`/user/${content['user_id']}`">{{ content["user_name"] }}</router-link></td>
-      <td><router-link :to="`/problem/${content['problem_id']}`">{{ content["problem_id"] }}. {{ content["problem_name"] }}</router-link></td>
+      <td>
+        <router-link :to="`/user/${content['user_id']}`">{{ content["user_name"] }}</router-link>
+      </td>
+      <td>
+        <router-link :to="`/problem/${content['problem_id']}`">{{ content["problem_id"] }}. {{
+            content["problem_name"]
+          }}
+        </router-link>
+      </td>
       <td>{{ content["lang"] }}</td>
       <td>{{ content["result"] }}</td>
     </tr>
     </tbody>
   </table>
-  <nav aria-label="Page navigation example" v-if="!loading && !error">
-    <ul class="pagination" id="status_page">
-      <li class="page-item" :key="pages" v-for="pages in show_pages">
-        <a class="page-link" v-on:click="changePage(pages)" v-text="pages"></a>
-      </li>
-    </ul>
-  </nav>
+  <PageBar :page_manager="page_manager" />
 </template>
 
 <script setup>
@@ -71,30 +69,48 @@ import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {api, timestamp_to_str} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
+import {usePage} from "@/utils/page";
+import PageBar from "@/components/PageBar.vue";
 
 const route = useRoute();
 const router = useRouter();
 const store = useJudgeInfoStore();
 const {lang_info} = storeToRefs(store);
 const pid = ref(route.query.pid || "");
-const username = ref(route.query.user || "");
+const user = ref(route.query.user || "");
 const lang = ref(route.query.lang || "");
 const result = ref(route.query.result || "");
-const page = ref(route.query.page || "1");
-const loading = ref(true);
-const error = ref(null);
-const show_pages = ref([]);
-const contents = ref([]);
+const update_url = async (page) => {
+  await router.replace({
+    path: route.path,
+    query: {
+      pid: pid.value,
+      user: user.value,
+      lang: lang.value,
+      result: result.value,
+      page: page,
+    }
+  });
+};
+const page_manager = usePage("/status", {
+  pid: pid,
+  user: user,
+  lang: lang,
+  result: result
+}, update_url);
+const loading = page_manager.loading;
+const contents = page_manager.contents;
+const ok = page_manager.ok;
 
 const rejudge = async () => {
-  try{
+  try {
     await api.post("/rejudge_all", {
       pid: pid.value,
-      user: username.value,
+      user: user.value,
       lang: lang.value,
       result: result.value,
     });
-  }catch (err){
+  } catch (err) {
     await show_modal("錯誤", err);
     return;
   }
@@ -102,45 +118,9 @@ const rejudge = async () => {
   await refresh();
 };
 
-const refresh = async () => {
-  loading.value = true;
-  if (isNaN(Number(page.value)) || Number(page.value) <= 0) {
-    page.value = "1";
-  }
-  await router.replace({
-    path: route.path,
-    query: {
-      pid: pid.value,
-      user: username.value,
-      lang: lang.value,
-      result: result.value,
-      page: page.value,
-    }
-  });
-  try{
-    const data = await api.get("/status", {
-      pid: pid.value,
-      user: username.value,
-      lang: lang.value,
-      result: result.value,
-      page: page.value,
-      page_size: "12"
-    });
-    page.value = data["page"];
-    show_pages.value = data["show_pages"];
-    contents.value = data["data"]
-  }catch (err){
-    error.value = err || '發生未知錯誤';
-  }
-  loading.value = false;
-};
+const refresh = page_manager.refresh
 
-const changePage = async (page_num) => {
-  page.value = page_num;
-  await refresh();
-};
-
-onMounted(async () =>{
+onMounted(async () => {
   await store.fetchJudgeInfo();
   await refresh();
 });

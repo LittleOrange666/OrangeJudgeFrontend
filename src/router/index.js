@@ -75,6 +75,14 @@ const routes = [
         }
     },
     {
+        path: "/problems",
+        name: "problems",
+        component: () => import(/* webpackChunkName: "problems" */ "@/views/ProblemsView.vue"),
+        meta: {
+            pageTitle: "公開題目"
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),

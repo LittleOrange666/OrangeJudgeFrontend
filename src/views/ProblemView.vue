@@ -33,26 +33,17 @@
 
 <script setup>
 import {useRoute} from "vue-router";
-import {onMounted, ref} from "vue";
-import {api} from "@/utils/tools";
+import {onMounted} from "vue";
+import {useLoader} from "@/utils/tools";
 import CodeSubmit from "@/components/CodeSubmit.vue";
 import {isLoggedIn} from "@/utils/accounts";
 
-const data = ref(null);
-const error = ref(null);
+const {data, error, load} = useLoader();
 
 const route = useRoute();
 const pid = route.params.pid;
 
-const do_load = async () => {
-  try {
-    data.value = await api.get("/problem/" + pid);
-  } catch (err) {
-    error.value = err;
-  }
-};
-
 onMounted(async () => {
-  await do_load();
+  await load("/problem/" + pid);
 });
 </script>

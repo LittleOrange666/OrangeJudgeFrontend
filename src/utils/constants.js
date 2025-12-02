@@ -23,3 +23,4 @@ export const result_css_class = (result)=>{
     if (result in result_css_class_table) return result_css_class_table[result];
     else return "table-secondary";
 };
+export const default_page_size = "12";
