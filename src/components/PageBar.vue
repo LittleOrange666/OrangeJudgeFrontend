@@ -8,8 +8,8 @@
   <nav v-else>
     <ul class="pagination">
       <li class="page-item">
-        <button class="page-link" aria-label="Previous" :disabled="page_manager.page.value==='1'"
-                v-on:click="page_manager.to_page(+page_manager.page.value-1)">
+        <button class="page-link" aria-label="Previous" :disabled="!has_prev"
+                v-on:click="to_prev_page">
           <span aria-hidden="true">&laquo;</span>
         </button>
       </li>
@@ -17,8 +17,8 @@
         <a class="page-link" v-on:click="page_manager.to_page(pages)" v-text="pages"></a>
       </li>
       <li class="page-item">
-        <button class="page-link" aria-label="Next" :disabled="page_manager.page.value===page_manager.page_count.value"
-                v-on:click="page_manager.to_page(+page_manager.page.value+1)">
+        <button class="page-link" aria-label="Next" :disabled="!has_next"
+                v-on:click="to_next_page">
           <span aria-hidden="true">&raquo;</span>
         </button>
       </li>
@@ -35,4 +35,12 @@ const props = defineProps({
 });
 const loading = computed(()=>props.page_manager.loading.value);
 const error = computed(()=>props.page_manager.error.value);
+const has_prev = computed(()=>""+props.page_manager.page.value !== "1");
+const has_next = computed(()=>""+props.page_manager.page.value !== ""+props.page_manager.page_cnt.value);
+async function to_next_page(){
+  props.page_manager.to_page(+props.page_manager.page.value+1);
+}
+async function to_prev_page(){
+  props.page_manager.to_page(+props.page_manager.page.value-1);
+}
 </script>

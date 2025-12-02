@@ -34,7 +34,7 @@ export function usePage(path, args, on_load){
     // 計算屬性，返回當前頁的數據內容
     const contents = computed(()=>data && data.value && data.value["data"] || []);
     const ok = computed(()=>!loading.value && !error.value);
-    const page_cnt = computed(()=>data && data.value && data.value["page_cnt"] || []);
+    const page_cnt = computed(()=>data && data.value && data.value["page_count"] || []);
 
     /**
      * 加載指定頁碼的數據。
