@@ -30,12 +30,11 @@
         <div class="row">
           <div class="row">
             <div class="col-auto" v-if="content['can_register']">
-              <button class="btn btn-danger" v-if="content['is_registered']">取消註冊</button>
-              <button class="btn btn-primary" v-else>註冊</button>
+              <button class="btn btn-danger" v-if="content['is_registered']" v-on:click="handleUnregister(content.cid)">取消註冊</button>
+              <button class="btn btn-primary" v-else v-on:click="handleRegister(content.cid)">註冊</button>
             </div>
-            <span>&nbsp;</span>
             <div class="col-auto" v-if="content['can_virtual']">
-              <button class="btn btn-secondary">模擬註冊</button>
+              <router-link class="btn btn-secondary" :to="`/virtual_register/${content.cid}`">模擬註冊</router-link>
             </div>
           </div>
         </div>
@@ -68,6 +67,26 @@ const handleCreate = async () => {
     await router.push(`/contest/${idx}`);
   }catch(err){
     await show_modal("創建失敗", err.message);
+  }
+};
+
+const handleRegister = async (cid) => {
+  try{
+    await api.post("/contest/"+cid+"/register");
+    await show_modal("成功", "成功註冊");
+    await page_manager.refresh();
+  }catch(err){
+    await show_modal("註冊失敗", err.message);
+  }
+};
+
+const handleUnregister = async (cid) => {
+  try{
+    await api.post("/contest/"+cid+"/unregister");
+    await show_modal("成功", "成功取消註冊");
+    await page_manager.refresh();
+  }catch(err){
+    await show_modal("取消註冊失敗", err.message);
   }
 };
 

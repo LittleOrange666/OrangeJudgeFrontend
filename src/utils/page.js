@@ -1,6 +1,6 @@
 // 導入 Vue 和專案相關的工具和常數
 import {useRoute} from "vue-router";
-import {computed, ref, watch} from "vue";
+import {computed, ref} from "vue";
 import {useLoader} from "@/utils/tools";
 import {default_page_size} from "@/utils/constants";
 
@@ -70,11 +70,6 @@ export function usePage(path, args, on_load){
     const refresh = async () => {
         await do_load(page.value);
     }
-
-    // 監聽頁碼變化，如果不是正在加載中，則自動加載新頁碼的數據
-    watch(page, async (new_page) => {
-        if (!my_loading.value) await do_load(new_page);
-    })
 
     // 返回供組件使用的狀態和方法
     return {
