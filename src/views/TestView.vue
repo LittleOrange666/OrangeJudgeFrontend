@@ -18,7 +18,7 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {onMounted, ref} from 'vue';
 import {useJudgeInfoStore} from '@/stores/judgeInfo';
 import {storeToRefs} from 'pinia';

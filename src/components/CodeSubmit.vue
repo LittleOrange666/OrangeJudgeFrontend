@@ -14,7 +14,7 @@
     <div v-if="error" class="alert alert-danger col-5 offset-2">{{ error }}</div>
   </form>
 </template>
-<script setup>
+<script setup lang="ts">
 import {defineProps, onMounted, ref} from 'vue';
 import {useJudgeInfoStore} from '@/stores/judgeInfo';
 import {default_lang} from "@/utils/constants";

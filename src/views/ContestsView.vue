@@ -44,7 +44,7 @@
   </table>
   <PageBar :page_manager="page_manager" />
 </template>
-<script setup>
+<script setup lang="ts">
 import {usePage} from "@/utils/page";
 import PageBar from "@/components/PageBar.vue";
 import {onMounted, ref} from "vue";

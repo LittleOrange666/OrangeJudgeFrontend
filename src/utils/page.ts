@@ -1,30 +1,33 @@
 // 導入 Vue 和專案相關的工具和常數
 import {useRoute} from "vue-router";
-import {computed, ref} from "vue";
+import {computed, ComputedRef, Ref, ref} from "vue";
 import {useLoader} from "@/utils/tools";
 import {default_page_size} from "@/utils/constants";
 
-/**
- * 一個處理分頁邏輯的 Vue Composition API。
- * @param {string} path - 獲取分頁數據的 API 路徑。
- * @param {Object} args - 一個包含額外查詢參數的物件，其值為 ref 物件。
- * @param {Function} on_load - 數據加載完成後執行的回調函數。
- * @returns {{
- *   to_page: ((page_val: (string|number)) => Promise<void>),
- *   refresh: (() => Promise<void>),
- *   loading: import('vue').Ref<boolean>,
- *   error: import('vue').Ref<any>,
- *   contents: import('vue').ComputedRef<Array<any>>,
- *   page: import('vue').Ref<string>,
- *   show_pages: import('vue').ComputedRef<Array<number>>,
- *   ok: import('vue').ComputedRef<boolean>
- * }} - 返回一個包含分頁狀態和控制方法的物件。
- */
-export function usePage(path, args, on_load){
+interface PageManager {
+    to_page: (page: string|number) => Promise<void>,
+    refresh: () => Promise<void>,
+    loading: Ref<boolean>,
+    error: Ref<string>,
+    contents: ComputedRef<any[]>,
+    page: Ref<string>,
+    show_pages: ComputedRef<string[]>,
+    ok: ComputedRef<boolean>,
+    page_cnt: ComputedRef<string>,
+}
+
+function safe_page(page: string|string[]|null): string{
+    if (!page) return "1";
+    if (typeof page === "string") return page;
+    return page[0];
+}
+
+
+export function usePage(path: string, args?: {[key: string]: any}, on_load?: (page: string) => Promise<void>): PageManager {
     // 獲取當前路由實例
     const route = useRoute();
     // 當前頁碼，從路由查詢參數或預設為 "1"
-    const page = ref(route.query.page || "1");
+    const page: Ref<string> = ref(safe_page(route.query.page));
     // 使用 useLoader 來處理數據加載、錯誤和加載狀態
     const {data, error, load, loading} = useLoader();
     // 自定義的加載狀態，用於防止重複加載
@@ -40,12 +43,12 @@ export function usePage(path, args, on_load){
      * 加載指定頁碼的數據。
      * @param {string|number} page_val - 要加載的頁碼。
      */
-    const do_load = async (page_val) => {
+    const do_load = async (page_val: string | number) => {
         if (my_loading.value) return;
         my_loading.value = true;
         page.value = ""+page_val;
         // 構建 API 請求的查詢參數
-        const get_args = {
+        const get_args: {[key: string]: any} = {
             page: page.value,
             page_size: default_page_size
         }

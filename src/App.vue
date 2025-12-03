@@ -50,7 +50,7 @@
 
 </style>
 
-<script setup>
+<script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
 import MyModal from "@/components/MyModal.vue";
 import CheckingModal from "@/components/CheckingModal.vue";

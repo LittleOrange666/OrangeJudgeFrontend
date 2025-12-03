@@ -19,7 +19,7 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {onMounted, ref} from 'vue';
 import {useAuthStore} from '@/stores/auth';
 import {useRoute, useRouter} from "vue-router";

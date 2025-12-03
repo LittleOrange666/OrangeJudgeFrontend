@@ -64,7 +64,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {api, useLoader} from "@/utils/tools";
 import {useRoute} from "vue-router";
 import {computed, onMounted} from "vue";

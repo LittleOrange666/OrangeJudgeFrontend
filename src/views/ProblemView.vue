@@ -31,7 +31,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useRoute} from "vue-router";
 import {onMounted} from "vue";
 import {useLoader} from "@/utils/tools";

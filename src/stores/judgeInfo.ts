@@ -1,8 +1,21 @@
 import {defineStore} from 'pinia';
 import {api} from "@/utils/tools";
 
+interface langInfo{
+    name: string,
+    compile: string,
+    run: string,
+    ext: string
+}
+
+interface judgeState{
+    lang_info: langInfo[],
+    hasFetched: boolean,
+    error: string | null,
+}
+
 export const useJudgeInfoStore = defineStore('judgeInfo', {
-    state: () => ({
+    state: (): judgeState => ({
         lang_info: [],
         hasFetched: false, // 標記是否已經擷取過資料
         error: null,
@@ -22,7 +35,7 @@ export const useJudgeInfoStore = defineStore('judgeInfo', {
                 } else {
                     throw new Error('從 API 回傳的資料格式不正確');
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error('無法取得 judge info:', err);
                 this.error = err.message || '發生未知錯誤';
             } finally {

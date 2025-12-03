@@ -2,7 +2,7 @@ import hljs from 'highlight.js';
 
 const highlightDirective = {
     // 當元素插入到 DOM 中時呼叫
-    mounted(el, binding) {
+    mounted(el: HTMLElement, binding: any) {
         // 檢查是否有傳入語言參數，如果沒有則讓 highlight.js 自動偵測
         const language = binding.arg;
 

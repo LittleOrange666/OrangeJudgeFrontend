@@ -10,6 +10,6 @@
   <p>或到<router-link to="/contests">競賽列表</router-link>參與競賽</p>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useAuthStore} from '@/stores/auth';
 </script>

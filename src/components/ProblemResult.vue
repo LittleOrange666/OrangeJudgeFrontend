@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {defineProps, onMounted, ref} from 'vue';
 import {api} from "@/utils/tools";
 import {result_css_class} from "@/utils/constants";
