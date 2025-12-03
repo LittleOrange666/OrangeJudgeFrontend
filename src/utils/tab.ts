@@ -33,7 +33,7 @@ export default function useTab(){
         // Create a mapping from tab target ID (e.g., '#profile') to the tab element
         // and add click listeners to sync the URL hash with the active tab.
         for (const tab of tabs){
-            let tab_target = tab.dataset["bsTarget"];
+            const tab_target = tab.dataset["bsTarget"];
             if (tab_target) {
                 tab_table[tab_target] = tab;
                 tab.addEventListener("click", async function (){

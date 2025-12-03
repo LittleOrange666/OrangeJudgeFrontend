@@ -22,5 +22,5 @@ const result_css_class_table = {
 export function result_css_class(result: string): string {
     if (result in result_css_class_table) return result_css_class_table[result];
     else return "table-secondary";
-};
+}
 export const default_page_size = "12";

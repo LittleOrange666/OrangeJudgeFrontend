@@ -4,7 +4,7 @@ const { copy } = useClipboard();
 const canCopyDirective = {
     // 當元素插入到 DOM 中時呼叫
     mounted(el) {
-        let copy_btn = document.createElement('button');
+        const copy_btn = document.createElement('button');
         copy_btn.className = "copy_btn";
         copy_btn.textContent = "copy";
         el.appendChild(copy_btn);

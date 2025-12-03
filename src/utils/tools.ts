@@ -7,9 +7,9 @@ import {ref} from "vue";
  * @returns {FormData} A FormData object containing the key-value pairs from the input object.
  */
 export const toForm = function (obj) {
-    let f = new FormData();
+    const f = new FormData();
     if (!obj) return f;
-    for (let key in obj) {
+    for (const key in obj) {
         f.append(key, obj[key]);
     }
     return f;
@@ -95,10 +95,10 @@ export function timestamp_to_str(i) {
 }
 
 export function minute_to_str(i) {
-    let t = Math.floor(+i);
-    let d = Math.floor(t / 1440);
-    let h = Math.floor((t % 1440) / 60);
-    let m = t % 60;
+    const t = Math.floor(+i);
+    const d = Math.floor(t / 1440);
+    const h = Math.floor((t % 1440) / 60);
+    const m = t % 60;
     return (d > 0 ? d + ':' : '') + (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
 }
 
