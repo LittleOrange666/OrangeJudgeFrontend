@@ -48,8 +48,13 @@ const pid = route.params.pid;
 onMounted(async () => {
   await load("/problem/" + pid);
   const ele = document.getElementById("main_content");
+  let base = location.origin+location.pathname;
+  base = base.substring(0,base.lastIndexOf("/") + 1);
   ele.querySelectorAll("img").forEach(img => {
     let imgUrl = img.src;
+    if (imgUrl.startsWith(base)){
+      imgUrl = imgUrl.substring(base.length);
+    }
     if (!imgUrl.includes("/")) {
       img.src = "/api/problem/" + pid + "/file/" + imgUrl;
     }
