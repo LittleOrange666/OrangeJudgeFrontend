@@ -100,7 +100,7 @@ const handleSignup = async () => {
 };
 
 onMounted(async () => {
-  await useServerInfoStore().fetchServerInfo();
+  // await useServerInfoStore().fetchServerInfo();
   await goNext();
 });
 </script>

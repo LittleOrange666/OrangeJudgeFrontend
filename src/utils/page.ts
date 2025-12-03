@@ -22,7 +22,7 @@ interface PageResult<T> {
     page_count?: string
 }
 
-function safe_page(page: string|string[]|null): string{
+export function safe_page(page: string|string[]|null): string{
     if (!page) return "1";
     if (typeof page === "string") return page;
     return page[0];

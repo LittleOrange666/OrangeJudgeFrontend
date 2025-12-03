@@ -24,14 +24,10 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted} from 'vue';
 import {useJudgeInfoStore} from '@/stores/judgeInfo';
 import {storeToRefs} from 'pinia';
 
 const store = useJudgeInfoStore();
 const {lang_info} = storeToRefs(store);
 
-onMounted(() => {
-  store.fetchJudgeInfo();
-});
 </script>

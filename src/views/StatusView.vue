@@ -19,7 +19,7 @@
       </select>
     </div>
     <div class="col-auto">
-      <button class="btn btn-primary" v-on:click="refresh" :disabled="loading">篩選</button>
+      <button class="btn btn-primary" v-on:click="refresh" :disabled="loading">刷新/篩選</button>
     </div>
     <div class="col-auto" v-if="hasAdminPermission">
       <button class="btn btn-primary" v-on:click="rejudge" :disabled="loading">Rejudge</button>
@@ -122,7 +122,6 @@ const rejudge = async () => {
 const refresh = page_manager.refresh
 
 onMounted(async () => {
-  await store.fetchJudgeInfo();
   await refresh();
 });
 

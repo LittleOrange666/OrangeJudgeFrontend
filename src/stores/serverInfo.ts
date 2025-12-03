@@ -2,7 +2,9 @@ import {defineStore} from 'pinia';
 import {api} from "@/utils/tools";
 
 interface serverInfo{
-    need_verify?: boolean
+    need_verify?: boolean,
+    site_name?: string,
+    version_info?: string,
 }
 
 interface serverState{

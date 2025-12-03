@@ -24,11 +24,6 @@
         <a class="nav-link" id="status_tab" data-bs-toggle="tab" data-bs-target="#status" type="button" role="tab"
            aria-controls="status" aria-selected="false">解題動態</a>
       </li>
-      <li class="nav-item" role="presentation" v-if="isLoggedIn">
-        <a class="nav-link" id="my_status_tab" data-bs-toggle="tab" data-bs-target="#my_status" type="button"
-           role="tab"
-           aria-controls="my_status" aria-selected="false">我的解題動態</a>
-      </li>
       <li class="nav-item" role="presentation">
         <a class="nav-link" id="standing_tab" data-bs-toggle="tab" data-bs-target="#standing" type="button"
            role="tab"
@@ -51,9 +46,6 @@
       <div id="status" class="tab-pane fade">
         <StatusTab :data="data" v-if="loaded('#status')" />
       </div>
-      <div id="my_status" class="tab-pane fade" v-if="isLoggedIn">
-        <MyStatusTab :data="data" v-if="loaded('#my_status')" />
-      </div>
       <div id="standing" class="tab-pane fade">
         <StandingTab :data="data" v-if="loaded('#standing')" />
       </div>
@@ -71,16 +63,14 @@
 import {api, useLoader} from "@/utils/tools";
 import {useRoute} from "vue-router";
 import {computed, onMounted} from "vue";
-import {isLoggedIn} from "@/utils/accounts";
 import IndexTab from "@/components/contest/IndexTab.vue";
 import StatusTab from "@/components/contest/StatusTab.vue";
-import MyStatusTab from "@/components/contest/MyStatusTab.vue";
 import StandingTab from "@/components/contest/StandingTab.vue";
 import EditTab from "@/components/contest/EditTab.vue";
 import ParticipantTab from "@/components/contest/ParticipantTab.vue";
 import useTab from "@/utils/tab";
 import {show_modal} from "@/utils/modal";
-import {updateTitle} from "@/router";
+import {addNavBtn, updateTitle} from "@/router";
 import {contest_status_text} from "@/utils/constants";
 import {ContestDetail} from "@/utils/datatypes";
 
@@ -124,5 +114,6 @@ onMounted(async () => {
   await do_load();
   await init();
   updateTitle("競賽 - " + data.value["name"]);
+  addNavBtn("刷新", do_load);
 })
 </script>

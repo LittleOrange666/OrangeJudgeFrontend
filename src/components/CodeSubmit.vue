@@ -22,7 +22,7 @@
   </form>
 </template>
 <script setup lang="ts">
-import {defineProps, onMounted, ref} from 'vue';
+import {defineProps, ref} from 'vue';
 import {useJudgeInfoStore} from '@/stores/judgeInfo';
 import {default_lang} from "@/utils/constants";
 import {storeToRefs} from "pinia";
@@ -93,8 +93,4 @@ const getExt = () => {
   }
   return null;
 };
-
-onMounted(() => {
-  store.fetchJudgeInfo();
-});
 </script>

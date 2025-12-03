@@ -10,6 +10,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import 'highlight.js/styles/github.css'
 import 'vue3-markdown/dist/vue3-markdown.css'
+import {useServerInfoStore} from "@/stores/serverInfo";
+import {useJudgeInfoStore} from "@/stores/judgeInfo";
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -21,7 +23,11 @@ app.directive('highlight', highlightDirective);
 
 app.directive('can-copy', canCopyDirective);
 
-const authStore = useAuthStore();
-authStore.checkLoginStatus().then(() => {
+async function init(){
+    await useAuthStore().checkLoginStatus();
+    await useServerInfoStore().fetchServerInfo();
+    await useJudgeInfoStore().fetchJudgeInfo();
+}
+init().then(() => {
     app.mount('#app');
 });

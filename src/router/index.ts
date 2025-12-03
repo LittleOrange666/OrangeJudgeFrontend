@@ -130,6 +130,14 @@ const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: "/contest/:cid/problem/:pid",
+        name: "contest-problem",
+        component: () => import(/* webpackChunkName: "contest-problem" */ "@/views/ContestProblemView.vue"),
+        meta: {
+            pageTitle: "題目"
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),

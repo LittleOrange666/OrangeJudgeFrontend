@@ -92,3 +92,17 @@ export interface SubmissionDetail {
     cid: string,
     contest: string
 }
+
+export interface ContestProblemDetail {
+    pid: string,
+    internal_pid: string,
+    name: string,
+    description: string,
+    allowed_languages: string[],
+    contest_cid: string,
+    contest_name: string,
+    time_limit: number,
+    memory_limit: number
+    statement_html: string,
+    samples: SampleTestcase[],
+}

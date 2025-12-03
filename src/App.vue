@@ -5,6 +5,10 @@
   <div id="main_area">
     <router-view/>
   </div>
+  <div class="footer">
+    <p>{{ serverInfoStore.server_info.site_name }}</p>
+    <p>Powered by <a href="https://github.com/LittleOrange666/OrangeJudge">OrangeJudge</a> {{ serverInfoStore.server_info.version_info }}</p>
+  </div>
   <MyModal />
   <CheckingModal />
 </template>
@@ -48,10 +52,18 @@
   font-size: 0.9rem;
 }
 
+.footer {
+  text-align: center;
+  font-size: small;
+}
+
 </style>
 
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
 import MyModal from "@/components/MyModal.vue";
 import CheckingModal from "@/components/CheckingModal.vue";
+import {useServerInfoStore} from "@/stores/serverInfo";
+
+const serverInfoStore = useServerInfoStore();
 </script>
