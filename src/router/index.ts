@@ -109,13 +109,13 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHistory(),
     routes
 })
 
 export function updateTitle(pageName){
     pageName = pageName || '找不到頁面';
-    const appTitleBase = process.env.VUE_APP_TITLE || 'OrangeJudge';
+    const appTitleBase = 'OrangeJudge';
     document.title = `${pageName} - ${appTitleBase}`;
 }
 

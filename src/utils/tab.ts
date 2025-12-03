@@ -1,12 +1,13 @@
-import {computed, ref} from "vue";
+import {computed, ComputedRef, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {Tab} from "bootstrap";
 
-/**
- * @description A Vue composable for managing Bootstrap tabs and syncing them with the router.
- * It initializes tabs, handles tab switching based on URL hash, and provides a way to check if a tab's content has been loaded.
- * @returns {{init: (function(): Promise<void>), loaded: (function(*): ComputedRef<boolean>)}}
- */
+interface TabManager{
+    init: () => Promise<void>,
+    loaded: (tab: string) => ComputedRef<boolean>
+}
+
+
 export default function useTab(){
     const route = useRoute();
     const router = useRouter();
@@ -59,12 +60,8 @@ export default function useTab(){
         }
     }
 
-    /**
-     * @description Returns a computed property indicating whether a specific tab's content has been loaded.
-     * @param {string} tab - The identifier for the tab (should match an entry in `loaded_tabs`).
-     * @returns {ComputedRef<boolean>} A Vue computed property that is true if the tab is in the `loaded_tabs` array.
-     */
-    function loaded(tab){
+
+    function loaded(tab: string): ComputedRef<boolean>{
         return computed(()=>loaded_tabs.value.includes(tab));
     }
 

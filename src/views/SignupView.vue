@@ -33,12 +33,12 @@
   </form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {computed, onMounted, ref} from 'vue';
 import {useAuthStore} from '@/stores/auth';
 import {useServerInfoStore} from "@/stores/serverInfo";
 import {useRoute, useRouter} from "vue-router";
-import {api} from "@/utils/tools";
+import {api} from "@/utils/tools.ts";
 import {show_modal} from "@/utils/modal";
 
 

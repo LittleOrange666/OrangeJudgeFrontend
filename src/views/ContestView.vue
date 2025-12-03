@@ -64,8 +64,8 @@
   </div>
 </template>
 
-<script setup>
-import {api, useLoader} from "@/utils/tools";
+<script setup lang="ts">
+import {api, useLoader} from "@/utils/tools.ts";
 import {useRoute} from "vue-router";
 import {computed, onMounted} from "vue";
 import {isLoggedIn} from "@/utils/accounts";
@@ -77,6 +77,7 @@ import EditTab from "@/components/contest/EditTab.vue";
 import ParticipantTab from "@/components/contest/ParticipantTab.vue";
 import useTab from "@/utils/tab";
 import {show_modal} from "@/utils/modal";
+import {updateTitle} from "@/router";
 
 const {data, error, loading, load} = useLoader();
 const {init, loaded} = useTab();
@@ -111,5 +112,6 @@ const handleUnregister = async () => {
 onMounted(async () => {
   await load("/contest/"+cid);
   await init();
+  updateTitle("競賽 - " + data.value["name"]);
 })
 </script>

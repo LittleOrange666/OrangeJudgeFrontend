@@ -31,12 +31,13 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useRoute} from "vue-router";
 import {onMounted} from "vue";
-import {useLoader} from "@/utils/tools";
+import {useLoader} from "@/utils/tools.ts";
 import CodeSubmit from "@/components/CodeSubmit.vue";
 import {isLoggedIn} from "@/utils/accounts";
+import {updateTitle} from "@/router";
 
 const {data, error, load} = useLoader();
 
@@ -51,6 +52,7 @@ onMounted(async () => {
     if (!imgUrl.includes("/")) {
       img.src = "/api/problem/" + pid + "/file/" + imgUrl;
     }
-  })
+  });
+  updateTitle("題目 - " + data.value["title"]);
 });
 </script>

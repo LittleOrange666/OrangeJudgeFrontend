@@ -60,14 +60,14 @@
   <PageBar :page_manager="page_manager" />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {useJudgeInfoStore} from "@/stores/judgeInfo";
 import {storeToRefs} from "pinia";
 import {hasAdminPermission} from "@/utils/accounts";
 import {can_filter_results} from "@/utils/constants";
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {api, timestamp_to_str} from "@/utils/tools";
+import {api, timestamp_to_str} from "@/utils/tools.ts";
 import {show_modal} from "@/utils/modal";
 import {usePage} from "@/utils/page";
 import PageBar from "@/components/PageBar.vue";

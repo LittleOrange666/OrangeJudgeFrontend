@@ -1,34 +1,31 @@
 // 導入 Vue 和專案相關的工具和常數
 import {useRoute} from "vue-router";
-import {computed, ref} from "vue";
+import {computed, ComputedRef, Ref, ref} from "vue";
 import {useLoader} from "@/utils/tools";
 import {default_page_size} from "@/utils/constants";
 
-/**
- * 一個處理分頁邏輯的 Vue Composition API。
- * @param {string} path - 獲取分頁數據的 API 路徑。
- * @param {Object} args - 一個包含額外查詢參數的物件，其值為 ref 物件。
- * @param {Function} on_load - 數據加載完成後執行的回調函數。
- * @returns {{
- *   to_page: ((page_val: (string|number)) => Promise<void>),
- *   refresh: (() => Promise<void>),
- *   loading: import('vue').Ref<boolean>,
- *   error: import('vue').Ref<any>,
- *   contents: import('vue').ComputedRef<Array<any>>,
- *   page: import('vue').Ref<string>,
- *   show_pages: import('vue').ComputedRef<Array<number>>,
- *   ok: import('vue').ComputedRef<boolean>
- * }} - 返回一個包含分頁狀態和控制方法的物件。
- */
-export function usePage(path, args, on_load){
+interface PageManager{
+    to_page: (page_val: string) => Promise<void>,
+    refresh: () => Promise<void>,
+    loading: Ref<boolean>,
+    error: Ref<string>,
+    contents: ComputedRef,
+    page: Ref<string>,
+    show_pages: Ref<string[]>,
+    ok: ComputedRef<boolean>,
+    page_cnt: ComputedRef<string>
+}
+
+
+export function usePage(path: string, args: any, on_load?: (page_val: string) => Promise<void>): PageManager{
     // 獲取當前路由實例
     const route = useRoute();
     // 當前頁碼，從路由查詢參數或預設為 "1"
-    const page = ref(route.query.page || "1");
+    const page: Ref<string> = ref((typeof route.query.page === "string")?route.query.page:route.query.page[0] || "1");
     // 使用 useLoader 來處理數據加載、錯誤和加載狀態
     const {data, error, load, loading} = useLoader();
     // 自定義的加載狀態，用於防止重複加載
-    const my_loading = ref(false);
+    const my_loading: Ref<boolean> = ref(false);
     // 計算屬性，返回要顯示的頁碼陣列
     const show_pages = computed(()=>data && data.value && data.value["show_pages"] || []);
     // 計算屬性，返回當前頁的數據內容
@@ -40,7 +37,7 @@ export function usePage(path, args, on_load){
      * 加載指定頁碼的數據。
      * @param {string|number} page_val - 要加載的頁碼。
      */
-    const do_load = async (page_val) => {
+    const do_load = async (page_val: string) => {
         if (my_loading.value) return;
         my_loading.value = true;
         page.value = ""+page_val;

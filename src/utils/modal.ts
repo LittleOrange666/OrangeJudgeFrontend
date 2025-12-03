@@ -7,7 +7,7 @@ import { Modal } from 'bootstrap';
  * @param {number|null} timeout - Auto-hide timeout in milliseconds.
  * @returns {Promise<void>}
  */
-export function show_modal(title, text, timeout) {
+export function show_modal(title: string, text: string, timeout?: number): Promise<void> {
     if (!timeout && title === "成功"){
         timeout = 3000;
     }
@@ -60,7 +60,7 @@ export function show_modal(title, text, timeout) {
  * @param {string} [subtitle] - The body text of the modal. If not provided, a default message will be used.
  * @returns {Promise<boolean>} A promise that resolves to `true` if the user confirms, and `false` if the user cancels or dismisses the modal.
  */
-export function double_check(title, subtitle){
+export function double_check(title: string, subtitle?: string): Promise<boolean>{
     return new Promise((resolve) =>{
         const modalElement = document.getElementById('checkingModal');
         if (!modalElement) {

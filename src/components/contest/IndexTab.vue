@@ -21,7 +21,7 @@
     <p class="h3" v-else>您目前無法觀看題目</p>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import {computed, defineProps} from 'vue';
 import {useRoute} from "vue-router";
 
