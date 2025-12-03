@@ -1,4 +1,4 @@
-export const can_filter_results: [string, string][] = [
+export const can_filter_results = [
     ["OK", "通過"],
     ["WA", "錯誤答案"],
     ["PE", "格式錯誤"],
@@ -12,15 +12,15 @@ export const can_filter_results: [string, string][] = [
     ["JE", "系統錯誤"],
     ["RF", "評測被拒絕"]
 ]
-export const default_lang: string = "C++17";
-const result_css_class_table = {
+export const default_lang = "C++17";
+const result_css_class_table: { [key: string]: string } = {
     "OK": "table-success",
     "WA": "table-danger",
     "MLE": "table-warning",
     "TLE": "table-info",
 };
-export function result_css_class(result: string): string {
+export const result_css_class = (result: string)=>{
     if (result in result_css_class_table) return result_css_class_table[result];
     else return "table-secondary";
-}
+};
 export const default_page_size = "12";

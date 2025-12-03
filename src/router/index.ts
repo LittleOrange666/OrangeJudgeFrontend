@@ -1,8 +1,18 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import {createRouter, createWebHistory, RouteLocation} from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import {useAuthStore} from "@/stores/auth";
 import IndexView from "@/views/IndexView.vue";
 
-const routes = [
+declare module 'vue-router' {
+    // noinspection JSUnusedGlobalSymbols
+    interface RouteMeta {
+        pageTitle: string
+        redirectIfLoggedIn?: boolean
+        requiresAuth?: boolean
+    }
+}
+
+const routes: RouteRecordRaw[] = [
     {
         path: '/',
         name: 'home',
@@ -113,13 +123,13 @@ const router = createRouter({
     routes
 })
 
-export function updateTitle(pageName){
+export function updateTitle(pageName?: string){
     pageName = pageName || '找不到頁面';
     const appTitleBase = 'OrangeJudge';
     document.title = `${pageName} - ${appTitleBase}`;
 }
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to: RouteLocation) => {
     const authStore = useAuthStore();
     if (!authStore.statusChecked) {
         await authStore.checkLoginStatus();

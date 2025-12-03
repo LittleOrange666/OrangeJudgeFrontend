@@ -32,7 +32,7 @@ export function show_modal(title: string, text: string, timeout?: number): Promi
       const close_evt = () => myModal.hide();
       const timeout_id = window.setTimeout(close_evt, timeout);
       
-      const keypressHandler = (event) => {
+      const keypressHandler = (event: KeyboardEvent) => {
         if (event.key) {
           close_evt();
         }
@@ -60,7 +60,7 @@ export function show_modal(title: string, text: string, timeout?: number): Promi
  * @param {string} [subtitle] - The body text of the modal. If not provided, a default message will be used.
  * @returns {Promise<boolean>} A promise that resolves to `true` if the user confirms, and `false` if the user cancels or dismisses the modal.
  */
-export function double_check(title: string, subtitle?: string): Promise<boolean>{
+export function double_check(title: string, subtitle?: string): Promise<boolean> {
     return new Promise((resolve) =>{
         const modalElement = document.getElementById('checkingModal');
         if (!modalElement) {

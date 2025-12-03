@@ -4,28 +4,34 @@ import {computed, ComputedRef, Ref, ref} from "vue";
 import {useLoader} from "@/utils/tools";
 import {default_page_size} from "@/utils/constants";
 
-interface PageManager{
-    to_page: (page_val: string) => Promise<void>,
+interface PageManager {
+    to_page: (page: string|number) => Promise<void>,
     refresh: () => Promise<void>,
     loading: Ref<boolean>,
     error: Ref<string>,
-    contents: ComputedRef,
+    contents: ComputedRef<any[]>,
     page: Ref<string>,
-    show_pages: Ref<string[]>,
+    show_pages: ComputedRef<string[]>,
     ok: ComputedRef<boolean>,
-    page_cnt: ComputedRef<string>
+    page_cnt: ComputedRef<string>,
+}
+
+function safe_page(page: string|string[]|null): string{
+    if (!page) return "1";
+    if (typeof page === "string") return page;
+    return page[0];
 }
 
 
-export function usePage(path: string, args: any, on_load?: (page_val: string) => Promise<void>): PageManager{
+export function usePage(path: string, args?: {[key: string]: any}, on_load?: (page: string) => Promise<void>): PageManager {
     // 獲取當前路由實例
     const route = useRoute();
     // 當前頁碼，從路由查詢參數或預設為 "1"
-    const page: Ref<string> = ref((typeof route.query.page === "string")?route.query.page:route.query.page[0] || "1");
+    const page: Ref<string> = ref(safe_page(route.query.page));
     // 使用 useLoader 來處理數據加載、錯誤和加載狀態
     const {data, error, load, loading} = useLoader();
     // 自定義的加載狀態，用於防止重複加載
-    const my_loading: Ref<boolean> = ref(false);
+    const my_loading = ref(false);
     // 計算屬性，返回要顯示的頁碼陣列
     const show_pages = computed(()=>data && data.value && data.value["show_pages"] || []);
     // 計算屬性，返回當前頁的數據內容
@@ -37,12 +43,12 @@ export function usePage(path: string, args: any, on_load?: (page_val: string) =>
      * 加載指定頁碼的數據。
      * @param {string|number} page_val - 要加載的頁碼。
      */
-    const do_load = async (page_val: string) => {
+    const do_load = async (page_val: string | number) => {
         if (my_loading.value) return;
         my_loading.value = true;
         page.value = ""+page_val;
         // 構建 API 請求的查詢參數
-        const get_args = {
+        const get_args: {[key: string]: any} = {
             page: page.value,
             page_size: default_page_size
         }

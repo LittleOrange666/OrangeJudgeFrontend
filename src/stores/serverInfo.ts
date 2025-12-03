@@ -1,9 +1,19 @@
 import {defineStore} from 'pinia';
 import {api} from "@/utils/tools";
 
+interface serverInfo{
+    need_verify?: boolean
+}
+
+interface serverState{
+    server_info: serverInfo,
+    hasFetched: boolean,
+    error: null | string,
+}
+
 export const useServerInfoStore = defineStore('serverInfo', {
-    state: () => ({
-        server_info: [],
+    state: (): serverState => ({
+        server_info: {},
         hasFetched: false, // 標記是否已經擷取過資料
         error: null,
     }),
@@ -16,7 +26,7 @@ export const useServerInfoStore = defineStore('serverInfo', {
 
             try {
                 this.server_info = await api.get('/server_info');
-            } catch (err) {
+            } catch (err: any) {
                 console.error('無法取得 server info:', err);
                 this.error = err.message || '發生未知錯誤';
             } finally {

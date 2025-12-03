@@ -5,8 +5,16 @@ import {api} from "@/utils/tools";
 
 axios.defaults.withCredentials = true;
 
+interface authState {
+    isLoggedIn: boolean,
+    username: string | null,
+    statusChecked: boolean,
+    display_name: string | null,
+    permissions: string[]
+}
+
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
+    state: (): authState => ({
         isLoggedIn: false,
         username: null,
         statusChecked: false,
@@ -48,7 +56,7 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async login(username, password) {
+        async login(username: string, password: string) {
             try {
                 const data = await api.post("/login", {
                     username,
