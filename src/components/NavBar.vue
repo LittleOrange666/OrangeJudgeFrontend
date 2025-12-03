@@ -8,7 +8,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent" style="justify-content: space-between;">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex" id="navbarFirstBlock">
           <li class="nav-item">
             <router-link to="/" class="nav-link active">首頁</router-link>
           </li>

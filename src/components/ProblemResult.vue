@@ -79,7 +79,7 @@ onMounted(async () => {
     const data: ProblemDetail = await api.get("/problem/" + pid);
     problem_name.value = data.title;
   } catch (err) {
-    console.log("無法載入題目名稱")
+    console.log("無法載入題目名稱");
   }
 });
 

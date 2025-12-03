@@ -19,6 +19,7 @@ import {useLoader} from "@/utils/tools";
 import TestResult from "@/components/TestResult.vue";
 import ProblemResult from "@/components/ProblemResult.vue";
 import {SubmissionDetail} from "@/utils/datatypes";
+import {addNavBtn, addNavLink} from "@/router";
 
 const route = useRoute();
 const sub_id = route.params.sub_id;
@@ -32,5 +33,9 @@ const do_load = async () => {
 
 onMounted(async () => {
   await do_load();
+  if (data.value && data.value.cid){
+    addNavLink("競賽頁面("+data.value.contest+")","/contest/"+data.value.cid);
+  }
+  addNavBtn("刷新", do_load);
 });
 </script>

@@ -5,6 +5,7 @@ export const toForm = function (obj?: {[key: string]: any}) {
     const f = new FormData();
     if (!obj) return f;
     for (const key in obj) {
+        if (obj[key] === undefined) continue;
         f.append(key, obj[key]);
     }
     return f;

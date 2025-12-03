@@ -88,5 +88,7 @@ export interface SubmissionDetail {
     output: string,
     error: string,
     pid: string,
-    simple_result: string
+    simple_result: string,
+    cid: string,
+    contest: string
 }

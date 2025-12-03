@@ -6,7 +6,14 @@
     <div class="mb-3">
       <label for="code-textarea" class="form-label">Code</label>
       <input class="form-control" type="file" id="uploadFile" v-on:change="loadFile" :accept="getExt()"/>
-      <textarea class="form-control" v-model="code" id="code-textarea" rows="3"></textarea>
+      <codemirror id="code-textarea"
+        v-model="code"
+        :style="{ height: '400px', width: '100%', border: '1px solid #ddd' }"
+        :autofocus="true"
+        :indent-with-tab="true"
+        :tab-size="4"
+        :extensions="extensions"
+    />
     </div>
     <div class="mb-3">
       <button class="btn btn-primary mb-3">提交</button>
@@ -22,14 +29,23 @@ import {storeToRefs} from "pinia";
 import {api} from "@/utils/tools";
 import {useRouter} from "vue-router";
 import {useLocalStorage} from "@vueuse/core";
+import {Codemirror} from "vue-codemirror";
+import {cpp} from "@codemirror/lang-cpp";
+import {basicSetup} from "@codemirror/basic-setup";
 
 
 interface Props {
   pid: string,
-  cid?: string
+  cid?: string,
+  input?: string
 }
 
 const props = defineProps<Props>();
+
+const extensions = [
+  basicSetup,
+  cpp(),
+];
 
 const router = useRouter();
 
@@ -40,12 +56,16 @@ const store = useJudgeInfoStore();
 const {lang_info} = storeToRefs(store);
 const handleSubmit = async () => {
   try{
-    const data = await api.post("/submission",{
+    const obj = {
       lang: lang.value,
       code: code.value,
       pid: props.pid,
       cid: props.cid
-    });
+    };
+    if(props.input){
+      obj["input"] = props.input;
+    }
+    const data = await api.post("/submission",obj);
     const idx = data["submission_id"];
     const link = "/submission/" + idx;
     await router.push(link);
