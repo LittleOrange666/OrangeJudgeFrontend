@@ -38,7 +38,7 @@ import {computed, onMounted, ref} from 'vue';
 import {useAuthStore} from '@/stores/auth';
 import {useServerInfoStore} from "@/stores/serverInfo";
 import {useRoute, useRouter} from "vue-router";
-import {api} from "@/utils/tools.ts";
+import {api} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 
 

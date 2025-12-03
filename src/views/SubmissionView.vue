@@ -15,13 +15,13 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { onMounted } from "vue";
-import {useLoader} from "@/utils/tools.ts";
+import {useLoader} from "@/utils/tools";
 import TestResult from "@/components/TestResult.vue";
 import ProblemResult from "@/components/ProblemResult.vue";
 
 const route = useRoute();
 const sub_id = route.params.sub_id;
-const {data, error, load, loading} = useLoader();
+const {data, error, load, loading} = useLoader<any>();
 
 const do_load = async () => {
   await load("/submission", {

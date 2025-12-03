@@ -34,12 +34,12 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import {onMounted} from "vue";
-import {useLoader} from "@/utils/tools.ts";
+import {useLoader} from "@/utils/tools";
 import CodeSubmit from "@/components/CodeSubmit.vue";
 import {isLoggedIn} from "@/utils/accounts";
 import {updateTitle} from "@/router";
 
-const {data, error, load} = useLoader();
+const {data, error, load} = useLoader<any>();
 
 const route = useRoute();
 const pid = route.params.pid;

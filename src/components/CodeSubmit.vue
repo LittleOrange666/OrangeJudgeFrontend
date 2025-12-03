@@ -19,7 +19,7 @@ import {defineProps, onMounted, ref} from 'vue';
 import {useJudgeInfoStore} from '@/stores/judgeInfo';
 import {default_lang} from "@/utils/constants";
 import {storeToRefs} from "pinia";
-import {api} from "@/utils/tools.ts";
+import {api} from "@/utils/tools";
 import {useRouter} from "vue-router";
 import {useLocalStorage} from "@vueuse/core";
 

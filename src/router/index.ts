@@ -2,6 +2,7 @@ import {createRouter, createWebHistory, RouteLocation} from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import {useAuthStore} from "@/stores/auth";
 import IndexView from "@/views/IndexView.vue";
+import {show_modal} from "@/utils/modal";
 
 declare module 'vue-router' {
     // noinspection JSUnusedGlobalSymbols
@@ -126,7 +127,7 @@ const router = createRouter({
 export function updateTitle(pageName?: string){
     pageName = pageName || '找不到頁面';
     const appTitleBase = 'OrangeJudge';
-    document.title = `${pageName} - ${appTitleBase}`;
+    document.title = `${pageName} | ${appTitleBase}`;
 }
 
 router.beforeEach(async (to: RouteLocation) => {
@@ -147,5 +148,11 @@ router.beforeEach(async (to: RouteLocation) => {
     }
     updateTitle(to.meta.pageTitle);
 });
+
+router.onError(async (error: Error) => {
+    console.log(error);
+    await show_modal("網站錯誤", error.message);
+    await router.push("/");
+})
 
 export default router

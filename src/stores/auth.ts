@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth', {
                 this.isLoggedIn = data["logged_in"];
                 this.username = data["username"];
                 this.display_name = data["display_name"];
-                this.permissions = data["permissions"];
+                this.permissions = data["permissions"] || [];
             } catch (error) {
                 this.isLoggedIn = false;
                 this.username = null;

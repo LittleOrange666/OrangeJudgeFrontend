@@ -37,23 +37,23 @@
     </tr>
     </thead>
     <tbody>
-    <tr v-for="content in contents" :key="content['id']">
+    <tr v-for="content in contents" :key="content.id">
       <th scope="row">
-        <router-link :to="`/submission/${content['id']}`" v-if="content['can_see']">{{ content["id"] }}</router-link>
-        <span v-else>{{ content["id"] }}</span>
+        <router-link :to="`/submission/${content.id}`" v-if="content.can_see">{{ content.id }}</router-link>
+        <span v-else>{{ content.id }}</span>
       </th>
-      <td>{{ timestamp_to_str(content["time"]) }}</td>
+      <td>{{ timestamp_to_str(content.time) }}</td>
       <td>
-        <router-link :to="`/user/${content['user_id']}`">{{ content["user_name"] }}</router-link>
+        <router-link :to="`/user/${content.user_id}`">{{ content.user_name }}</router-link>
       </td>
       <td>
-        <router-link :to="`/problem/${content['problem_id']}`">{{ content["problem_id"] }}. {{
-            content["problem_name"]
+        <router-link :to="`/problem/${content.problem_id}`">{{ content.problem_id }}. {{
+            content.problem_name
           }}
         </router-link>
       </td>
-      <td>{{ content["lang"] }}</td>
-      <td>{{ content["result"] }}</td>
+      <td>{{ content.lang }}</td>
+      <td>{{ content.result }}</td>
     </tr>
     </tbody>
   </table>
@@ -67,10 +67,11 @@ import {hasAdminPermission} from "@/utils/accounts";
 import {can_filter_results} from "@/utils/constants";
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {api, timestamp_to_str} from "@/utils/tools.ts";
+import {api, timestamp_to_str} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 import {usePage} from "@/utils/page";
 import PageBar from "@/components/PageBar.vue";
+import {SubmissionSummary} from "@/utils/datatypes";
 
 const route = useRoute();
 const router = useRouter();
@@ -80,7 +81,7 @@ const pid = ref(route.query.pid || "");
 const user = ref(route.query.user || "");
 const lang = ref(route.query.lang || "");
 const result = ref(route.query.result || "");
-const update_url = async (page) => {
+const update_url = async (page: string) => {
   await router.replace({
     path: route.path,
     query: {
@@ -92,7 +93,7 @@ const update_url = async (page) => {
     }
   });
 };
-const page_manager = usePage("/status", {
+const page_manager = usePage<SubmissionSummary>("/status", {
   pid: pid,
   user: user,
   lang: lang,

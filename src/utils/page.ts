@@ -4,16 +4,22 @@ import {computed, ComputedRef, Ref, ref} from "vue";
 import {useLoader} from "@/utils/tools";
 import {default_page_size} from "@/utils/constants";
 
-interface PageManager {
+interface PageManager<T> {
     to_page: (page: string|number) => Promise<void>,
     refresh: () => Promise<void>,
     loading: Ref<boolean>,
     error: Ref<string>,
-    contents: ComputedRef<any[]>,
+    contents: ComputedRef<T[]>,
     page: Ref<string>,
     show_pages: ComputedRef<string[]>,
     ok: ComputedRef<boolean>,
     page_cnt: ComputedRef<string>,
+}
+
+interface PageResult<T> {
+    data?: T[],
+    show_pages?: string[],
+    page_count?: string
 }
 
 function safe_page(page: string|string[]|null): string{
@@ -23,21 +29,21 @@ function safe_page(page: string|string[]|null): string{
 }
 
 
-export function usePage(path: string, args?: {[key: string]: any}, on_load?: (page: string) => Promise<void>): PageManager {
+export function usePage<T>(path: string, args?: {[key: string]: any}, on_load?: (page: string) => Promise<void>): PageManager<T> {
     // 獲取當前路由實例
     const route = useRoute();
     // 當前頁碼，從路由查詢參數或預設為 "1"
     const page: Ref<string> = ref(safe_page(route.query.page));
     // 使用 useLoader 來處理數據加載、錯誤和加載狀態
-    const {data, error, load, loading} = useLoader();
+    const {data, error, load, loading} = useLoader<PageResult<T>>();
     // 自定義的加載狀態，用於防止重複加載
     const my_loading = ref(false);
     // 計算屬性，返回要顯示的頁碼陣列
-    const show_pages = computed(()=>data && data.value && data.value["show_pages"] || []);
+    const show_pages = computed(()=>data && data.value && data.value.show_pages || []);
     // 計算屬性，返回當前頁的數據內容
-    const contents = computed(()=>data && data.value && data.value["data"] || []);
+    const contents = computed(()=>data && data.value && data.value.data || []);
     const ok = computed(()=>!loading.value && !error.value);
-    const page_cnt = computed(()=>data && data.value && data.value["page_count"] || []);
+    const page_cnt = computed(()=>data && data.value && data.value.page_count || "1");
 
     /**
      * 加載指定頁碼的數據。

@@ -40,7 +40,14 @@ export const api = {
         return send_request(axios.put, path, obj);
     },
     delete: async function (path: string, obj?: {[key: string]: any}){
-        return send_request(axios.delete, path, obj);
+        if (!path.startsWith("/")) path = "/" + path;
+        const response = await axios.delete(API_BASE_URL + path, {
+            data: toForm(obj)
+        });
+        if (response.data["status"] !== "success") {
+            throw new Error(response.data["description"] || response.data["message"]);
+        }
+        return response.data["data"];
     }
 };
 
@@ -60,14 +67,14 @@ export function minute_to_str(i: string | number): string {
     const m = t % 60;
     return (d > 0 ? d + ':' : '') + (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m;
 }
-interface dataLoader{
-    data: Ref,
+interface dataLoader<T> {
+    data: Ref<T | null>,
     error: Ref<string | null>,
     loading: Ref<boolean>,
     load: (path: string, obj?: {[key: string]: any}) => Promise<void>
 }
 
-export function useLoader(): dataLoader{
+export function useLoader<T>(): dataLoader<T>{
     const data = ref(null);
     const error = ref(null);
     const loading = ref(true);

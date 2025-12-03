@@ -20,8 +20,9 @@
 import {usePage} from "@/utils/page";
 import PageBar from "@/components/PageBar.vue";
 import {onMounted} from "vue";
+import {ProblemSummary} from "@/utils/datatypes";
 
-const page_manager = usePage("/problem");
+const page_manager = usePage<ProblemSummary>("/problem");
 const ok = page_manager.ok;
 const contents = page_manager.contents;
 onMounted(async ()=>{

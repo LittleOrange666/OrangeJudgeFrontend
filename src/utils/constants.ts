@@ -1,4 +1,4 @@
-export const can_filter_results = [
+export const can_filter_results: [string,string][] = [
     ["OK", "通過"],
     ["WA", "錯誤答案"],
     ["PE", "格式錯誤"],
@@ -24,3 +24,12 @@ export const result_css_class = (result: string)=>{
     else return "table-secondary";
 };
 export const default_page_size = "12";
+export const contest_status_text: { [key: string]: string } = {
+    "practice": "練習模式",
+    "waiting_virtual": "等待模擬競賽開始",
+    "waiting": "等待競賽開始",
+    "running": "競賽進行中",
+    "running_virtual": "模擬競賽進行中",
+    "guest": "僅觀看",
+    "testing": "測試模式"
+};

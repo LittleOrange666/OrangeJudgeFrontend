@@ -24,16 +24,16 @@
     <tbody>
     <tr v-for="content in contents" :key="content.cid">
       <th scope="row"><router-link :to="`/contest/${content.cid}`">{{ content.name }}</router-link></th>
-      <td class="date-string">{{ timestamp_to_str(content['start_time']) }}</td>
-      <td class="time-string">{{ minute_to_str(content['elapsed']) }}</td>
+      <td class="date-string">{{ timestamp_to_str(content.start_time) }}</td>
+      <td class="time-string">{{ minute_to_str(content.elapsed) }}</td>
       <td>
         <div class="row">
           <div class="row">
             <div class="col-auto" v-if="content['can_register']">
-              <button class="btn btn-danger" v-if="content['is_registered']" v-on:click="handleUnregister(content.cid)">取消註冊</button>
+              <button class="btn btn-danger" v-if="content.is_registered" v-on:click="handleUnregister(content.cid)">取消註冊</button>
               <button class="btn btn-primary" v-else v-on:click="handleRegister(content.cid)">註冊</button>
             </div>
-            <div class="col-auto" v-if="content['can_virtual']">
+            <div class="col-auto" v-if="content.can_virtual">
               <router-link class="btn btn-secondary" :to="`/virtual_register/${content.cid}`">模擬註冊</router-link>
             </div>
           </div>
@@ -49,11 +49,12 @@ import {usePage} from "@/utils/page";
 import PageBar from "@/components/PageBar.vue";
 import {onMounted, ref} from "vue";
 import {hasProblemPermission} from "@/utils/accounts";
-import {api, minute_to_str, timestamp_to_str} from "@/utils/tools.ts";
+import {api, minute_to_str, timestamp_to_str} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 import router from "@/router";
+import {ContestSummary} from "@/utils/datatypes";
 
-const page_manager = usePage("/contest");
+const page_manager = usePage<ContestSummary>("/contest");
 const ok = page_manager.ok;
 const contents = page_manager.contents;
 const contest_name = ref("");
