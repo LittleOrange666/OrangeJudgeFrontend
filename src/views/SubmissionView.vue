@@ -18,10 +18,11 @@ import { onMounted } from "vue";
 import {useLoader} from "@/utils/tools";
 import TestResult from "@/components/TestResult.vue";
 import ProblemResult from "@/components/ProblemResult.vue";
+import {SubmissionDetail} from "@/utils/datatypes";
 
 const route = useRoute();
 const sub_id = route.params.sub_id;
-const {data, error, load, loading} = useLoader<any>();
+const {data, error, load, loading} = useLoader<SubmissionDetail>();
 
 const do_load = async () => {
   await load("/submission", {

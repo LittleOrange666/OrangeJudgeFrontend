@@ -64,19 +64,19 @@
 import {defineProps, onMounted, ref} from 'vue';
 import {api} from "@/utils/tools";
 import {result_css_class} from "@/utils/constants";
+import {ProblemDetail, SubmissionDetail} from "@/utils/datatypes";
 
-const props = defineProps({
-  result: {
-    type: Object,
-    required: true,
-  },
-});
+interface Props {
+  result: SubmissionDetail
+}
+
+const props = defineProps<Props>();
 const problem_name = ref("???");
 
 onMounted(async () => {
   const pid = props.result.pid;
   try {
-    const data = await api.get("/problem/" + pid);
+    const data: ProblemDetail = await api.get("/problem/" + pid);
     problem_name.value = data.title;
   } catch (err) {
     console.log("無法載入題目名稱")

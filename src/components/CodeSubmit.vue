@@ -24,16 +24,12 @@ import {useRouter} from "vue-router";
 import {useLocalStorage} from "@vueuse/core";
 
 
-const props = defineProps({
-  pid: {
-    type: String,
-    required: true
-  },
-  cid: {
-    type: String,
-    required: false
-  }
-});
+interface Props {
+  pid: string,
+  cid?: string
+}
+
+const props = defineProps<Props>();
 
 const router = useRouter();
 

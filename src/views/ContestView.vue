@@ -82,8 +82,9 @@ import useTab from "@/utils/tab";
 import {show_modal} from "@/utils/modal";
 import {updateTitle} from "@/router";
 import {contest_status_text} from "@/utils/constants";
+import {ContestDetail} from "@/utils/datatypes";
 
-const {data, error, loading, load} = useLoader<any>();
+const {data, error, loading, load} = useLoader<ContestDetail>();
 const {init, loaded} = useTab();
 
 const route = useRoute();

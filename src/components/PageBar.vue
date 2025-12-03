@@ -27,12 +27,13 @@
 </template>
 <script setup lang="ts">
 import {computed, defineProps} from 'vue';
-const props = defineProps({
-  page_manager: {
-    type: Object,
-    required: true
-  }
-});
+import {PageManager} from "@/utils/page";
+
+interface Props{
+  page_manager: PageManager<any>
+}
+
+const props = defineProps<Props>();
 const loading = computed(()=>props.page_manager.loading.value);
 const error = computed(()=>props.page_manager.error.value);
 const has_prev = computed(()=>""+props.page_manager.page.value !== "1");

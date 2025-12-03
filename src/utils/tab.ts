@@ -2,7 +2,7 @@ import {computed, ComputedRef, Ref, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {Tab} from "bootstrap";
 
-interface TabManager{
+export interface TabManager{
     init: () => Promise<void>,
     loaded: (key: string) => ComputedRef<boolean>,
 }

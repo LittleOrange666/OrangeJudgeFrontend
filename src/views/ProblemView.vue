@@ -1,10 +1,10 @@
 <template>
   <div v-if="data">
-    <h1 class="text-center">{{ data["title"] }}</h1>
-    <p class="text-center">Time Limit:{{ data["time_limit"] }}ms</p>
-    <p class="text-center">Memory Limit:{{ data["memory_limit"] }}MB</p>
-    <div v-html="data['statement_html']" id="main_content"></div>
-    <div class="container test-case" v-for="(sample,i) in data['samples']" :key="i">
+    <h1 class="text-center">{{ data.title }}</h1>
+    <p class="text-center">Time Limit:{{ data.time_limit }}ms</p>
+    <p class="text-center">Memory Limit:{{ data.memory_limit }}MB</p>
+    <div v-html="data.statement_html" id="main_content"></div>
+    <div class="container test-case" v-for="(sample,i) in data.samples" :key="i">
       <div class="row">
         <div class="col"><h3>範例輸入 #{{ i + 1 }}</h3></div>
         <div class="col"><h3>範例輸出 #{{ i + 1 }}</h3></div>
@@ -18,7 +18,7 @@
         </div>
       </div>
     </div>
-    <CodeSubmit :pid="data['pid']" v-if="isLoggedIn" />
+    <CodeSubmit :pid="data.pid" v-if="isLoggedIn" />
     <div v-else class="alert alert-info">
       <p>需要登入才能提交程式碼</p>
     </div>
@@ -38,8 +38,9 @@ import {useLoader} from "@/utils/tools";
 import CodeSubmit from "@/components/CodeSubmit.vue";
 import {isLoggedIn} from "@/utils/accounts";
 import {updateTitle} from "@/router";
+import {ProblemDetail} from "@/utils/datatypes";
 
-const {data, error, load} = useLoader<any>();
+const {data, error, load} = useLoader<ProblemDetail>();
 
 const route = useRoute();
 const pid = route.params.pid;

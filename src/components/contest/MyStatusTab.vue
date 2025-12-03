@@ -4,11 +4,11 @@
 </template>
 <script setup lang="ts">
 import {defineProps} from 'vue';
+import {ContestDetail} from "@/utils/datatypes";
 
-defineProps({
-  data: {
-    type: Object,
-    required: true
-  }
-})
+interface Props {
+  data: ContestDetail
+}
+
+defineProps<Props>();
 </script>

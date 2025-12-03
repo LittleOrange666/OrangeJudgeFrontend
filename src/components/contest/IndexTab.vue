@@ -54,17 +54,14 @@ import {useRoute} from "vue-router";
 import {vDraggable} from 'vue-draggable-plus'
 import {api} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
+import {ContestDetail} from "@/utils/datatypes";
 
-const props = defineProps({
-  data: {
-    type: Object,
-    required: true
-  },
-  do_load: {
-    type: Function,
-    required: true
-  }
-})
+interface Props{
+  data: ContestDetail,
+  do_load: ()=>Promise<void>,
+}
+
+const props = defineProps<Props>()
 const route = useRoute();
 const can_see_problems = computed(() => props.data['can_see_problems']);
 const can_edit = computed(() => props.data['can_edit']);

@@ -37,11 +37,11 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
+import {SubmissionDetail} from "@/utils/datatypes";
 
-defineProps({
-  result: {
-    type: Object,
-    required: true,
-  },
-});
+interface Props {
+  result: SubmissionDetail
+}
+
+defineProps<Props>();
 </script>

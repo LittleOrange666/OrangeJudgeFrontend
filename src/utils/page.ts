@@ -4,7 +4,7 @@ import {computed, ComputedRef, Ref, ref} from "vue";
 import {useLoader} from "@/utils/tools";
 import {default_page_size} from "@/utils/constants";
 
-interface PageManager<T> {
+export interface PageManager<T> {
     to_page: (page: string|number) => Promise<void>,
     refresh: () => Promise<void>,
     loading: Ref<boolean>,
