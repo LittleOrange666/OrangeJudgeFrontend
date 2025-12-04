@@ -1,14 +1,14 @@
 import {defineStore} from 'pinia';
 import {api} from "@/utils/tools";
 
-interface langInfo{
+interface langInfo {
     name: string,
     compile: string,
     run: string,
     ext: string
 }
 
-interface judgeState{
+interface judgeState {
     lang_info: langInfo[],
     hasFetched: boolean,
     error: string | null,

@@ -1,10 +1,10 @@
 services:
-  frontend:
-    build: ./
-    ports:
-      - "8090:80"
-    environment:
-      - VUE_APP_TITLE=OrangeJudge
-      - BACKEND_LINK=http://host.docker.internal:8080
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    frontend:
+        build: ./
+        ports:
+            - "8090:80"
+        environment:
+            - VUE_APP_TITLE=OrangeJudge
+            - BACKEND_LINK=http://host.docker.internal:8080
+        extra_hosts:
+            - "host.docker.internal:host-gateway"

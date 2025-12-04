@@ -1,8 +1,8 @@
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 import App from './App.vue';
 import router from './router';
-import { useAuthStore } from './stores/auth';
-import { createPinia } from 'pinia';
+import {useAuthStore} from './stores/auth';
+import {createPinia} from 'pinia';
 import highlightDirective from './directives/v-highlight'
 import canCopyDirective from "@/directives/v-cancopy";
 
@@ -23,11 +23,12 @@ app.directive('highlight', highlightDirective);
 
 app.directive('can-copy', canCopyDirective);
 
-async function init(){
+async function init() {
     await useAuthStore().checkLoginStatus();
     await useServerInfoStore().fetchServerInfo();
     await useJudgeInfoStore().fetchJudgeInfo();
 }
+
 init().then(() => {
     app.mount('#app');
 });

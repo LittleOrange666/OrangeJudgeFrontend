@@ -1,4 +1,4 @@
-import { Modal } from 'bootstrap';
+import {Modal} from 'bootstrap';
 
 /**
  * Shows a Bootstrap modal and returns a promise that resolves when the modal is hidden.
@@ -8,49 +8,49 @@ import { Modal } from 'bootstrap';
  * @returns {Promise<void>}
  */
 export function show_modal(title: string, text: string, timeout?: number): Promise<void> {
-    if (!timeout && title === "成功"){
+    if (!timeout && title === "成功") {
         timeout = 3000;
     }
-  return new Promise((resolve) => {
-    const modalElement = document.getElementById('myModal');
-    if (!modalElement) {
-      console.error('Modal element #myModal not found in the DOM.');
-      return resolve(); // Resolve immediately if modal doesn't exist
-    }
-
-    const myModal = Modal.getOrCreateInstance(modalElement);
-
-    const modalTitleEl = modalElement.querySelector('.modal-title');
-    const modalBodyEl = modalElement.querySelector('.modal-body');
-
-    if (modalTitleEl) modalTitleEl.textContent = title;
-    if (modalBodyEl) modalBodyEl.textContent = text;
-
-    let hideHandler = () => resolve();
-
-    if (timeout) {
-      const close_evt = () => myModal.hide();
-      const timeout_id = window.setTimeout(close_evt, timeout);
-      
-      const keypressHandler = (event: KeyboardEvent) => {
-        if (event.key) {
-          close_evt();
+    return new Promise((resolve) => {
+        const modalElement = document.getElementById('myModal');
+        if (!modalElement) {
+            console.error('Modal element #myModal not found in the DOM.');
+            return resolve(); // Resolve immediately if modal doesn't exist
         }
-      };
-      document.addEventListener("keypress", keypressHandler, { once: true });
 
-      // Overwrite hideHandler to also clean up listeners
-      const originalHideHandler = hideHandler;
-      hideHandler = () => {
-        window.clearTimeout(timeout_id);
-        document.removeEventListener("keypress", keypressHandler);
-        originalHideHandler();
-      };
-    }
+        const myModal = Modal.getOrCreateInstance(modalElement);
 
-    modalElement.addEventListener("hide.bs.modal", hideHandler, { once: true });
-    myModal.show();
-  });
+        const modalTitleEl = modalElement.querySelector('.modal-title');
+        const modalBodyEl = modalElement.querySelector('.modal-body');
+
+        if (modalTitleEl) modalTitleEl.textContent = title;
+        if (modalBodyEl) modalBodyEl.textContent = text;
+
+        let hideHandler = () => resolve();
+
+        if (timeout) {
+            const close_evt = () => myModal.hide();
+            const timeout_id = window.setTimeout(close_evt, timeout);
+
+            const keypressHandler = (event: KeyboardEvent) => {
+                if (event.key) {
+                    close_evt();
+                }
+            };
+            document.addEventListener("keypress", keypressHandler, {once: true});
+
+            // Overwrite hideHandler to also clean up listeners
+            const originalHideHandler = hideHandler;
+            hideHandler = () => {
+                window.clearTimeout(timeout_id);
+                document.removeEventListener("keypress", keypressHandler);
+                originalHideHandler();
+            };
+        }
+
+        modalElement.addEventListener("hide.bs.modal", hideHandler, {once: true});
+        myModal.show();
+    });
 }
 
 /**
@@ -61,7 +61,7 @@ export function show_modal(title: string, text: string, timeout?: number): Promi
  * @returns {Promise<boolean>} A promise that resolves to `true` if the user confirms, and `false` if the user cancels or dismisses the modal.
  */
 export function double_check(title: string, subtitle?: string): Promise<boolean> {
-    return new Promise((resolve) =>{
+    return new Promise((resolve) => {
         const modalElement = document.getElementById('checkingModal');
         if (!modalElement) {
             console.error('Modal element #checkingModal not found in the DOM.');
@@ -80,7 +80,7 @@ export function double_check(title: string, subtitle?: string): Promise<boolean>
 
         if (modalTitleEl) modalTitleEl.textContent = title;
         if (modalBodyEl) modalBodyEl.textContent = subtitle || "請確認是否要繼續進行此操作。";
-        
+
         let closed = false;
 
         const cleanUp = () => {
@@ -103,9 +103,9 @@ export function double_check(title: string, subtitle?: string): Promise<boolean>
             resolve(false);
         };
 
-        enterButton.addEventListener("click", enterClickHandler, { once: true });
-        modalElement.addEventListener('hidden.bs.modal', cancelClickHandler, { once: true });
-        
+        enterButton.addEventListener("click", enterClickHandler, {once: true});
+        modalElement.addEventListener('hidden.bs.modal', cancelClickHandler, {once: true});
+
         checkModal.show();
     });
 }

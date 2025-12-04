@@ -1,5 +1,6 @@
-import { useClipboard } from '@vueuse/core'
-const { copy } = useClipboard();
+import {useClipboard} from '@vueuse/core'
+
+const {copy} = useClipboard();
 
 const canCopyDirective = {
     // 當元素插入到 DOM 中時呼叫

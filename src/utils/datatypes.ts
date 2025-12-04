@@ -6,7 +6,7 @@ export type PretestType = "no" | "all" | "last";
 
 export type PracticeType = "no" | "private" | "public";
 
-export function yesNo(val: boolean): YesNo{
+export function yesNo(val: boolean): YesNo {
     return val ? "yes" : "no";
 }
 
@@ -73,19 +73,19 @@ export interface ContestDetail {
     can_register: boolean
 }
 
-export interface SampleTestcase{
+export interface SampleTestcase {
     input: string,
     output: string,
 }
 
-export interface ProblemDetail{
+export interface ProblemDetail {
     pid: string,
     title: string,
     statement: string,
     statement_html: string,
     langs: string[],
     samples: SampleTestcase[],
-    default_code: {[key: string]: string},
+    default_code: { [key: string]: string },
     time_limit: number,
     memory_limit: number
 }

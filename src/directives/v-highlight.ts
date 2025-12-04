@@ -11,7 +11,7 @@ const highlightDirective = {
 
         if (language) {
             // 依指定語言高亮
-            const result = hljs.highlight(code, { language: language });
+            const result = hljs.highlight(code, {language: language});
             el.innerHTML = result.value;
         } else {
             // 自動偵測並高亮

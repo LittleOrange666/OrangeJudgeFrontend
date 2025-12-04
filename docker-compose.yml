@@ -5,28 +5,28 @@ services:
         volumes:
             - ./data/redis:/data
         healthcheck:
-          test: ["CMD", "redis-cli", "ping"]
-          interval: 10s
-          timeout: 3s
-          retries: 5
+            test: [ "CMD", "redis-cli", "ping" ]
+            interval: 10s
+            timeout: 3s
+            retries: 5
     judge_mariadb:
         image: mariadb:11.8
         restart: unless-stopped
         environment:
-          - MYSQL_ROOT_PASSWORD=orangejudgerootpassword
-          - MYSQL_DATABASE=orangejudge
-          - MYSQL_USER=orangejudgeuser
-          - MYSQL_PASSWORD=orangejudgepassword
+            - MYSQL_ROOT_PASSWORD=orangejudgerootpassword
+            - MYSQL_DATABASE=orangejudge
+            - MYSQL_USER=orangejudgeuser
+            - MYSQL_PASSWORD=orangejudgepassword
         ports:
-          - "3306:3306"
+            - "3306:3306"
         volumes:
-          - ./data/mariadb:/var/lib/mysql
+            - ./data/mariadb:/var/lib/mysql
         healthcheck:
-          test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-          start_period: 10s
-          interval: 10s
-          timeout: 5s
-          retries: 5
+            test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+            start_period: 10s
+            interval: 10s
+            timeout: 5s
+            retries: 5
     judge_server:
         image: littleorange666/judge_server:1.5.0
         read_only: true
@@ -48,11 +48,11 @@ services:
         ports:
             - "0.0.0.0:9132:8000"
         healthcheck:
-          test: ["CMD", "python3", "-c", "import http.client; c=http.client.HTTPConnection('localhost', 8000); c.request('GET', '/health_check'); r=c.getresponse(); exit(0) if r.status < 400 else exit(1)"]
-          interval: 10s
-          start_period: 10s
-          timeout: 3s
-          retries: 5
+            test: [ "CMD", "python3", "-c", "import http.client; c=http.client.HTTPConnection('localhost', 8000); c.request('GET', '/health_check'); r=c.getresponse(); exit(0) if r.status < 400 else exit(1)" ]
+            interval: 10s
+            start_period: 10s
+            timeout: 3s
+            retries: 5
     judge_backend:
         image: littleorange666/orange_judge:1.10.1
         read_only: true
@@ -89,11 +89,11 @@ services:
         ports:
             - "0.0.0.0:8081:8080"
         healthcheck:
-          test: ["CMD", "python3", "-c", "import http.client; c=http.client.HTTPConnection('localhost', 8080); c.request('GET', '/'); r=c.getresponse(); exit(0) if r.status < 400 else exit(1)"]
-          interval: 10s
-          start_period: 10s
-          timeout: 3s
-          retries: 5
+            test: [ "CMD", "python3", "-c", "import http.client; c=http.client.HTTPConnection('localhost', 8080); c.request('GET', '/'); r=c.getresponse(); exit(0) if r.status < 400 else exit(1)" ]
+            interval: 10s
+            start_period: 10s
+            timeout: 3s
+            retries: 5
     judge_frontend:
         image: littleorange666/judge_frontend:0.1.8
         read_only: true
@@ -102,9 +102,9 @@ services:
             judge_backend:
                 condition: service_healthy
         ports:
-          - "0.0.0.0:8080:80"
+            - "0.0.0.0:8080:80"
         environment:
-          - VUE_APP_TITLE=OrangeJudge
-          - BACKEND_LINK=http://judge_backend:8080
+            - VUE_APP_TITLE=OrangeJudge
+            - BACKEND_LINK=http://judge_backend:8080
 volumes:
     sandbox:

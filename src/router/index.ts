@@ -1,12 +1,12 @@
 import {createRouter, createWebHistory, RouteLocation} from 'vue-router'
-import type { RouteRecordRaw } from 'vue-router'
+import type {RouteRecordRaw} from 'vue-router'
 import {useAuthStore} from "@/stores/auth";
 import IndexView from "@/views/IndexView.vue";
 import {show_modal} from "@/utils/modal";
 
-interface navItem{
-    text:(to: RouteLocation)=>string,
-    link:(to: RouteLocation)=>string
+interface navItem {
+    text: (to: RouteLocation) => string,
+    link: (to: RouteLocation) => string
 }
 
 declare module 'vue-router' {
@@ -91,15 +91,15 @@ const routes: RouteRecordRaw[] = [
             pageTitle: "題目",
             navItems: [
                 {
-                    text:()=>"本題動態",
-                    link:(to)=>"/status?pid="+to.params.pid
+                    text: () => "本題動態",
+                    link: (to) => "/status?pid=" + to.params.pid
                 },
                 {
-                    text:()=>"我的提交",
-                    link:(to)=>{
+                    text: () => "我的提交",
+                    link: (to) => {
                         const authStore = useAuthStore();
-                        if(!authStore.isLoggedIn) return "";
-                        return "/status?pid="+to.params.pid+"&user="+authStore.username;
+                        if (!authStore.isLoggedIn) return "";
+                        return "/status?pid=" + to.params.pid + "&user=" + authStore.username;
                     }
                 }
             ]
@@ -152,13 +152,13 @@ const router = createRouter({
     routes
 })
 
-export function updateTitle(pageName?: string){
+export function updateTitle(pageName?: string) {
     pageName = pageName || '找不到頁面';
     const appTitleBase = 'OrangeJudge';
     document.title = `${pageName} | ${appTitleBase}`;
 }
 
-export function addNavLink(txt: string, link: string){
+export function addNavLink(txt: string, link: string) {
     if (!txt || !link) return;
     const li = document.createElement("li");
     li.className = "nav-item temp-nav-item";
@@ -171,13 +171,13 @@ export function addNavLink(txt: string, link: string){
     nav.appendChild(li);
 }
 
-export function addNavBtn(txt: string, func: Function){
+export function addNavBtn(txt: string, func: Function) {
     if (!txt || !func) return;
     const li = document.createElement("li");
     li.className = "nav-item temp-nav-item";
     const a = document.createElement("a");
     a.href = "#";
-    a.addEventListener("click", function (e){
+    a.addEventListener("click", function (e) {
         e.preventDefault();
         func();
     });
@@ -188,8 +188,8 @@ export function addNavBtn(txt: string, func: Function){
     nav.appendChild(li);
 }
 
-export function clearNav(){
-    for(const o of document.querySelectorAll(".temp-nav-item")){
+export function clearNav() {
+    for (const o of document.querySelectorAll(".temp-nav-item")) {
         o.remove();
     }
 }
@@ -212,8 +212,8 @@ router.beforeEach(async (to: RouteLocation) => {
     }
     updateTitle(to.meta.pageTitle);
     clearNav();
-    if (to.meta.navItems){
-        for(const o of to.meta.navItems){
+    if (to.meta.navItems) {
+        for (const o of to.meta.navItems) {
             const txt = o.text(to);
             const link = o.link(to);
             addNavLink(txt, link);

@@ -5,7 +5,7 @@ import {useLoader} from "@/utils/tools";
 import {default_page_size} from "@/utils/constants";
 
 export interface PageManager<T> {
-    to_page: (page: string|number) => Promise<void>,
+    to_page: (page: string | number) => Promise<void>,
     refresh: () => Promise<void>,
     loading: Ref<boolean>,
     error: Ref<string>,
@@ -22,14 +22,16 @@ interface PageResult<T> {
     page_count?: string
 }
 
-export function safe_page(page: string|string[]|null): string{
+export function safe_page(page: string | string[] | null): string {
     if (!page) return "1";
     if (typeof page === "string") return page;
     return page[0];
 }
 
 
-export function usePage<T>(path: string, args?: {[key: string]: any}, on_load?: (page: string) => Promise<void>): PageManager<T> {
+export function usePage<T>(path: string, args?: {
+    [key: string]: any
+}, on_load?: (page: string) => Promise<void>): PageManager<T> {
     // 獲取當前路由實例
     const route = useRoute();
     // 當前頁碼，從路由查詢參數或預設為 "1"
@@ -39,11 +41,11 @@ export function usePage<T>(path: string, args?: {[key: string]: any}, on_load?: 
     // 自定義的加載狀態，用於防止重複加載
     const my_loading = ref(false);
     // 計算屬性，返回要顯示的頁碼陣列
-    const show_pages = computed(()=>data && data.value && data.value.show_pages || []);
+    const show_pages = computed(() => data && data.value && data.value.show_pages || []);
     // 計算屬性，返回當前頁的數據內容
-    const contents = computed(()=>data && data.value && data.value.data || []);
-    const ok = computed(()=>!loading.value && !error.value);
-    const page_cnt = computed(()=>data && data.value && data.value.page_count || "1");
+    const contents = computed(() => data && data.value && data.value.data || []);
+    const ok = computed(() => !loading.value && !error.value);
+    const page_cnt = computed(() => data && data.value && data.value.page_count || "1");
 
     /**
      * 加載指定頁碼的數據。
@@ -52,9 +54,9 @@ export function usePage<T>(path: string, args?: {[key: string]: any}, on_load?: 
     const do_load = async (page_val: string | number) => {
         if (my_loading.value) return;
         my_loading.value = true;
-        page.value = ""+page_val;
+        page.value = "" + page_val;
         // 構建 API 請求的查詢參數
-        const get_args: {[key: string]: any} = {
+        const get_args: { [key: string]: any } = {
             page: page.value,
             page_size: default_page_size
         }
@@ -67,7 +69,7 @@ export function usePage<T>(path: string, args?: {[key: string]: any}, on_load?: 
         // 調用加載器加載數據
         await load(path, get_args);
         // 如果 API 回應中包含頁碼，則更新當前頁碼
-        if (data && data.value && data.value["page"] && ""+page.value !== ""+data.value["page"]) page.value = data.value["page"];
+        if (data && data.value && data.value["page"] && "" + page.value !== "" + data.value["page"]) page.value = data.value["page"];
         // 如果有回調函數，則在數據加載後執行
         if (on_load) await on_load(page.value);
         my_loading.value = false;
