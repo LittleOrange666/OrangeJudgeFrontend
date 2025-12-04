@@ -1,5 +1,9 @@
 #!/bin/sh
 
+export BACKEND_LINK="${BACKEND_LINK:-http://judge_backend:8080}"
+
+export WORKER_PROCESSES="${WORKER_PROCESSES:-4}"
+
 VARS_TO_SUBST='$BACKEND_LINK $WORKER_PROCESSES'
 
 echo "--- 使用 envsubst 替換 Nginx 配置變數 ---"

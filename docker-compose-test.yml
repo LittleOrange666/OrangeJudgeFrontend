@@ -9,3 +9,9 @@ services:
             - WORKER_PROCESSES=4
         extra_hosts:
             - "host.docker.internal:host-gateway"
+        healthcheck:
+            test: [ "CMD", "curl", "-f", "http://localhost" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 20s

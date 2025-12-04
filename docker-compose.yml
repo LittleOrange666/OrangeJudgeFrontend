@@ -96,7 +96,6 @@ services:
             retries: 5
     judge_frontend:
         image: littleorange666/judge_frontend:0.2.1
-        read_only: true
         restart: on-failure
         depends_on:
             judge_backend:
@@ -107,5 +106,11 @@ services:
             - VUE_APP_TITLE=OrangeJudge
             - BACKEND_LINK=http://judge_backend:8080
             - WORKER_PROCESSES=4
+        healthcheck:
+            test: [ "CMD", "curl", "-f", "http://localhost" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 20s
 volumes:
     sandbox:
