@@ -14,11 +14,15 @@ FROM nginx:stable-alpine AS production-stage
 
 RUN rm /etc/nginx/conf.d/default.conf
 
+RUN rm /etc/nginx/nginx.conf
+
 COPY entrypoint.sh /docker-entrypoint.sh
 
 RUN chmod +x /docker-entrypoint.sh
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf.template
+COPY default.conf /etc/nginx/conf.d/default.conf.template
+
+COPY nginx.conf /etc/nginx/nginx.conf.template
 
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 

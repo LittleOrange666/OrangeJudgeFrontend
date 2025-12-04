@@ -6,5 +6,6 @@ services:
         environment:
             - VUE_APP_TITLE=OrangeJudge
             - BACKEND_LINK=http://host.docker.internal:8080
+            - WORKER_PROCESSES=4
         extra_hosts:
             - "host.docker.internal:host-gateway"
