@@ -1,3 +1,15 @@
+export type YesNo = "yes" | "no";
+
+export type RuleType = "icpc" | "ioi";
+
+export type PretestType = "no" | "all" | "last";
+
+export type PracticeType = "no" | "private" | "public";
+
+export function yesNo(val: boolean): YesNo{
+    return val ? "yes" : "no";
+}
+
 export interface ContestSummary {
     cid: string,
     name: string,
@@ -105,4 +117,19 @@ export interface ContestProblemDetail {
     memory_limit: number
     statement_html: string,
     samples: SampleTestcase[],
+}
+
+export interface ContestSettings {
+    contest_title: string,
+    start_time: number,
+    elapsed_time: number,
+    rule_type: RuleType,
+    pretest_type: PretestType,
+    practice_type: PracticeType,
+    register_type: boolean,
+    show_standing: boolean,
+    show_contest: boolean,
+    freeze_time: number,
+    unfreeze_time: number,
+    penalty: number
 }

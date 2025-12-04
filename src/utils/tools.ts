@@ -52,13 +52,12 @@ export const api = {
     }
 };
 
-/**
- * Converts a Unix timestamp (in seconds) to a localized date-time string.
- * @param {number|string} i The Unix timestamp in seconds.
- * @returns {string} A localized string representation of the date and time.
- */
 export function timestamp_to_str(i: string | number): string {
     return new Date(+i * 1000).toLocaleString()
+}
+
+export function date_to_str(d: Date): string{
+    return d.toISOString().slice(0, 16);
 }
 
 export function minute_to_str(i: string | number): string {

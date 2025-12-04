@@ -50,7 +50,7 @@
         <StandingTab :data="data" v-if="loaded('#standing')" />
       </div>
       <div id="edit" class="tab-pane fade" v-if="can_edit">
-        <EditTab :data="data" v-if="loaded('#edit')" />
+        <EditTab :data="data" :do_load="do_load" v-if="loaded('#edit')" />
       </div>
       <div id="participants" class="tab-pane fade">
         <ParticipantTab :data="data" v-if="loaded('#participants')" />
@@ -70,7 +70,7 @@ import EditTab from "@/components/contest/EditTab.vue";
 import ParticipantTab from "@/components/contest/ParticipantTab.vue";
 import useTab from "@/utils/tab";
 import {show_modal} from "@/utils/modal";
-import {addNavBtn, updateTitle} from "@/router";
+import {addNavBtn, clearNav, updateTitle} from "@/router";
 import {contest_status_text} from "@/utils/constants";
 import {ContestDetail} from "@/utils/datatypes";
 
@@ -88,6 +88,9 @@ const status_text = computed(() => data.value && data.value["status"] &&
 
 const do_load = async () => {
   await load("/contest/"+cid);
+  clearNav();
+  updateTitle("競賽 - " + data.value["name"]);
+  addNavBtn("刷新", do_load);
 }
 
 const handleRegister = async () => {
@@ -113,7 +116,5 @@ const handleUnregister = async () => {
 onMounted(async () => {
   await do_load();
   await init();
-  updateTitle("競賽 - " + data.value["name"]);
-  addNavBtn("刷新", do_load);
 })
 </script>
