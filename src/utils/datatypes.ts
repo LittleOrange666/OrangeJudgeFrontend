@@ -70,7 +70,8 @@ export interface ContestDetail {
     is_registered: boolean,
     is_virtual_participant: boolean,
     elapsed: number,
-    can_register: boolean
+    can_register: boolean,
+    target: number,
 }
 
 export interface SampleTestcase {
