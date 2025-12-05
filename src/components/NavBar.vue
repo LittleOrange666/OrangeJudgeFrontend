@@ -90,7 +90,7 @@
 
 <script setup lang="ts">
 import {useAuthStore} from '@/stores/auth';
-import {isLoggedIn, hasRootPermission, hasAdminPermission, hasProblemPermission} from "@/utils/accounts";
+import {hasAdminPermission, hasProblemPermission, hasRootPermission, isLoggedIn} from "@/utils/accounts";
 
 const authStore = useAuthStore();
 </script>

@@ -68,7 +68,7 @@ import {hasAdminPermission} from "@/utils/accounts";
 import {can_filter_results} from "@/utils/constants";
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {api, timestamp_to_str} from "@/utils/tools";
+import {api, getQuery, timestamp_to_str} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 import {usePage} from "@/utils/page";
 import PageBar from "@/components/PageBar.vue";
@@ -78,10 +78,10 @@ const route = useRoute();
 const router = useRouter();
 const store = useJudgeInfoStore();
 const {lang_info} = storeToRefs(store);
-const pid = ref(route.query.pid || "");
-const user = ref(route.query.user || "");
-const lang = ref(route.query.lang || "");
-const result = ref(route.query.result || "");
+const pid = ref(getQuery("pid"));
+const user = ref(getQuery("user"));
+const lang = ref(getQuery("lang"));
+const result = ref(getQuery("result"));
 const update_url = async (page: string) => {
     await router.replace({
         path: route.path,

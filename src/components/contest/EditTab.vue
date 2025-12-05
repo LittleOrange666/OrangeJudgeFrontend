@@ -161,8 +161,7 @@
 <script setup lang="ts">
 import {defineProps, onMounted, ref} from 'vue';
 import {ContestDetail, ContestSettings, PracticeType, PretestType, RuleType, yesNo, YesNo} from "@/utils/datatypes";
-import {api, date_to_str, useLoader} from "@/utils/tools";
-import {useRoute} from "vue-router";
+import {api, date_to_str, getParam, useLoader} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 
 interface Props {
@@ -172,9 +171,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const route = useRoute();
-
-const cid = route.params.cid;
+const cid = getParam("cid");
 
 const dataLoader = useLoader<ContestSettings>();
 const loading = dataLoader.loading;

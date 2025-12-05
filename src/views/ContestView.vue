@@ -62,8 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import {api, useLoader} from "@/utils/tools";
-import {useRoute} from "vue-router";
+import {api, getParam, useLoader} from "@/utils/tools";
 import {computed, onMounted} from "vue";
 import IndexTab from "@/components/contest/IndexTab.vue";
 import StatusTab from "@/components/contest/StatusTab.vue";
@@ -79,14 +78,13 @@ import {ContestDetail} from "@/utils/datatypes";
 const {data, error, loading, load} = useLoader<ContestDetail>();
 const {init, loaded} = useTab();
 
-const route = useRoute();
-const cid = route.params.cid;
+const cid = getParam("cid");
 
 const can_register = computed(() => data.value && data.value["can_register"]);
 const is_registered = computed(() => data.value && data.value["is_registered"]);
 const can_edit = computed(() => data.value && data.value["can_edit"]);
 const status_text = computed(() => data.value && data.value["status"] &&
-        contest_status_text[data.value["status"]] || "???");
+    contest_status_text[data.value["status"]] || "???");
 
 const do_load = async () => {
     await load("/contest/" + cid);

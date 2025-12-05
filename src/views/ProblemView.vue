@@ -32,9 +32,8 @@
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "vue-router";
 import {onMounted} from "vue";
-import {useLoader} from "@/utils/tools";
+import {getParam, useLoader} from "@/utils/tools";
 import CodeSubmit from "@/components/CodeSubmit.vue";
 import {isLoggedIn} from "@/utils/accounts";
 import {updateTitle} from "@/router";
@@ -42,8 +41,7 @@ import {ProblemDetail} from "@/utils/datatypes";
 
 const {data, error, load} = useLoader<ProblemDetail>();
 
-const route = useRoute();
-const pid = route.params.pid;
+const pid = getParam("pid");
 
 onMounted(async () => {
     await load("/problem/" + pid);

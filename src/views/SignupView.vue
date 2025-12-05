@@ -40,8 +40,8 @@
 import {computed, onMounted, ref} from 'vue';
 import {useAuthStore} from '@/stores/auth';
 import {useServerInfoStore} from "@/stores/serverInfo";
-import {useRoute, useRouter} from "vue-router";
-import {api} from "@/utils/tools";
+import {useRouter} from "vue-router";
+import {api, getQuery} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 
 
@@ -54,12 +54,11 @@ const isLoading = ref(false);
 const error = ref(null);
 const authStore = useAuthStore();
 const router = useRouter();
-const route = useRoute();
 const need_verify = computed(() => useServerInfoStore().server_info["need_verify"]);
 
 const goNext = async () => {
     if (authStore.isLoggedIn) {
-        const redirectPath = route.query.redirect;
+        const redirectPath = getQuery("redirect");
         if (redirectPath) {
             await router.push(redirectPath);
         } else {

@@ -1,5 +1,15 @@
-import axios, {AxiosResponse} from "axios";
+import axios, {AxiosError} from "axios";
 import {Ref, ref} from "vue";
+import {useRoute} from "vue-router";
+
+export class ApiError extends Error {
+    public status_code: number | null;
+
+    constructor(message: string, status_code?: number) {
+        super(message);
+        this.status_code = status_code;
+    }
+}
 
 export const toForm = function (obj?: { [key: string]: any }) {
     const f = new FormData();
@@ -13,42 +23,67 @@ export const toForm = function (obj?: { [key: string]: any }) {
 
 const API_BASE_URL = '/api';
 
-async function send_request(func: (path: string, body: any) => Promise<AxiosResponse>,
-                            path: string, obj?: { [key: string]: any }) {
-    if (!path.startsWith("/")) path = "/" + path;
-    const response = await func(API_BASE_URL + path, toForm(obj));
-    if (response.data["status"] !== "success") {
-        throw new Error(response.data["description"] || response.data["message"]);
+
+function resolveError(err: AxiosError) {
+    let message: string = err.message;
+    let status_code = null;
+    if (err.response) {
+        if (err.response.data) {
+            const data = err.response.data;
+            message = data["description"] || data["message"] || message;
+            status_code = err.response.status;
+        } else {
+            message = err.message;
+            status_code = err.response.status;
+        }
     }
-    return response.data["data"];
+    return new ApiError(message, status_code);
 }
 
 export const api = {
     get: async function (path: string, obj?: { [key: string]: any }) {
         if (!path.startsWith("/")) path = "/" + path;
-        const response = await axios.get(API_BASE_URL + path, {
-            params: obj
-        });
-        if (response.data["status"] !== "success") {
-            throw new Error(response.data["description"] || response.data["message"]);
+        try {
+            const response = await axios.get(API_BASE_URL + path, {
+                params: obj
+            });
+            return response.data["data"];
+        } catch (err) {
+            console.error(err);
+            throw resolveError(err as AxiosError);
         }
-        return response.data["data"];
     },
     post: async function (path: string, obj?: { [key: string]: any }) {
-        return send_request(axios.post, path, obj);
+        if (!path.startsWith("/")) path = "/" + path;
+        try {
+            const response = await axios.post(API_BASE_URL + path, toForm(obj));
+            return response.data["data"];
+        } catch (err) {
+            console.error(err);
+            throw resolveError(err as AxiosError);
+        }
     },
     put: async function (path: string, obj?: { [key: string]: any }) {
-        return send_request(axios.put, path, obj);
+        if (!path.startsWith("/")) path = "/" + path;
+        try {
+            const response = await axios.put(API_BASE_URL + path, toForm(obj));
+            return response.data["data"];
+        } catch (err) {
+            console.error(err);
+            throw resolveError(err as AxiosError);
+        }
     },
     delete: async function (path: string, obj?: { [key: string]: any }) {
         if (!path.startsWith("/")) path = "/" + path;
-        const response = await axios.delete(API_BASE_URL + path, {
-            data: toForm(obj)
-        });
-        if (response.data["status"] !== "success") {
-            throw new Error(response.data["description"] || response.data["message"]);
+        try {
+            const response = await axios.delete(API_BASE_URL + path, {
+                data: toForm(obj)
+            });
+            return response.data["data"];
+        } catch (err) {
+            console.error(err);
+            throw resolveError(err as AxiosError);
         }
-        return response.data["data"];
     }
 };
 
@@ -99,4 +134,30 @@ export function useLoader<T>(): dataLoader<T> {
         load,
         loading
     }
+}
+
+export function getParam(name: string, default_val: string = ""): string {
+    const route = useRoute();
+    if (!route) {
+        console.warn(`getParam(${name}) is called outside of a component's setup context. Returning default value.`);
+        return default_val;
+    }
+    const res = route.params[name];
+    if (!res) return default_val;
+    if (typeof res === "string") return res;
+    if (res.length === 0) return default_val;
+    return res[0];
+}
+
+export function getQuery(name: string, default_val: string = ""): string {
+    const route = useRoute();
+    if (!route) {
+        console.warn(`getQuery(${name}) is called outside of a component's setup context. Returning default value.`);
+        return default_val;
+    }
+    const res = route.query[name];
+    if (!res) return default_val;
+    if (typeof res === "string") return res;
+    if (res.length === 0) return default_val;
+    return res[0];
 }

@@ -32,20 +32,17 @@
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "vue-router";
 import {onMounted} from "vue";
-import {useLoader} from "@/utils/tools";
+import {getParam, useLoader} from "@/utils/tools";
 import CodeSubmit from "@/components/CodeSubmit.vue";
 import {isLoggedIn} from "@/utils/accounts";
 import {updateTitle} from "@/router";
 import {ContestProblemDetail} from "@/utils/datatypes";
-import {safe_page} from "@/utils/page";
 
 const {data, error, load} = useLoader<ContestProblemDetail>();
 
-const route = useRoute();
-const pid: string = safe_page(route.params.pid);
-const cid: string = safe_page(route.params.cid);
+const pid: string = getParam("pid");
+const cid: string = getParam("cid");
 
 onMounted(async () => {
     await load("/contest/" + cid + "/problem/" + pid);

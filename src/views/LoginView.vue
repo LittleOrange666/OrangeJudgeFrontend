@@ -23,8 +23,9 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
 import {useAuthStore} from '@/stores/auth';
-import {useRoute, useRouter} from "vue-router";
+import {useRouter} from "vue-router";
 import {show_modal} from "@/utils/modal";
+import {getQuery} from "@/utils/tools";
 
 
 const username = ref('');
@@ -33,11 +34,10 @@ const isLoading = ref(false);
 const error = ref(null);
 const authStore = useAuthStore();
 const router = useRouter();
-const route = useRoute();
 
 const goNext = async () => {
     if (authStore.isLoggedIn) {
-        const redirectPath = route.query.redirect;
+        const redirectPath = getQuery("redirect");
         if (redirectPath) {
             await router.push(redirectPath);
         } else {
@@ -55,7 +55,7 @@ const handleLogin = async () => {
         await show_modal("成功", "登入成功");
         await goNext();
     } catch (err) {
-        error.value = err.response?.data?.message || '帳號或密碼錯誤，請重新嘗試。';
+        error.value = err.message || '帳號或密碼錯誤，請重新嘗試。';
         console.error('Login Error:', err);
     } finally {
         isLoading.value = false;

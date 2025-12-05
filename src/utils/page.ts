@@ -1,7 +1,6 @@
 // 導入 Vue 和專案相關的工具和常數
-import {useRoute} from "vue-router";
 import {computed, ComputedRef, Ref, ref} from "vue";
-import {useLoader} from "@/utils/tools";
+import {getQuery, useLoader} from "@/utils/tools";
 import {default_page_size} from "@/utils/constants";
 
 export interface PageManager<T> {
@@ -32,10 +31,8 @@ export function safe_page(page: string | string[] | null): string {
 export function usePage<T>(path: string, args?: {
     [key: string]: any
 }, on_load?: (page: string) => Promise<void>): PageManager<T> {
-    // 獲取當前路由實例
-    const route = useRoute();
     // 當前頁碼，從路由查詢參數或預設為 "1"
-    const page: Ref<string> = ref(safe_page(route.query.page));
+    const page: Ref<string> = ref(getQuery("page") || "1");
     // 使用 useLoader 來處理數據加載、錯誤和加載狀態
     const {data, error, load, loading} = useLoader<PageResult<T>>();
     // 自定義的加載狀態，用於防止重複加載

@@ -1,5 +1,5 @@
-import {createRouter, createWebHistory, RouteLocation} from 'vue-router'
 import type {RouteRecordRaw} from 'vue-router'
+import {createRouter, createWebHistory, RouteLocation} from 'vue-router'
 import {useAuthStore} from "@/stores/auth";
 import IndexView from "@/views/IndexView.vue";
 import {show_modal} from "@/utils/modal";

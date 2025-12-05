@@ -50,9 +50,8 @@
 </template>
 <script setup lang="ts">
 import {computed, defineProps, ref} from 'vue';
-import {useRoute} from "vue-router";
 import {vDraggable} from 'vue-draggable-plus'
-import {api} from "@/utils/tools";
+import {api, getParam} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 import {ContestDetail} from "@/utils/datatypes";
 
@@ -62,10 +61,9 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-const route = useRoute();
 const can_see_problems = computed(() => props.data['can_see_problems']);
 const can_edit = computed(() => props.data['can_edit']);
-const cid = route.params.cid;
+const cid = getParam("cid");
 const new_pid = ref("");
 const base_path = "/contest/" + cid + "/manage";
 const problem_list = computed(() => props.data['problems']);

@@ -68,16 +68,15 @@
     </div>
 </template>
 <script setup lang="ts">
-import {defineProps, onMounted, ref} from 'vue';
+import {computed, defineProps, onMounted, ref} from 'vue';
 import {ContestDetail, SubmissionSummary} from "@/utils/datatypes";
 import {can_filter_results} from "@/utils/constants";
 import {hasAdminPermission, isLoggedIn} from "@/utils/accounts";
 import {useJudgeInfoStore} from "@/stores/judgeInfo";
 import {storeToRefs} from "pinia";
 import {usePage} from "@/utils/page";
-import {api, timestamp_to_str} from "@/utils/tools";
+import {api, getParam, timestamp_to_str} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
-import {useRoute} from "vue-router";
 import {useAuthStore} from "@/stores/auth";
 
 interface Props {
@@ -86,9 +85,7 @@ interface Props {
 
 defineProps<Props>();
 
-const route = useRoute();
-
-const cid = route.params.cid;
+const cid = getParam("cid");
 
 const base_path = "/contest/" + cid;
 
@@ -104,9 +101,9 @@ const page_manager = usePage<SubmissionSummary>(base_path + "/status", {
     lang: lang,
     result: result
 });
-const loading = page_manager.loading;
-const contents = page_manager.contents;
-const ok = page_manager.ok;
+const loading = computed(()=>page_manager.loading.value);
+const contents = computed(()=>page_manager.contents.value);
+const ok = computed(()=>page_manager.ok.value);
 const refresh = page_manager.refresh;
 
 const rejudge = async () => {

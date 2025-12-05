@@ -13,16 +13,14 @@
 </template>
 
 <script setup lang="ts">
-import {useRoute} from "vue-router";
 import {onMounted} from "vue";
-import {useLoader} from "@/utils/tools";
+import {getParam, useLoader} from "@/utils/tools";
 import TestResult from "@/components/TestResult.vue";
 import ProblemResult from "@/components/ProblemResult.vue";
 import {SubmissionDetail} from "@/utils/datatypes";
 import {addNavBtn, addNavLink} from "@/router";
 
-const route = useRoute();
-const sub_id = route.params.sub_id;
+const sub_id = getParam("sub_id");
 const {data, error, load, loading} = useLoader<SubmissionDetail>();
 
 const do_load = async () => {
