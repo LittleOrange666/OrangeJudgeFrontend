@@ -133,3 +133,30 @@ export interface ContestSettings {
     unfreeze_time: number,
     penalty: number
 }
+
+export interface StandingSubmission {
+    user: string,
+    pid: string,
+    time: number,
+    scores: { [group: string]: number },
+    total_score: number,
+    pretest: boolean,
+    per: number
+}
+
+export interface ContestPeriod {
+    start_time: number,
+    judging: boolean,
+    idx: number
+}
+
+export interface ContestStanding {
+    submissions: StandingSubmission[],
+    rule: RuleType,
+    pids: string[],
+    penalty: number,
+    pers: ContestPeriod[],
+    main_per: number,
+    participants: string[],
+    virtual_participants: { [user: string]: number },
+}

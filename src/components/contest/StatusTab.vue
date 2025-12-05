@@ -101,9 +101,9 @@ const page_manager = usePage<SubmissionSummary>(base_path + "/status", {
     lang: lang,
     result: result
 });
-const loading = computed(()=>page_manager.loading.value);
-const contents = computed(()=>page_manager.contents.value);
-const ok = computed(()=>page_manager.ok.value);
+const loading = computed(() => page_manager.loading.value);
+const contents = computed(() => page_manager.contents.value);
+const ok = computed(() => page_manager.ok.value);
 const refresh = page_manager.refresh;
 
 const rejudge = async () => {
