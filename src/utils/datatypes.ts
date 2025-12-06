@@ -9,6 +9,10 @@ export type PracticeType = "no" | "private" | "public";
 export type TaskResultType = "OK" | "WA" | "TLE" | "MLE" | "RE" | "CE" | "JE" | "RF" | "FAIL" | "PARTIAL" | "PENDING" |
     "PE" | "POINTS" | "DIRT" | "OLE" | "SKIP" | "PASS";
 
+export type ConfigType = "str" | "int" | "bool" | "limits" | "limit"
+
+export type timeUnit = "hour" | "minute" | "second"
+
 export function yesNo(val: boolean): YesNo {
     return val ? "yes" : "no";
 }
@@ -194,4 +198,17 @@ export interface UserSettings {
     email: string,
     username: string,
     permissions: string
+}
+
+export interface ConfigSlot{
+    name: string,
+    title: string,
+    type: ConfigType,
+    value: string | number | boolean | string[]
+}
+
+export interface ConfigClass {
+    name: string,
+    title: string,
+    slots: ConfigSlot[],
 }

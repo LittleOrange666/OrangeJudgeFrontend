@@ -139,6 +139,15 @@ export const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: "/admin",
+        name: "admin",
+        component: () => import(/* webpackChunkName: "admin" */ "@/views/AdminView.vue"),
+        meta: {
+            pageTitle: "管理介面",
+            requiresAuth: true
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),
