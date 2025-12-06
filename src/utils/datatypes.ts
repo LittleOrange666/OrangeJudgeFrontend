@@ -1,3 +1,5 @@
+import {Permission} from "@/stores/auth";
+
 export type YesNo = "yes" | "no";
 
 export type RuleType = "icpc" | "ioi";
@@ -211,4 +213,11 @@ export interface ConfigClass {
     name: string,
     title: string,
     slots: ConfigSlot[],
+}
+
+export interface UserInfo{
+    id: number,
+    username: string,
+    display_name: string,
+    permissions: Permission[],
 }
