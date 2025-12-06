@@ -15,8 +15,8 @@
 <script setup lang="ts">
 import {onMounted} from "vue";
 import {getParam, useLoader} from "@/utils/tools";
-import TestResult from "@/components/TestResult.vue";
-import ProblemResult from "@/components/ProblemResult.vue";
+import TestResult from "@/components/submission/TestResult.vue";
+import ProblemResult from "@/components/submission/ProblemResult.vue";
 import {SubmissionDetail} from "@/utils/datatypes";
 import {addNavBtn, addNavLink} from "@/router";
 

@@ -6,6 +6,9 @@ export type PretestType = "no" | "all" | "last";
 
 export type PracticeType = "no" | "private" | "public";
 
+export type TaskResultType = "OK" | "WA" | "TLE" | "MLE" | "RE" | "CE" | "JE" | "RF" | "FAIL" | "PARTIAL" | "PENDING" |
+    "PE" | "POINTS" | "DIRT" | "OLE" | "SKIP" | "PASS";
+
 export function yesNo(val: boolean): YesNo {
     return val ? "yes" : "no";
 }
@@ -91,19 +94,43 @@ export interface ProblemDetail {
     memory_limit: number
 }
 
+export type TestResult = string;
+
+export interface TestcaseResult {
+    result: TaskResultType,
+    time: number,
+    score: number,
+    mem: number,
+}
+
+export interface TestcaseGroupResult {
+    result: TaskResultType,
+    time: number,
+    gained_score: number,
+    mem: number,
+}
+
+export interface ProblemResult {
+    detail: TestcaseResult[],
+    CE: boolean,
+    total_score: number,
+    group_result: TestcaseGroupResult[],
+}
+
 export interface SubmissionDetail {
     lang: string,
     source_code: string,
     completed: boolean,
     ce_msg: string,
-    result: any,
+    result: TestResult | ProblemResult,
     input: string,
     output: string,
     error: string,
     pid: string,
     simple_result: string,
     cid: string,
-    contest: string
+    contest: string,
+    pos: number
 }
 
 export interface ContestProblemDetail {
@@ -160,4 +187,11 @@ export interface ContestStanding {
     main_per: number,
     participants: string[],
     virtual_participants: { [user: string]: number },
+}
+
+export interface UserSettings {
+    display_name: string,
+    email: string,
+    username: string,
+    permissions: string
 }

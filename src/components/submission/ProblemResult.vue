@@ -19,7 +19,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(testcase, i) in result.result.detail" :key="i" :class="result_css_class(testcase.result)">
+            <tr v-for="(testcase, i) in results.detail" :key="i" :class="result_css_class(testcase.result)">
                 <th scope="row">{{ i }}</th>
                 <td>{{ testcase.result }}</td>
                 <td>{{ testcase.time }}</td>
@@ -29,13 +29,13 @@
             </tbody>
         </table>
         <div v-if="result.completed">
-            <div class="test-case" v-if="result.result.CE">
+            <div class="test-case" v-if="results.CE">
                 <div>Compilation Error</div>
                 <pre>{{ result.ce_msg }}</pre>
             </div>
             <div v-else>
-                <div class="test-case">Total Score: {{ result.result["total_score"] }}</div>
-                <table class="table table-hover" v-if="result.result.group_result">
+                <div class="test-case">Total Score: {{ results.total_score }}</div>
+                <table class="table table-hover" v-if="results.group_result">
                     <thead>
                     <tr class="table-light">
                         <th scope="col">Group</th>
@@ -46,7 +46,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(gp_result, name) in result.result.group_result" :key="name"
+                    <tr v-for="(gp_result, name) in results.group_result" :key="name"
                         :class="result_css_class(gp_result.result)">
                         <th scope="row">{{ name }}</th>
                         <td>{{ gp_result.result }}</td>
@@ -58,14 +58,17 @@
                 </table>
             </div>
         </div>
+        <div v-if="!result.completed">
+            Waiting in queue... ({{ result.pos }})
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import {defineProps, onMounted, ref} from 'vue';
+import {computed, defineProps, onMounted, ref} from 'vue';
 import {api} from "@/utils/tools";
 import {result_css_class} from "@/utils/constants";
-import {ProblemDetail, SubmissionDetail} from "@/utils/datatypes";
+import {ProblemDetail, ProblemResult, SubmissionDetail} from "@/utils/datatypes";
 
 interface Props {
     result: SubmissionDetail
@@ -73,6 +76,7 @@ interface Props {
 
 const props = defineProps<Props>();
 const problem_name = ref("???");
+const results = computed(() => (props.result.result as ProblemResult));
 
 onMounted(async () => {
     const pid = props.result.pid;

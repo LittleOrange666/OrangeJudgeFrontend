@@ -32,6 +32,10 @@
                 <pre><code v-highlight v-can-copy>{{ result.result }}</code></pre>
             </div>
         </div>
+        <div v-if="!result.completed">
+            <div v-if="result.pos > 0 ">Waiting in queue... ({{ result.pos }})</div>
+            <div v-else>Judging...</div>
+        </div>
     </div>
 </template>
 

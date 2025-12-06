@@ -5,12 +5,14 @@ import {api} from "@/utils/tools";
 
 axios.defaults.withCredentials = true;
 
+export type Permission = "make_problems" | "admin" | "root";
+
 interface authState {
     isLoggedIn: boolean,
     username: string | null,
     statusChecked: boolean,
     display_name: string | null,
-    permissions: string[]
+    permissions: Permission[]
 }
 
 export const useAuthStore = defineStore('auth', {
