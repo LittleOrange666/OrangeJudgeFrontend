@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <router-link class="navbar-brand" to="/">OrangeJudge</router-link>
+            <router-link class="navbar-brand" to="/">{{ servername }}</router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -91,6 +91,10 @@
 <script setup lang="ts">
 import {useAuthStore} from '@/stores/auth';
 import {hasAdminPermission, hasProblemPermission, hasRootPermission, isLoggedIn} from "@/utils/accounts";
+import {computed} from "vue";
+import {useServerInfoStore} from "@/stores/serverInfo";
 
 const authStore = useAuthStore();
+const serverInfoStore = useServerInfoStore();
+const servername = computed(() => serverInfoStore.server_info.site_name || "OrangeJudge");
 </script>

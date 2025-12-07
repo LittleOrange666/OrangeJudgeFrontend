@@ -144,7 +144,8 @@ export const routes: RouteRecordRaw[] = [
         component: () => import(/* webpackChunkName: "admin" */ "@/views/AdminView.vue"),
         meta: {
             pageTitle: "管理介面",
-            requiresAuth: true
+            requiresAuth: true,
+            requiredPermission: "root"
         }
     },
     {

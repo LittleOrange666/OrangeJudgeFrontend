@@ -1,7 +1,8 @@
 import {createRouter, createWebHistory, RouteLocation} from 'vue-router'
-import {useAuthStore} from "@/stores/auth";
+import {Permission, useAuthStore} from "@/stores/auth";
 import {show_modal} from "@/utils/modal";
 import {routes} from "@/router/routes";
+import {useClientStore} from "@/stores/clientState";
 
 interface navItem {
     text: (to: RouteLocation) => string,
@@ -15,13 +16,14 @@ declare module 'vue-router' {
         redirectIfLoggedIn?: boolean
         requiresAuth?: boolean,
         navItems?: navItem[],
+        requiredPermission?: Permission
     }
 }
 
 const router = createRouter({
     history: createWebHistory(),
     routes
-})
+});
 
 export function updateTitle(pageName?: string) {
     pageName = pageName || '找不到頁面';
@@ -66,6 +68,8 @@ export function clearNav() {
 }
 
 router.beforeEach(async (to: RouteLocation) => {
+    const clientState = useClientStore();
+    clientState.setLoading(true);
     const authStore = useAuthStore();
     if (!authStore.statusChecked) {
         await authStore.checkLoginStatus();
@@ -77,6 +81,9 @@ router.beforeEach(async (to: RouteLocation) => {
                 redirect: to.fullPath
             }
         };
+    }
+    if (to.meta.requiredPermission && !authStore.permissions.includes(to.meta.requiredPermission)) {
+        return {name: 'home'};
     }
     if (to.meta.redirectIfLoggedIn && authStore.isLoggedIn) {
         return {name: 'home'};
@@ -96,6 +103,13 @@ router.onError(async (error: Error) => {
     console.log(error);
     await show_modal("網站錯誤", error.message);
     await router.push("/");
+});
+
+router.afterEach(async () => {
+    setTimeout(() => {
+        const clientState = useClientStore();
+        clientState.setLoading(false);
+    }, 0);
 });
 
 export default router;

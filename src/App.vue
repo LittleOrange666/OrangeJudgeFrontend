@@ -3,6 +3,9 @@
         <NavBar/>
     </div>
     <div id="main_area">
+        <div v-if="clientState.loading" class="global-loading-overlay">
+            載入中...
+        </div>
         <router-view/>
     </div>
     <div class="footer">
@@ -15,6 +18,18 @@
 </template>
 
 <style>
+.global-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
 #top_area {
     position: fixed;
     left: 0;
@@ -64,9 +79,11 @@
 
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
-import MyModal from "@/components/MyModal.vue";
-import CheckingModal from "@/components/CheckingModal.vue";
+import MyModal from "@/components/modals/MyModal.vue";
+import CheckingModal from "@/components/modals/CheckingModal.vue";
 import {useServerInfoStore} from "@/stores/serverInfo";
+import {useClientStore} from "@/stores/clientState";
 
 const serverInfoStore = useServerInfoStore();
+const clientState = useClientStore();
 </script>
