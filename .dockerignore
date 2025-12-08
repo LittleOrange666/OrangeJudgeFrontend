@@ -13,4 +13,4 @@ Dockerfile
 *.yml
 *.sh
 
-!entrypoint.sh
+!tools/entrypoint.sh

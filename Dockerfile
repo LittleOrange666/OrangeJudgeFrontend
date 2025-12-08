@@ -16,13 +16,13 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 RUN rm /etc/nginx/nginx.conf
 
-COPY entrypoint.sh /docker-entrypoint.sh
+COPY tools/entrypoint.sh /docker-entrypoint.sh
 
 RUN chmod +x /docker-entrypoint.sh
 
-COPY default.conf /etc/nginx/conf.d/default.conf.template
+COPY tools/default.conf /etc/nginx/conf.d/default.conf.template
 
-COPY nginx.conf /etc/nginx/nginx.conf.template
+COPY tools/nginx.conf /etc/nginx/nginx.conf.template
 
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
