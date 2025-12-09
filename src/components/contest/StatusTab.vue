@@ -65,6 +65,7 @@
             </tr>
             </tbody>
         </table>
+        <PageBar :page_manager="page_manager" />
     </div>
 </template>
 <script setup lang="ts">
@@ -78,6 +79,7 @@ import {usePage} from "@/utils/page";
 import {api, getParam, timestamp_to_str} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 import {useAuthStore} from "@/stores/auth";
+import PageBar from "@/components/PageBar.vue";
 
 interface Props {
     data: ContestDetail

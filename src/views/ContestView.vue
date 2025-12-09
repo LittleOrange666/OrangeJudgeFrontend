@@ -153,5 +153,6 @@ onMounted(async () => {
     });
     await do_load();
     await init();
+    updateTitle("競賽 - " + cid);
 });
 </script>

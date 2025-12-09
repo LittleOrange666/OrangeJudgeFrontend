@@ -66,10 +66,7 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li v-if="hasProblemPermission">
-                                <router-link class="dropdown-item" to="/problemsetting/my">我的題目</router-link>
-                            </li>
-                            <li v-if="hasAdminPermission">
-                                <router-link class="dropdown-item" to="/problemsetting">所有題目</router-link>
+                                <router-link class="dropdown-item" to="/admin/problem">題目管理</router-link>
                             </li>
                             <li v-if="hasRootPermission">
                                 <hr class="dropdown-divider">
@@ -90,7 +87,7 @@
 
 <script setup lang="ts">
 import {useAuthStore} from '@/stores/auth';
-import {hasAdminPermission, hasProblemPermission, hasRootPermission, isLoggedIn} from "@/utils/accounts";
+import {hasProblemPermission, hasRootPermission, isLoggedIn} from "@/utils/accounts";
 import {computed} from "vue";
 import {useServerInfoStore} from "@/stores/serverInfo";
 

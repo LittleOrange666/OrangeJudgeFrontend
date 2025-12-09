@@ -149,6 +149,26 @@ export const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: "/admin/problem",
+        name: "problems_manage",
+        component: () => import(/* webpackChunkName: "problems_manage" */ "@/views/ProblemsManageView.vue"),
+        meta: {
+            pageTitle: "題目管理",
+            requiresAuth: true,
+            requiredPermission: "make_problems"
+        }
+    },
+    {
+        path: "/admin/problem/:pid",
+        name: "problem_manage",
+        component: () => import(/* webpackChunkName: "problem_manage" */ "@/views/ProblemManageView.vue"),
+        meta: {
+            pageTitle: "題目管理",
+            requiresAuth: true,
+            requiredPermission: "make_problems"
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),

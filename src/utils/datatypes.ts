@@ -20,204 +20,204 @@ export function yesNo(val: boolean): YesNo {
 }
 
 export interface ContestSummary {
-    cid: string,
-    name: string,
-    start_time: number,
-    end_time: number,
-    status: string,
-    can_virtual: boolean,
-    can_register: boolean,
-    is_registered: boolean,
+    cid: string;
+    name: string;
+    start_time: number;
+    end_time: number;
+    status: string;
+    can_virtual: boolean;
+    can_register: boolean;
+    is_registered: boolean;
     elapsed: number
 }
 
 export interface ProblemSummary {
-    pid: string,
-    name: string,
+    pid: string;
+    name: string;
 }
 
 export interface SubmissionSummary {
-    id: string,
-    time: number,
-    user_id: string,
-    user_name: string,
-    problem_id: string,
-    problem_name: string,
-    lang: string,
-    result: string,
-    can_see: boolean,
+    id: string;
+    time: number;
+    user_id: string;
+    user_name: string;
+    problem_id: string;
+    problem_name: string;
+    lang: string;
+    result: string;
+    can_see: boolean;
     can_rejudge: boolean
 }
 
 export interface Announcement {
-    title: string,
-    content: string,
-    time: number,
+    title: string;
+    content: string;
+    time: number;
 }
 
 export interface Question {
-    id: number,
-    title: string,
-    content: string,
-    time: number,
-    author: string,
-    answer: string,
+    id: number;
+    title: string;
+    content: string;
+    time: number;
+    author: string;
+    answer: string;
 }
 
 export interface ContestDetail {
-    cid: string,
-    name: string,
-    description: string,
-    start_time: number,
-    end_time: number,
-    status: string,
-    can_edit: boolean,
-    can_see_problems: boolean,
-    problems: ProblemSummary[],
-    announcements: Announcement[],
-    questions: Question[],
-    is_registered: boolean,
-    is_virtual_participant: boolean,
-    elapsed: number,
-    can_register: boolean,
-    target: number,
+    cid: string;
+    name: string;
+    description: string;
+    start_time: number;
+    end_time: number;
+    status: string;
+    can_edit: boolean;
+    can_see_problems: boolean;
+    problems: ProblemSummary[];
+    announcements: Announcement[];
+    questions: Question[];
+    is_registered: boolean;
+    is_virtual_participant: boolean;
+    elapsed: number;
+    can_register: boolean;
+    target: number;
 }
 
 export interface SampleTestcase {
-    input: string,
-    output: string,
+    input: string;
+    output: string;
 }
 
 export interface ProblemDetail {
-    pid: string,
-    title: string,
-    statement: string,
-    statement_html: string,
-    langs: string[],
-    samples: SampleTestcase[],
-    default_code: { [key: string]: string },
-    time_limit: number,
+    pid: string;
+    title: string;
+    statement: string;
+    statement_html: string;
+    langs: string[];
+    samples: SampleTestcase[];
+    default_code: { [key: string]: string };
+    time_limit: number;
     memory_limit: number
 }
 
 export type TestResult = string;
 
 export interface TestcaseResult {
-    result: TaskResultType,
-    time: number,
-    score: number,
-    mem: number,
+    result: TaskResultType;
+    time: number;
+    score: number;
+    mem: number;
 }
 
 export interface TestcaseGroupResult {
-    result: TaskResultType,
-    time: number,
-    gained_score: number,
-    mem: number,
+    result: TaskResultType;
+    time: number;
+    gained_score: number;
+    mem: number;
 }
 
 export interface ProblemResult {
-    detail: TestcaseResult[],
-    CE: boolean,
-    total_score: number,
-    group_result: TestcaseGroupResult[],
+    detail: TestcaseResult[];
+    CE: boolean;
+    total_score: number;
+    group_result: TestcaseGroupResult[];
 }
 
 export interface SubmissionDetail {
-    lang: string,
-    source_code: string,
-    completed: boolean,
-    ce_msg: string,
-    result: TestResult | ProblemResult,
-    input: string,
-    output: string,
-    error: string,
-    pid: string,
-    simple_result: string,
-    cid: string,
-    contest: string,
+    lang: string;
+    source_code: string;
+    completed: boolean;
+    ce_msg: string;
+    result: TestResult | ProblemResult;
+    input: string;
+    output: string;
+    error: string;
+    pid: string;
+    simple_result: string;
+    cid: string;
+    contest: string;
     pos: number
 }
 
 export interface ContestProblemDetail {
-    pid: string,
-    internal_pid: string,
-    name: string,
-    description: string,
-    allowed_languages: string[],
-    contest_cid: string,
-    contest_name: string,
-    time_limit: number,
+    pid: string;
+    internal_pid: string;
+    name: string;
+    description: string;
+    allowed_languages: string[];
+    contest_cid: string;
+    contest_name: string;
+    time_limit: number;
     memory_limit: number
-    statement_html: string,
-    samples: SampleTestcase[],
+    statement_html: string;
+    samples: SampleTestcase[];
 }
 
 export interface ContestSettings {
-    contest_title: string,
-    start_time: number,
-    elapsed_time: number,
-    rule_type: RuleType,
-    pretest_type: PretestType,
-    practice_type: PracticeType,
-    register_type: boolean,
-    show_standing: boolean,
-    show_contest: boolean,
-    freeze_time: number,
-    unfreeze_time: number,
+    contest_title: string;
+    start_time: number;
+    elapsed_time: number;
+    rule_type: RuleType;
+    pretest_type: PretestType;
+    practice_type: PracticeType;
+    register_type: boolean;
+    show_standing: boolean;
+    show_contest: boolean;
+    freeze_time: number;
+    unfreeze_time: number;
     penalty: number
 }
 
 export interface StandingSubmission {
-    user: string,
-    pid: string,
-    time: number,
-    scores: { [group: string]: number },
-    total_score: number,
-    pretest: boolean,
+    user: string;
+    pid: string;
+    time: number;
+    scores: { [group: string]: number };
+    total_score: number;
+    pretest: boolean;
     per: number
 }
 
 export interface ContestPeriod {
-    start_time: number,
-    judging: boolean,
+    start_time: number;
+    judging: boolean;
     idx: number
 }
 
 export interface ContestStanding {
-    submissions: StandingSubmission[],
-    rule: RuleType,
-    pids: string[],
-    penalty: number,
-    pers: ContestPeriod[],
-    main_per: number,
-    participants: string[],
-    virtual_participants: { [user: string]: number },
+    submissions: StandingSubmission[];
+    rule: RuleType;
+    pids: string[];
+    penalty: number;
+    pers: ContestPeriod[];
+    main_per: number;
+    participants: string[];
+    virtual_participants: { [user: string]: number };
 }
 
 export interface UserSettings {
-    display_name: string,
-    email: string,
-    username: string,
+    display_name: string;
+    email: string;
+    username: string;
     permissions: string
 }
 
 export interface ConfigSlot{
-    name: string,
-    title: string,
-    type: ConfigType,
+    name: string;
+    title: string;
+    type: ConfigType;
     value: string | number | boolean | string[]
 }
 
 export interface ConfigClass {
-    name: string,
-    title: string,
-    slots: ConfigSlot[],
+    name: string;
+    title: string;
+    slots: ConfigSlot[];
 }
 
 export interface UserInfo{
-    id: number,
-    username: string,
-    display_name: string,
-    permissions: Permission[],
+    id: number;
+    username: string;
+    display_name: string;
+    permissions: Permission[];
 }

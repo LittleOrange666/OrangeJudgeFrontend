@@ -25,4 +25,22 @@
 
 <script setup lang="ts">
 import {useAuthStore} from '@/stores/auth';
+import {useRoute, useRouter} from "vue-router";
+import {onMounted} from "vue";
+import {show_modal} from "@/utils/modal";
+import {getQuery} from "@/utils/tools";
+
+const router = useRouter();
+const route = useRoute();
+
+onMounted(async () => {
+    if (route.query.msg){
+        const msg = getQuery("msg");
+        await router.replace({
+            path: route.path,
+            query: {}
+        })
+        await show_modal("訊息", msg, 3000);
+    }
+})
 </script>

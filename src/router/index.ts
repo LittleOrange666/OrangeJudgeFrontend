@@ -3,6 +3,7 @@ import {Permission, useAuthStore} from "@/stores/auth";
 import {show_modal} from "@/utils/modal";
 import {routes} from "@/router/routes";
 import {useClientStore} from "@/stores/clientState";
+import {hasPermission} from "@/utils/accounts";
 
 interface navItem {
     text: (to: RouteLocation) => string,
@@ -82,11 +83,21 @@ router.beforeEach(async (to: RouteLocation) => {
             }
         };
     }
-    if (to.meta.requiredPermission && !authStore.permissions.includes(to.meta.requiredPermission)) {
-        return {name: 'home'};
+    if (to.meta.requiredPermission && !hasPermission(to.meta.requiredPermission)) {
+        return {
+            name: 'home',
+            query:{
+                msg: "You don't have permission to visit " + to.fullPath
+            }
+        };
     }
     if (to.meta.redirectIfLoggedIn && authStore.isLoggedIn) {
-        return {name: 'home'};
+        return {
+            name: 'home',
+            query:{
+                msg: "Already have logged in"
+            }
+        };
     }
     updateTitle(to.meta.pageTitle);
     clearNav();
