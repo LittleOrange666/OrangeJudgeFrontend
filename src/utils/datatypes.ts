@@ -21,6 +21,10 @@ export function yesNo(val: boolean): YesNo {
     return val ? "yes" : "no";
 }
 
+export function onOff(val: boolean): OnOff {
+    return val ? "on" : "off";
+}
+
 export interface ContestSummary {
     cid: string;
     name: string;
