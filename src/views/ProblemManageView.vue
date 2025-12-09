@@ -49,7 +49,7 @@
         </ul>
         <div class="tab-content">
             <div id="general_info" class="tab-pane fade show active">
-                <GeneralInfoTab :data="data as ProblemManageDetail" v-if="loaded('#general_info')" />
+                <GeneralInfoTab :data="data as ProblemManageDetail" :do_load="do_load" v-if="loaded('#general_info')" />
             </div>
             <div id="languages" class="tab-pane fade">
                 <LanguagesTab :data="data as ProblemManageDetail" v-if="loaded('#languages')" />
@@ -64,7 +64,7 @@
                 <JudgeTab :data="data as ProblemManageDetail" v-if="loaded('#judge')" />
             </div>
             <div id="tests" class="tab-pane fade">
-                <TestsTab :data="data as ProblemManageDetail" v-if="loaded('#tests')" />>
+                <TestsTab :data="data as ProblemManageDetail" v-if="loaded('#tests')" />
             </div>
             <div id="versions" class="tab-pane fade">
                 <VersionsTab :data="data as ProblemManageDetail" v-if="loaded('#versions')" />

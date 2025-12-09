@@ -2,6 +2,8 @@ import {Permission} from "@/stores/auth";
 
 export type YesNo = "yes" | "no";
 
+export type OnOff = "on" | "off";
+
 export type RuleType = "icpc" | "ioi";
 
 export type PretestType = "no" | "all" | "last";

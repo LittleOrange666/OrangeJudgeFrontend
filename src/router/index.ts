@@ -68,9 +68,9 @@ export function clearNav() {
     }
 }
 
-router.beforeEach(async (to: RouteLocation) => {
+router.beforeEach(async (to: RouteLocation, from: RouteLocation) => {
     const clientState = useClientStore();
-    clientState.setLoading(true);
+    if(to.path !== from.path)clientState.setLoading(true);
     const authStore = useAuthStore();
     if (!authStore.statusChecked) {
         await authStore.checkLoginStatus();
