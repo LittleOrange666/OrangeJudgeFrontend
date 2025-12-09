@@ -40,8 +40,8 @@ const lang_info = computed(() => {
     return judgeInfoStore.lang_info;
 })
 
-const lang_check = ref<{[lang: string]: boolean}>();
-const lang_mul = ref<{[lang: string]: number}>();
+const lang_check = ref<{[lang: string]: boolean}>({});
+const lang_mul = ref<{[lang: string]: number}>({});
 
 async function save_lang(){
     const out: {[key: string]: number | OnOff} = {};
