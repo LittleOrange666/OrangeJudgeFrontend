@@ -69,7 +69,7 @@
                 <FilesTab v-model="data_" v-if="loaded('#files')" />
             </div>
             <div id="judge" class="tab-pane fade">
-                <JudgeTab :data="data as ProblemManageDetail" v-if="loaded('#judge')" />
+                <JudgeTab v-model="data_" v-if="loaded('#judge')" />
             </div>
             <div id="tests" class="tab-pane fade">
                 <TestsTab :data="data as ProblemManageDetail" v-if="loaded('#tests')" />
