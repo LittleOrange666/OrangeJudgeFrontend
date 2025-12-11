@@ -54,19 +54,14 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps, onMounted, ref} from "vue";
+import {defineModel, onMounted, ref} from "vue";
 import {ManualSample, ProblemManageDetail} from "@/utils/problemdatas";
 import {api, getParam} from "@/utils/tools";
 // noinspection TypeScriptCheckImport
 import {VMarkdownEditor} from 'vue3-markdown';
 import {show_modal} from "@/utils/modal";
 
-interface Props {
-    data: ProblemManageDetail;
-    do_load: () => Promise<void>;
-}
-
-const props = defineProps<Props>();
+const data = defineModel<ProblemManageDetail>({ required: true });
 
 const pid = getParam("pid");
 
@@ -78,6 +73,17 @@ const scoring = ref("");
 const note = ref("");
 const full = ref("");
 const samples = ref<ManualSample[]>([]);
+
+async function save_to_data(){
+    data.value.data.statement.main = main.value;
+    data.value.data.statement.input = input.value;
+    data.value.data.statement.output = output.value;
+    data.value.data.statement.interaction = interaction.value;
+    data.value.data.statement.scoring = scoring.value;
+    data.value.data.statement.note = note.value;
+    data.value.data.statement.full = full.value;
+    data.value.data.manual_samples = samples.value;
+}
 
 async function handleSave() {
     try{
@@ -93,7 +99,7 @@ async function handleSave() {
             samples: JSON.stringify(samples.value),
         });
         await show_modal("成功","成功儲存");
-        await props.do_load();
+        await save_to_data();
     }catch(err){
         await show_modal("失敗", err.message);
     }
@@ -108,7 +114,7 @@ async function removeSample(i){
 }
 
 onMounted(() => {
-    const statement = props.data.data.statement;
+    const statement = data.value.data.statement;
     main.value = statement.main;
     input.value = statement.input;
     output.value = statement.output;
@@ -116,6 +122,6 @@ onMounted(() => {
     scoring.value = statement.scoring;
     note.value = statement.note;
     full.value = statement.full;
-    samples.value = props.data.data.manual_samples;
+    samples.value = data.value.data.manual_samples;
 });
 </script>

@@ -111,19 +111,15 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps} from "vue";
+import {defineModel} from "vue";
 import {ProblemManageDetail} from "@/utils/problemdatas";
 import {storeToRefs} from "pinia";
 import {useJudgeInfoStore} from "@/stores/judgeInfo";
 import {api, getParam} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
+import {default_lang} from "@/utils/constants";
 
-interface Props{
-    data: ProblemManageDetail;
-    do_load: () => Promise<void>;
-}
-
-const props = defineProps<Props>();
+const data = defineModel<ProblemManageDetail>({ required: true });
 const store = useJudgeInfoStore();
 const {lang_info} = storeToRefs(store);
 const pid = getParam("pid");
@@ -134,7 +130,7 @@ async function removePublicFile(fn: string){
             filename: fn
         });
         await show_modal("成功", "成功刪除");
-        await props.do_load();
+        data.value.public_files.splice(data.value.public_files.indexOf(fn),1);
     }catch(err){
         await show_modal("失敗", err.message);
     }
@@ -147,7 +143,7 @@ async function uploadPublicFile(){
             files: files.files[0],
         });
         await show_modal("成功", "上傳成功");
-        await props.do_load();
+        data.value.public_files.push(files.files[0].name);
     }catch(err){
         await show_modal("失敗", err.message);
     }
@@ -160,7 +156,10 @@ async function uploadPrivateFile(){
             files: files.files[0],
         });
         await show_modal("成功", "上傳成功");
-        await props.do_load();
+        data.value.data.files.push({
+            name: files.files[0].name,
+            type: default_lang
+        });
     }catch(err){
         await show_modal("失敗", err.message);
     }
@@ -173,7 +172,10 @@ async function createPrivateFile(){
             filename: filename.value
         });
         await show_modal("成功", "建立成功");
-        await props.do_load();
+        data.value.data.files.push({
+            name: filename.value,
+            type: default_lang
+        });
     }catch(err){
         await show_modal("失敗", err.message);
     }
@@ -185,7 +187,11 @@ async function removePrivateFile(fn: string){
             filename: fn
         });
         await show_modal("成功", "成功刪除");
-        await props.do_load();
+        let i = 0;
+        while (i < data.value.data.files.length && data.value.data.files[i].name != fn){
+            i+=1;
+        }
+        data.value.data.files.splice(i,1);
     }catch(err){
         await show_modal("失敗", err.message);
     }

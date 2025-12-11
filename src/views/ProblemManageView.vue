@@ -54,19 +54,19 @@
         </ul>
         <div class="tab-content">
             <div id="general_info" class="tab-pane fade show active">
-                <GeneralInfoTab :data="data as ProblemManageDetail" :do_load="do_load" v-if="loaded('#general_info')" />
+                <GeneralInfoTab v-model="data_" v-if="loaded('#general_info')" />
             </div>
             <div id="languages" class="tab-pane fade">
                 <LanguagesTab :data="data as ProblemManageDetail" v-if="loaded('#languages')" />
             </div>
             <div id="statement" class="tab-pane fade">
-                <StatementTab :data="data as ProblemManageDetail" :do_load="do_load" v-if="loaded('#statement')" />
+                <StatementTab v-model="data_" v-if="loaded('#statement')" />
             </div>
             <div id="statement_preview" class="tab-pane fade">
                 <StatementPreviewTab v-if="loaded('#statement_preview')" />
             </div>
             <div id="files" class="tab-pane fade">
-                <FilesTab :data="data as ProblemManageDetail" :do_load="do_load" v-if="loaded('#files')" />
+                <FilesTab v-model="data_" v-if="loaded('#files')" />
             </div>
             <div id="judge" class="tab-pane fade">
                 <JudgeTab :data="data as ProblemManageDetail" v-if="loaded('#judge')" />
@@ -102,6 +102,7 @@ import StatementPreviewTab from "@/components/problem/StatementPreviewTab.vue";
 const {init, loaded, updateTab} = useTab();
 
 const {data, error, loading, load} = useLoader<ProblemManageInfo>();
+const data_ = data as ProblemManageDetail;
 const pid = getParam("pid");
 
 async function do_load() {

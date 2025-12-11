@@ -83,18 +83,13 @@
 </template>
 
 <script setup lang="ts">
-import {defineProps, onMounted, ref} from "vue";
+import {defineModel, onMounted, ref} from "vue";
 import {ProblemManageDetail} from "@/utils/problemdatas";
 import {OnOff, yesNo, YesNo} from "@/utils/datatypes";
 import {show_modal} from "@/utils/modal";
 import {api, getParam} from "@/utils/tools";
 
-interface Props{
-    data: ProblemManageDetail;
-    do_load: ()=>Promise<void>;
-}
-
-const props = defineProps<Props>();
+const data = defineModel<ProblemManageDetail>({ required: true });
 
 const pid = getParam("pid");
 
@@ -106,13 +101,20 @@ const show_checker = ref<YesNo>("no");
 const ac_info = ref("");
 
 async function init(){
-    const data = props.data;
-    title.value = data.name;
-    time_limit.value = data.data.timelimit;
-    memory_limit.value = data.data.memorylimit;
-    show_testcase.value = yesNo(data.data.public_testcase);
-    show_checker.value = yesNo(data.data.public_checker);
-    ac_info.value = data.data.ac_info;
+    title.value = data.value.name;
+    time_limit.value = data.value.data.timelimit;
+    memory_limit.value = data.value.data.memorylimit;
+    show_testcase.value = yesNo(data.value.data.public_testcase);
+    show_checker.value = yesNo(data.value.data.public_checker);
+    ac_info.value = data.value.data.ac_info;
+}
+async function save_to_data(){
+    data.value.name = title.value;
+    data.value.data.timelimit = time_limit.value;
+    data.value.data.memorylimit = memory_limit.value;
+    data.value.data.public_testcase = show_testcase.value==='yes';
+    data.value.data.public_checker = show_checker.value==='yes';
+    data.value.data.ac_info = ac_info.value;
 }
 
 async function save_general_info(){
@@ -126,6 +128,7 @@ async function save_general_info(){
             show_checker: show_checker.value,
         });
         await show_modal("成功", "成功儲存設置");
+        await save_to_data();
     }catch(err){
         await show_modal("失敗", err.message);
     }
@@ -136,8 +139,9 @@ async function save_public(val: OnOff, txt: string){
         await api.put("/problem/"+pid+"/manage/public",{
             public: val
         });
+        data.value.is_public = val==="on";
         await show_modal("成功", "成功"+txt);
-        await props.do_load();
+        await save_to_data();
     }catch(err){
         await show_modal("失敗", err.message);
     }
