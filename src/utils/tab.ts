@@ -16,6 +16,7 @@ export interface TabManager {
      * @returns A ComputedRef<boolean> that is true if the tab has been loaded.
      */
     loaded: (key: string) => ComputedRef<boolean>,
+    updateTab: () => Promise<void>,
 }
 
 /**
@@ -29,6 +30,31 @@ export default function useTab(): TabManager {
     const router = useRouter();
 
     const loaded_tabs: Ref<string[]> = ref([]);
+
+    async function updateTab(): Promise<void> {
+        const tabs = document.querySelectorAll("a[role='tab']");
+        if (tabs.length === 0) {
+            return;
+        }
+        const tab_table: { [key: string]: HTMLElement } = {};
+        for (const tab of tabs) {
+            if (tab instanceof HTMLElement) {
+                const tab_target = tab.dataset["bsTarget"];
+                if (tab_target) {
+                    tab_table[tab_target] = tab;
+                }
+            }
+        }
+
+        const currentHash = route.hash;
+        if (currentHash && (currentHash in tab_table)) {
+            const cur_tab = tab_table[currentHash];
+            Tab.getOrCreateInstance(cur_tab).show();
+            if (!loaded_tabs.value.includes(currentHash)) {
+                loaded_tabs.value.push(currentHash);
+            }
+        }
+    }
 
     /**
      * Scans the DOM for tab elements, sets up click listeners, and shows the
@@ -91,5 +117,6 @@ export default function useTab(): TabManager {
     return {
         init: init,
         loaded: loaded,
+        updateTab: updateTab
     };
 }

@@ -80,7 +80,7 @@ import {ContestDetail} from "@/utils/datatypes";
 import {useTimer} from "vue-timer-hook";
 
 const {data, error, loading, load} = useLoader<ContestDetail>();
-const {init, loaded} = useTab();
+const {init, loaded, updateTab} = useTab();
 
 const cid = getParam("cid");
 
@@ -123,6 +123,7 @@ async function do_load() {
         timer.restart(+new Date() + 1000000000, false);
         show_timer.value = false;
     }
+    await updateTab();
 }
 
 async function handleRegister() {

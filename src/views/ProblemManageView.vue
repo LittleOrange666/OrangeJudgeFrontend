@@ -26,6 +26,11 @@
                    aria-controls="statement" aria-selected="false">題敘</a>
             </li>
             <li class="nav-item" role="presentation">
+                <a class="nav-link" id="statement_preview_tab" data-bs-toggle="tab" data-bs-target="#statement_preview"
+                   type="button" role="tab"
+                   aria-controls="statement_preview" aria-selected="false">題敘預覽</a>
+            </li>
+            <li class="nav-item" role="presentation">
                 <a class="nav-link" id="files_tab" data-bs-toggle="tab" data-bs-target="#files" type="button" role="tab"
                    aria-controls="files" aria-selected="false">檔案</a>
             </li>
@@ -55,10 +60,13 @@
                 <LanguagesTab :data="data as ProblemManageDetail" v-if="loaded('#languages')" />
             </div>
             <div id="statement" class="tab-pane fade">
-                <StatementTab :data="data as ProblemManageDetail" v-if="loaded('#statement')" />
+                <StatementTab :data="data as ProblemManageDetail" :do_load="do_load" v-if="loaded('#statement')" />
+            </div>
+            <div id="statement_preview" class="tab-pane fade">
+                <StatementPreviewTab v-if="loaded('#statement_preview')" />
             </div>
             <div id="files" class="tab-pane fade">
-                <FilesTab :data="data as ProblemManageDetail" v-if="loaded('#files')" />
+                <FilesTab :data="data as ProblemManageDetail" :do_load="do_load" v-if="loaded('#files')" />
             </div>
             <div id="judge" class="tab-pane fade">
                 <JudgeTab :data="data as ProblemManageDetail" v-if="loaded('#judge')" />
@@ -89,14 +97,16 @@ import JudgeTab from "@/components/problem/JudgeTab.vue";
 import TestsTab from "@/components/problem/TestsTab.vue";
 import VersionsTab from "@/components/problem/VersionsTab.vue";
 import ImportTab from "@/components/problem/ImportTab.vue";
+import StatementPreviewTab from "@/components/problem/StatementPreviewTab.vue";
 
-const {init, loaded} = useTab();
+const {init, loaded, updateTab} = useTab();
 
 const {data, error, loading, load} = useLoader<ProblemManageInfo>();
 const pid = getParam("pid");
 
 async function do_load() {
     await load("/problem/" + pid + "/manage");
+    await updateTab();
 }
 onMounted(async () => {
     await do_load();

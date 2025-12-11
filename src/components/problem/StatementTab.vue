@@ -1,8 +1,6 @@
 <template>
     <div>
         <h3>題敘</h3>
-        <a :href="`/admin/problem/${ pid }/preview/statement`" class="btn btn-primary"
-           target="_blank">預覽已儲存內容</a>
         <div class="container-fluid">
             <div class="mb-3">
                 <label class="form-label">題目敘述</label>
@@ -65,6 +63,7 @@ import {show_modal} from "@/utils/modal";
 
 interface Props {
     data: ProblemManageDetail;
+    do_load: () => Promise<void>;
 }
 
 const props = defineProps<Props>();
@@ -93,7 +92,8 @@ async function handleSave() {
             statement_type: "md",
             samples: JSON.stringify(samples.value),
         });
-        await show_modal("成功","成功儲存")
+        await show_modal("成功","成功儲存");
+        await props.do_load();
     }catch(err){
         await show_modal("失敗", err.message);
     }

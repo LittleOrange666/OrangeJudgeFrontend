@@ -79,7 +79,7 @@ function loadFile() {
     const reader = new FileReader();
     const target = this;
     reader.onload = function () {
-        code.value = this.result
+        code.value = this.result as string
         target.value = null;
     };
     reader.readAsText(file);
