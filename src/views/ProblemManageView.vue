@@ -57,7 +57,7 @@
                 <GeneralInfoTab v-model="data_" v-if="loaded('#general_info')" />
             </div>
             <div id="languages" class="tab-pane fade">
-                <LanguagesTab :data="data as ProblemManageDetail" v-if="loaded('#languages')" />
+                <LanguagesTab :data="data_" v-if="loaded('#languages')" />
             </div>
             <div id="statement" class="tab-pane fade">
                 <StatementTab v-model="data_" v-if="loaded('#statement')" />
@@ -72,13 +72,13 @@
                 <JudgeTab v-model="data_" v-if="loaded('#judge')" />
             </div>
             <div id="tests" class="tab-pane fade">
-                <TestsTab :data="data as ProblemManageDetail" v-if="loaded('#tests')" />
+                <TestsTab v-model="data_" :do_load="do_load" v-if="loaded('#tests')" />
             </div>
             <div id="versions" class="tab-pane fade">
-                <VersionsTab :data="data as ProblemManageDetail" v-if="loaded('#versions')" />
+                <VersionsTab :data="data_" v-if="loaded('#versions')" />
             </div>
             <div id="import" class="tab-pane fade">
-                <ImportTab :data="data as ProblemManageDetail" v-if="loaded('#import')" />
+                <ImportTab :data="data_" v-if="loaded('#import')" />
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
 
 <script setup lang="ts">
 import useTab from "@/utils/tab";
-import {onMounted} from "vue";
+import {onMounted, Ref} from "vue";
 import {getParam, useLoader} from "@/utils/tools";
 import {ProblemManageDetail, ProblemManageInfo, ProblemManageLoading} from "@/utils/problemdatas"
 import GeneralInfoTab from "@/components/problem/GeneralInfoTab.vue";
@@ -102,11 +102,15 @@ import StatementPreviewTab from "@/components/problem/StatementPreviewTab.vue";
 const {init, loaded, updateTab} = useTab();
 
 const {data, error, loading, load} = useLoader<ProblemManageInfo>();
-const data_ = data as ProblemManageDetail;
+const data_ = data as Ref<ProblemManageDetail>;
 const pid = getParam("pid");
 
 async function do_load() {
     await load("/problem/" + pid + "/manage");
+    const testcases = data_.value.data.testcases;
+    for(let i = 0;i<testcases.length;i++){
+        testcases[i].old_idx = i;
+    }
     await updateTab();
 }
 onMounted(async () => {

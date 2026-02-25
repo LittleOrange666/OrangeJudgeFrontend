@@ -21,7 +21,12 @@ module.exports = {
             }
         }
     },
-    transpileDependencies: [
-        'vue-timer-hook' // 強制 Babel 處理這個套件
-    ]
+    chainWebpack: config => {
+        config.plugin('eslint').tap(args => {
+            if (args[0] && args[0].extensions) {
+                delete args[0].extensions;
+            }
+            return args;
+        });
+    }
 }

@@ -22,6 +22,7 @@ export interface Testcase {
     sample: boolean;
     pretest: boolean;
     gen: boolean;
+    old_idx: number;
 }
 
 export interface Statement{

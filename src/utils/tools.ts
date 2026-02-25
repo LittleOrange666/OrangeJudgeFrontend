@@ -42,9 +42,14 @@ function resolveError(err: AxiosError): ApiError {
     let status_code = null;
     if (err.response) {
         if (err.response.data) {
-            const data = err.response.data as { description?: string, message?: string };
+            const data = err.response.data as { description?: string, message?: string, errors?: {[key: string]: string} };
             message = data.description || data.message || message;
             status_code = err.response.status;
+            if (data && data.errors){
+                for (const key in data.errors){
+                    message += "\n" + key + ": " + data.errors[key];
+                }
+            }
         } else {
             message = err.message;
             status_code = err.response.status;
