@@ -109,11 +109,11 @@ export function resolveIOI(data: ContestStanding, officialOnly: boolean): Standi
         }
         let tot = 0;
         for (const pid of data.pids) {
-            for (const group in obj[key].scores[pid]) {
-                tot += obj[key].scores[pid][group];
+            for (const group in out[key].scores[pid]) {
+                tot += out[key].scores[pid][group];
             }
         }
-        if (tot > obj.total_score) {
+        if (tot > out[key].total_score) {
             out[key].total_score = tot;
             out[key].last_update = obj.time - (out[key].type === "practice" ? 0 : perTable[obj.per].start_time);
         }

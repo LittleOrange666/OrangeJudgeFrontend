@@ -77,7 +77,7 @@ import {show_modal} from "@/utils/modal";
 import {addNavBtn, clearNav, updateTitle} from "@/router";
 import {contest_status_text} from "@/utils/constants";
 import {ContestDetail} from "@/utils/datatypes";
-import {useTimer} from "vue-timer-hook";
+import useTimer from "@/utils/timer";
 
 const {data, error, loading, load} = useLoader<ContestDetail>();
 const {init, loaded, updateTab} = useTab();
@@ -93,23 +93,7 @@ const status_text = computed(() => data.value && data.value["status"] &&
 const show_timer = ref(false);
 const timer = useTimer(+new Date() + 1000000000);
 
-function add0(y: number) {
-    const x = "" + y;
-    if (x.length <= 1) return "0".repeat(2 - x.length) + x;
-    else return x;
-}
-
-const timer_text = computed(() => {
-    const day = timer.days.value;
-    const hour = timer.hours.value;
-    const minute = timer.minutes.value;
-    const second = timer.seconds.value;
-    if (day >= 1) {
-        return "" + day + ":" + add0(hour) + ":" + add0(minute) + ":" + add0(second);
-    } else {
-        return "" + hour + ":" + add0(minute) + ":" + add0(second);
-    }
-});
+const timer_text = computed(() => timer.text.value);
 
 async function do_load() {
     await load("/contest/" + cid);
@@ -117,10 +101,10 @@ async function do_load() {
     updateTitle("競賽 - " + data.value["name"]);
     addNavBtn("刷新", do_load);
     if (data.value.target) {
-        timer.restart(data.value.target * 1000, true);
+        timer.updateTarget(data.value.target * 1000);
         show_timer.value = true;
     } else {
-        timer.restart(+new Date() + 1000000000, false);
+        timer.updateTarget(+new Date() + 1000000000);
         show_timer.value = false;
     }
     await updateTab();

@@ -4,11 +4,11 @@ module.exports = {
         port: 8090,
         proxy: {
             "/api": {
-                target: "http://localhost:8080",
+                target: "http://localhost:8781",
                 changeOrigin: true,
             },
             "/swaggerui": {
-                target: "http://localhost:8080",
+                target: "http://localhost:8781",
                 changeOrigin: true,
             },
         }
@@ -20,5 +20,8 @@ module.exports = {
                 '@codemirror/state': resolve(__dirname, 'node_modules/@codemirror/state')
             }
         }
-    }
+    },
+    transpileDependencies: [
+        'vue-timer-hook' // 強制 Babel 處理這個套件
+    ]
 }

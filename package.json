@@ -12,7 +12,7 @@
     "@codemirror/lang-cpp": "^6.0.3",
     "@codemirror/lang-python": "^6.2.1",
     "@vueuse/core": "^14.1.0",
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "bootstrap": "^5.3.8",
     "core-js": "^3.47.0",
     "highlight.js": "^11.11.1",
@@ -22,12 +22,12 @@
     "vue-codemirror": "^6.1.1",
     "vue-draggable-plus": "^0.6.0",
     "vue-router": "^4.6.3",
-    "vue-timer-hook": "^1.0.86",
     "vue3-markdown": "^1.2.17"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",
     "@babel/eslint-parser": "^7.28.5",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@types/bootstrap": "^5.2.10",
     "@types/core-js": "^2.5.8",
     "@types/highlight.js": "^10.1.0",
@@ -41,7 +41,7 @@
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-typescript": "^9.1.0",
-    "eslint": "^7.32.0",
+    "eslint": "^10.0.2",
     "eslint-plugin-vue": "^8.7.1",
     "typescript": "^5.9.3"
   },
