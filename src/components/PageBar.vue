@@ -13,9 +13,14 @@
                     <span aria-hidden="true">&laquo;</span>
                 </button>
             </li>
-            <li class="page-item" :key="pages" v-for="pages in page_manager.show_pages.value">
-                <a class="page-link" v-on:click="page_manager.to_page(pages)" v-text="pages"></a>
-            </li>
+            <template :key="pages" v-for="pages in page_manager.show_pages.value">
+                <li class="page-item active" v-if="pages==page_manager.page.value">
+                    <span class="page-link">{{ pages }}</span>
+                </li>
+                <li class="page-item" v-else>
+                    <a class="page-link" v-on:click="page_manager.to_page(pages)" v-text="pages"></a>
+                </li>
+            </template>
             <li class="page-item">
                 <button class="page-link" aria-label="Next" :disabled="!has_next"
                         v-on:click="to_next_page">
