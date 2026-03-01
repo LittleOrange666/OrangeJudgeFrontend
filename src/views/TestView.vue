@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import CodeSubmit from "@/components/CodeSubmit.vue";
-import {basicSetup} from "@codemirror/basic-setup";
+import {basicSetup} from "codemirror";
 import {Codemirror} from "vue-codemirror";
 
 

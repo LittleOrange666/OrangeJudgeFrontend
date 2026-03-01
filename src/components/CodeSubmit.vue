@@ -31,7 +31,7 @@ import {useRouter} from "vue-router";
 import {useLocalStorage} from "@vueuse/core";
 import {Codemirror} from "vue-codemirror";
 import {cpp} from "@codemirror/lang-cpp";
-import {basicSetup} from "@codemirror/basic-setup";
+import {basicSetup} from "codemirror";
 
 
 interface Props {

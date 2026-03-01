@@ -3,7 +3,7 @@
         <h1 class="text-center">{{ data.title }}</h1>
         <p class="text-center">Time Limit:{{ data.time_limit }}ms</p>
         <p class="text-center">Memory Limit:{{ data.memory_limit }}MB</p>
-        <div v-html="data.statement_html" id="main_content"></div>
+        <div v-html="data.statement_html" id="main_content" v-math></div>
         <div class="container test-case" v-for="(sample,i) in data.samples" :key="i">
             <div class="row">
                 <div class="col"><h3>範例輸入 #{{ i + 1 }}</h3></div>
