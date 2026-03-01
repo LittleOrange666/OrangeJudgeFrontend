@@ -7,7 +7,7 @@
                 <input type="text" class="form-control" id="version_name_input" placeholder="描述" v-model="name">
             </div>
             <div class="col-auto">
-                <button class="btn btn-primary mb-3" id="create_version" v-on:click="createVersion">
+                <button class="btn btn-primary mb-3" id="create_version" v-my-click="createVersion">
                     發布更新
                 </button>
             </div>

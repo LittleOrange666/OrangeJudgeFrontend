@@ -9,14 +9,12 @@
                     <input type="text" class="form-control" v-model="new_group_name" placeholder="名稱">
                 </div>
                 <div class="col-auto">
-                    <button class="btn btn-primary mb-3" v-on:click="createGroup" :disabled="new_group_name == ''">
-                        <span class="visually-hidden spinner-border spinner-border-sm" role="status"
-                              aria-hidden="true"></span>
+                    <button class="btn btn-primary mb-3" v-my-click="createGroup" :disabled="new_group_name == ''">
                         新增分組
                     </button>
                 </div>
             </div>
-            <form @submit.prevent="saveGroup">
+            <form @submit.prevent>
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -35,7 +33,7 @@
                                 <div class="col-auto" v-for="(parent, i) in group.dependency" :key="i">
                                     <div class="alert alert-primary alert-sm-border btn-group" role="alert">
                                         <span>{{ parent }}</span>
-                                        <button type="button" class="btn-close close-sm" aria-label="Close" v-on:click="removeDependency(k as string,parent)"></button>
+                                        <button type="button" class="btn-close close-sm" aria-label="Close" v-my-click="async ()=>removeDependency(k as string,parent)"></button>
                                     </div>
                                 </div>
                                 <div class="col-auto btn-group" v-if="Object.keys(data.data.groups).some(k0=>k0!=k && !group.dependency.includes(k0 as string))">
@@ -45,7 +43,7 @@
                                             <option v-if="k0!=k && !group.dependency.includes(k0 as string)" :value="k0">{{ k0 }}</option>
                                         </template>
                                     </select>
-                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="addDependency(k as string)" :disabled="dependencies[k]=='undefined'||dependencies[k]==undefined">+</button>
+                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="async ()=>addDependency(k as string)" :disabled="dependencies[k]=='undefined'||dependencies[k]==undefined">+</button>
                                 </div>
                             </div>
                         </td>
@@ -61,19 +59,19 @@
                                    class="form-control">
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger" v-on:click="removeGroup(k as string)"
+                            <button type="button" class="btn btn-danger" v-my-click="async ()=>await removeGroup(k as string)"
                                     :disabled="'default' == k">刪除
                             </button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-primary">儲存</button>
+                <button type="submit" class="btn btn-primary" v-my-click="saveGroup">儲存</button>
             </form>
         </div>
         <br>
         <div class="card card-body">
-            <form @submit.prevent="uploadZip">
+            <form @submit.prevent>
                 <h4>快速新增</h4>
                 <div class="mb-3">
                     <input type="file" class="form-control" accept=".zip" name="zip_file" required>
@@ -91,7 +89,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary" type="submit">
+                    <button class="btn btn-primary" type="submit" v-my-click="uploadZip">
                     <span class="visually-hidden spinner-border spinner-border-sm" role="status"
                           aria-hidden="true"></span>
                         上傳zip檔
@@ -100,7 +98,7 @@
             </form>
         </div>
         <div class="card card-body">
-            <form @submit.prevent="uploadTestcase">
+            <form @submit.prevent>
                 <h4>手動新增</h4>
                 <div class="container">
                     <div class="row">
@@ -127,7 +125,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary submitter" data-msg-409="檔案名稱已被使用">
+                    <button class="btn btn-primary submitter" data-msg-409="檔案名稱已被使用" v-my-click="uploadTestcase">
                         新增測資
                     </button>
                 </div>
@@ -135,9 +133,7 @@
         </div>
         <div class="container-fluid">
             <h4>一般測資</h4>
-            <form the_action="remove_all_testcase">
-                <button class="btn btn-danger submitter" data-double-check="true" data-msg-409="沒有測資可刪除">全部刪除</button>
-            </form>
+            <button class="btn btn-danger submitter" v-my-click="removeAllTestcase">全部刪除</button>
             <table class="table table-hover">
                 <thead>
                 <tr>
@@ -176,13 +172,13 @@
                                v-model="testcase.pretest">
                     </td>
                     <td>
-                        <button class="btn btn-danger testcase-deleter" v-on:click="removeTestcase(testcase.old_idx, i)">刪除</button>
+                        <button class="btn btn-danger testcase-deleter" v-my-click="async ()=>await removeTestcase(testcase.old_idx, i)">刪除</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
             <div class="mb-3">
-                <button class="btn btn-primary data-saver" id="save_testcase" v-on:click="saveTestcase">儲存</button>
+                <button class="btn btn-primary data-saver" id="save_testcase" v-my-click="saveTestcase">儲存</button>
             </div>
         </div>
     </div>
@@ -193,7 +189,7 @@ import {vDraggable} from 'vue-draggable-plus'
 import {ProblemManageDetail} from "@/utils/problemdatas";
 import {computed, Ref, ref} from "vue";
 import {api, getParam} from "@/utils/tools";
-import {show_modal} from "@/utils/modal";
+import {double_check, show_modal} from "@/utils/modal";
 
 interface Props {
     do_load: () => Promise<void>
@@ -319,6 +315,17 @@ async function removeTestcase(idx: number, curidx: number){
         });
         await show_modal("成功", "刪除成功");
         testcases.value.splice(+curidx,1);
+    } catch (err) {
+        await show_modal("失敗", err.message);
+    }
+}
+
+async function removeAllTestcase(){
+    if (!await double_check("刪除全部測資")) return;
+    try {
+        await api.delete("/problem/" + pid + "/manage/testcases");
+        await show_modal("成功", "刪除成功");
+        testcases.value.splice(0);
     } catch (err) {
         await show_modal("失敗", err.message);
     }

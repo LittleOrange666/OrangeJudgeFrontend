@@ -43,12 +43,12 @@
                                   rows="3" v-model="sample.out_txt"></textarea>
                     </div>
                     <div class="col">
-                        <button class="btn btn-danger" v-on:click="removeSample(i)">刪除範例</button>
+                        <button class="btn btn-danger" v-my-click="async ()=>await removeSample(i)">刪除範例</button>
                     </div>
                 </div>
-                <button class="btn btn-success" v-on:click="addSample">新增範例</button>
+                <button class="btn btn-success" v-my-click="addSample">新增範例</button>
             </div>
-            <button class="btn btn-primary" v-on:click="handleSave">儲存</button>
+            <button class="btn btn-primary" v-my-click="handleSave">儲存</button>
         </div>
     </div>
 </template>

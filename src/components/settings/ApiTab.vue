@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3>API KEY</h3>
-        <button class="btn btn-primary" v-on:click="genKey">重新生成</button>
+        <button class="btn btn-primary" v-my-click="genKey">重新生成</button>
         <div class="row">
             <div class="col-12">
                 API key:
@@ -10,7 +10,7 @@
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" v-model="key"
                            placeholder="API key" disabled>
-                    <button class="btn btn-outline-secondary" type="button" v-on:click="copyKey">複製</button>
+                    <button class="btn btn-outline-secondary" type="button" v-my-click="copyKey">複製</button>
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3>語言</h3>
-        <form @submit.prevent="save_lang">
+        <form @submit.prevent>
             <div class="input-group" v-for="(lang,i) in lang_info" :key="i">
                 <span class="input-group-text">{{ lang.name }}</span>
                 <div class="input-group-text">
@@ -14,7 +14,7 @@
                 <input type="number" min="1" max="100" step="0.1" class="form-control" v-model="lang_mul[lang.name]">
                 <span class="input-group-text">倍</span>
             </div>
-            <button class="btn btn-primary" data-no-refresh="true">儲存</button>
+            <button class="btn btn-primary" data-no-refresh="true" v-my-click="save_lang">儲存</button>
         </form>
     </div>
 </template>

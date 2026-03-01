@@ -2,7 +2,7 @@
     <div>
         <h3>基本訊息</h3>
         <div class="container-fluid">
-            <form @submit.prevent="save_general_info">
+            <form @submit.prevent>
                 <div class="mb-3">
                     <label for="title_input" class="form-label">題目名稱</label>
                     <input type="text" class="form-control" id="title_input" v-model="title">
@@ -61,7 +61,7 @@
                     <label for="ac_info_input" class="form-label">AC訊息</label>
                     <input type="text" class="form-control" id="ac_info_input" v-model="ac_info">
                 </div>
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" v-my-click="save_general_info">
                     儲存
                 </button>
             </form>
@@ -74,10 +74,11 @@
                     <span>目前狀態：</span>
                     <span v-if="data.is_public">公開</span>
                     <span v-else>不公開</span>
+                    <span v-else>不公開</span>
                 </p>
             </div>
-            <button class="btn btn-primary" v-if="data.is_public" v-on:click="save_public('off','保密題目')">保密題目</button>
-            <button class="btn btn-primary" v-else v-on:click="save_public('on','公開題目')">公開題目</button>
+            <button class="btn btn-primary" v-if="data.is_public" v-my-click="un_public_problem">保密題目</button>
+            <button class="btn btn-primary" v-else v-my-click="public_problem">公開題目</button>
         </div>
     </div>
 </template>
@@ -145,6 +146,14 @@ async function save_public(val: OnOff, txt: string){
     }catch(err){
         await show_modal("失敗", err.message);
     }
+}
+
+async function public_problem(){
+    await save_public('on','公開題目');
+}
+
+async function un_public_problem(){
+    await save_public('off','保密題目');
 }
 
 onMounted(async () => {
