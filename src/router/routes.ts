@@ -169,6 +169,16 @@ export const routes: RouteRecordRaw[] = [
         }
     },
     {
+        path: "/log/:log_id",
+        name: "log",
+        component: () => import(/* webpackChunkName: "log" */ "@/views/LogView.vue"),
+        meta: {
+            pageTitle: "Error log",
+            requiresAuth: true,
+            requiredPermission: "admin"
+        }
+    },
+    {
         path: "/:catchAll(.*)",
         name: "notfound",
         component: () => import(/* webpackChunkName: "notfound" */ "@/views/NotFound.vue"),

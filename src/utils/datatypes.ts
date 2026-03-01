@@ -227,3 +227,8 @@ export interface UserInfo{
     display_name: string;
     permissions: Permission[];
 }
+
+export interface LogInfo {
+    id: string;
+    content: string;
+}
