@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="handleSignup">
+    <form v-my-submit="handleSignup">
         <div class="mb-3 col-7 offset-2">
             <label for="email" class="form-label">電子信箱</label>
             <div class="input-group mb-3">

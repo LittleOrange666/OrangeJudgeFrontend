@@ -14,7 +14,7 @@
                     </button>
                 </div>
             </div>
-            <form @submit.prevent>
+            <form v-my-submit="saveGroup">
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -66,12 +66,12 @@
                     </tr>
                     </tbody>
                 </table>
-                <button type="submit" class="btn btn-primary" v-my-click="saveGroup">儲存</button>
+                <button type="submit" class="btn btn-primary">儲存</button>
             </form>
         </div>
         <br>
         <div class="card card-body">
-            <form @submit.prevent>
+            <form v-my-submit="uploadZip">
                 <h4>快速新增</h4>
                 <div class="mb-3">
                     <input type="file" class="form-control" accept=".zip" name="zip_file" required>
@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary" type="submit" v-my-click="uploadZip">
+                    <button class="btn btn-primary" type="submit">
                     <span class="visually-hidden spinner-border spinner-border-sm" role="status"
                           aria-hidden="true"></span>
                         上傳zip檔
@@ -98,7 +98,7 @@
             </form>
         </div>
         <div class="card card-body">
-            <form @submit.prevent>
+            <form v-my-submit="uploadTestcase">
                 <h4>手動新增</h4>
                 <div class="container">
                     <div class="row">
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary submitter" data-msg-409="檔案名稱已被使用" v-my-click="uploadTestcase">
+                    <button class="btn btn-primary submitter" data-msg-409="檔案名稱已被使用">
                         新增測資
                     </button>
                 </div>

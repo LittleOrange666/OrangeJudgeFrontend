@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="handleLogin">
+    <form v-my-submit="handleLogin">
         <div class="mb-3 col-5 offset-2">
             <label for="user_id" class="form-label">User Id</label>
             <input type="text" class="form-control" id="user_id" v-model="username" placeholder="user id" required>

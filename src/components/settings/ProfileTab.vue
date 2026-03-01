@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3>基本訊息</h3>
-        <form @submit.prevent="handleSave">
+        <form v-my-submit="handleSave">
             <input type="hidden" name="action" value="general_info">
             <div class="mb-3">
                 <label class="form-label">ID</label>

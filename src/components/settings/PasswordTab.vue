@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3>變更密碼</h3>
-        <form @submit.prevent="changePassword">
+        <form v-my-submit="changePassword">
             <input type="hidden" name="action" value="change_password">
             <div class="mb-3">
                 <label for="old_password" class="form-label">舊密碼</label>

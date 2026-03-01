@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="can_edit">
-            <form @submit.prevent="handleAdd">
+            <form v-my-submit="handleAdd">
                 <div class="row">
                     <div class="col-auto">
                         <input type="text" class="form-control" v-model="username" placeholder="參賽者id" required>
@@ -11,7 +11,7 @@
                     </div>
                 </div>
             </form>
-            <form @submit.prevent="handleAdds">
+            <form v-my-submit="handleAdds">
                 <div class="row">
                     <div class="col-auto">
                         <input type="file" class="form-control" accept=".csv, .xlsx" name="file" id="uploadFile">

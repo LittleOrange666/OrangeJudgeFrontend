@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="handleSubmit">
+    <form v-my-submit="handleSubmit">
         <select class="form-select" aria-label="Default select example" v-model="lang">
             <option :value="lang.name" :key="lang.name" v-text="lang.name" v-for="lang in lang_info"></option>
         </select>

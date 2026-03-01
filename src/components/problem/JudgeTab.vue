@@ -7,7 +7,7 @@
                 <span>目前：{{ data.data.checker_source.name }}</span>
                 <span v-if="data.data.checker_source.type == 'default'">(內建)</span>
             </p>
-            <form @submit.prevent>
+            <form v-my-submit="choose_checker">
                 <div class="radio-selector">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="checker_type" id="checker_type1"
@@ -30,7 +30,7 @@
                         <option selected value="unknown">選擇檔案</option>
                         <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
                     </select>
-                    <button class="btn btn-primary" :disabled="checker_name2=='unknown'&&checker_type=='my'" v-my-click="choose_checker">更換評分程式</button>
+                    <button class="btn btn-primary" :disabled="checker_name2=='unknown'&&checker_type=='my'">更換評分程式</button>
                 </div>
             </form>
         </div>
@@ -38,7 +38,7 @@
         <div class="container-fluid">
             <h4>互動</h4>
             <p>目前：{{ data.data.interactor_source }}</p>
-            <form @submit.prevent>
+            <form v-my-submit="choose_interactor">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="enable_interactor"
                            name="enable_interactor" v-model="enable_interactor">
@@ -48,13 +48,13 @@
                     <option selected value="unknown">選擇檔案</option>
                     <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
                 </select>
-                <button class="btn btn-primary" :disabled="my_interactor=='unknown'&&enable_interactor" v-my-click="choose_interactor">更換互動程式</button>
+                <button class="btn btn-primary" :disabled="my_interactor=='unknown'&&enable_interactor">更換互動程式</button>
             </form>
         </div>
         <br>
         <div class="container-fluid">
             <h4>固定主程式</h4>
-            <form @submit.prevent>
+            <form v-my-submit="choose_runner">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="enable_runner"
                            name="enable_runner" v-model="enable_runner">
@@ -76,13 +76,13 @@
                         </select>
                     </div>
                 </div>
-                <button class="btn btn-primary" v-my-click="choose_runner">儲存固定主程式設定</button>
+                <button class="btn btn-primary">儲存固定主程式設定</button>
             </form>
         </div>
         <br>
         <div class="container-fluid">
             <h4>範例程式</h4>
-            <form @submit.prevent>
+            <form v-my-submit="choose_sample">
                 <div class="row" v-for="(lang,i) in lang_info" :key="i">
                     <div class="col-auto">
                         <p>{{ lang.name }}: </p>
@@ -99,7 +99,7 @@
                         </select>
                     </div>
                 </div>
-                <button class="btn btn-primary" v-my-click="choose_sample">儲存範例程式設定</button>
+                <button class="btn btn-primary">儲存範例程式設定</button>
             </form>
         </div>
         <br>
@@ -113,7 +113,7 @@
                     <button class="btn btn-danger" v-my-click="async ()=>await deleteLibrary(file)">刪除</button>
                 </div>
             </div>
-            <form @submit.prevent>
+            <form v-my-submit="addLibrary">
                 <div class="row">
                     <div class="col-auto">
                         <select class="form-select" name="library" v-model="new_library">
@@ -122,7 +122,7 @@
                         </select>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-primary" :disabled="new_library=='unknown'" v-my-click="addLibrary">加入</button>
+                        <button class="btn btn-primary" :disabled="new_library=='unknown'">加入</button>
                     </div>
                 </div>
             </form>
@@ -131,7 +131,7 @@
         <div class="container-fluid">
             <h4>程式碼檢查器</h4>
             <p>目前：{{ data.data.codechecker_source }}</p>
-            <form @submit.prevent>
+            <form v-my-submit="choose_codechecker">
                 <select class="form-select" name="my_codechecker" v-model="my_codechecker">
                     <option selected value="unknown">選擇檔案</option>
                     <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>

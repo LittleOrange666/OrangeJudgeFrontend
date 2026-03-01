@@ -1,6 +1,6 @@
 <template>
     <h1>競賽列表</h1>
-    <form v-if="hasProblemPermission" @submit.prevent="handleCreate">
+    <form v-if="hasProblemPermission" v-my-submit="handleCreate">
         <div class="row">
             <div class="col-auto">
                 <input type="text" class="form-control" v-model="contest_name" placeholder="競賽名稱"

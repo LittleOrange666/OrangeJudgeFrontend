@@ -6,7 +6,7 @@
         <div v-else-if="error" class="alert alert-danger">
             <p>無法載入頁面：{{ error }}</p>
         </div>
-        <form @submit.prevent="handleSave" v-else>
+        <form v-my-submit="handleSave" v-else>
             <div class="mb-3">
                 <label for="contest_title" class="form-label">比賽名稱</label>
                 <input type="text" class="form-control" id="contest_title"

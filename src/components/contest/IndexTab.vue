@@ -35,7 +35,7 @@
         <p class="h3" v-else>您目前無法觀看題目</p>
         <div v-if="can_edit">
             <button class="btn btn-primary" v-my-click="handleSaveOrder">儲存順序</button>
-            <form @submit.prevent="handleAddProblem">
+            <form v-my-submit="handleAddProblem">
                 <div class="row">
                     <div class="col-auto">
                         <input type="text" class="form-control" v-model="new_pid" placeholder="題目編號" required>

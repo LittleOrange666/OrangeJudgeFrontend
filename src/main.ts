@@ -6,7 +6,8 @@ import {createPinia} from 'pinia';
 import highlightDirective from './directives/v-highlight'
 import canCopyDirective from "@/directives/v-cancopy";
 import mathDirective from "@/directives/v-math";
-import vMyClickDirective from "@/directives/v-my-click";
+import myClickDirective from "@/directives/v-my-click";
+import mySubmitDirective from "@/directives/v-my-submit";
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
@@ -27,7 +28,9 @@ app.directive('can-copy', canCopyDirective);
 
 app.directive("math", mathDirective);
 
-app.directive("my-click", vMyClickDirective)
+app.directive("my-click", myClickDirective)
+
+app.directive("my-submit", mySubmitDirective)
 
 async function init() {
     await useAuthStore().checkLoginStatus();

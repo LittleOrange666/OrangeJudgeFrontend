@@ -9,7 +9,7 @@
         <div v-else-if="error" class="alert alert-danger">
             <p>無法載入頁面：{{ error }}</p>
         </div>
-        <form v-else @submit.prevent="saveConfig">
+        <form v-else v-my-submit="saveConfig">
             <div v-for="(category,i) in data.config" :key="i">
             <div class="card">
                 <div class="card-body">

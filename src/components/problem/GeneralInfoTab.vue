@@ -2,7 +2,7 @@
     <div>
         <h3>基本訊息</h3>
         <div class="container-fluid">
-            <form @submit.prevent>
+            <form v-my-submit="save_general_info">
                 <div class="mb-3">
                     <label for="title_input" class="form-label">題目名稱</label>
                     <input type="text" class="form-control" id="title_input" v-model="title">
@@ -61,7 +61,7 @@
                     <label for="ac_info_input" class="form-label">AC訊息</label>
                     <input type="text" class="form-control" id="ac_info_input" v-model="ac_info">
                 </div>
-                <button class="btn btn-primary" v-my-click="save_general_info">
+                <button class="btn btn-primary">
                     儲存
                 </button>
             </form>

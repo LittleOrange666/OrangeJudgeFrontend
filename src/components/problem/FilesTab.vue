@@ -3,13 +3,13 @@
         <h3>檔案</h3>
         <div class="container-fluid">
             <h4>公開檔案</h4>
-            <form @submit.prevent>
+            <form v-my-submit="uploadPublicFile">
                 <div class="mb-3">
                     <input type="file" class="form-control" accept="application/pdf,image/*" name="files" multiple
                            required id="public_file_upload">
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary" v-my-click="uploadPublicFile">上傳檔案</button>
+                    <button class="btn btn-primary">上傳檔案</button>
                 </div>
             </form>
             <table class="table table-hover">
@@ -39,18 +39,18 @@
         <div class="container-fluid">
             <h4>程式檔案</h4>
             <div class="card card-body">
-                <form @submit.prevent>
+                <form v-my-submit="uploadPrivateFile">
                     <div class="mb-3">
                         <input type="file" class="form-control" name="files" multiple required id="private_file_upload">
                     </div>
                     <div class="mb-3">
-                        <button class="btn btn-primary" v-my-click="uploadPrivateFile">上傳檔案</button>
+                        <button class="btn btn-primary">上傳檔案</button>
                     </div>
                 </form>
             </div>
             <br>
             <div class="card card-body">
-                <form @submit.prevent>
+                <form v-my-submit="createPrivateFile">
                     <div class="row g-3">
                         <div class="col-auto">
                             <label for="create_file_input" class="visually-hidden">檔名</label>
@@ -58,7 +58,7 @@
                                    name="filename" required>
                         </div>
                         <div class="col-auto">
-                            <button class="btn btn-primary mb-3" v-my-click="createPrivateFile">
+                            <button class="btn btn-primary mb-3">
                                 建立檔案
                             </button>
                         </div>

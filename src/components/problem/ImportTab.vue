@@ -3,32 +3,32 @@
         <h3>匯入與匯出</h3>
         <div class="card card-body">
             <h3>匯入Polygon題目</h3>
-            <form @submit.prevent>
+            <form v-my-submit="importPolygon">
                 <div class="mb-3">
                     <input type="file" class="form-control" accept=".zip" name="zip_file" id="file_input_polygon" required>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary submitter" v-my-click="importPolygon">
+                    <button class="btn btn-primary submitter">
                         上傳zip檔
                     </button>
                 </div>
             </form>
         </div>
         <div class="card card-body">
-            <form @submit.prevent>
+            <form v-my-submit="exportStandard">
                 <div class="mb-3">
-                    <button class="btn btn-primary submitter" v-my-click="exportStandard">
+                    <button class="btn btn-primary submitter">
                         匯出題目
                     </button>
                 </div>
             </form>
             <h3>匯入題目</h3>
-            <form @submit.prevent>
+            <form v-my-submit="importStandard">
                 <div class="mb-3">
                     <input type="file" class="form-control" accept=".zip" name="zip_file" id="file_input_standard" required>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary submitter" v-my-click="importStandard">
+                    <button class="btn btn-primary submitter">
                         上傳zip檔
                     </button>
                 </div>
