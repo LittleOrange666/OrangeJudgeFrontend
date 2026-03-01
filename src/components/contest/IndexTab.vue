@@ -17,7 +17,7 @@
                     <router-link :to="`/contest/${cid}/problem/${problem.pid}`">{{ problem.name }}</router-link>
                 </td>
                 <td>
-                    <button class="btn btn-danger" v-on:click="handleDeleteProblem(problem)">刪除題目</button>
+                    <button class="btn btn-danger" v-my-click="async()=>await handleDeleteProblem(problem)">刪除題目</button>
                 </td>
             </tr>
             </tbody>
@@ -34,7 +34,7 @@
         </table>
         <p class="h3" v-else>您目前無法觀看題目</p>
         <div v-if="can_edit">
-            <button class="btn btn-primary" v-on:click="handleSaveOrder">儲存順序</button>
+            <button class="btn btn-primary" v-my-click="handleSaveOrder">儲存順序</button>
             <form @submit.prevent="handleAddProblem">
                 <div class="row">
                     <div class="col-auto">

@@ -41,7 +41,7 @@
                 <th scope="row">{{ index }}</th>
                 <td><a href="/user/{{ user }}" target="_blank">{{ user }}</a></td>
                 <td v-if="can_edit">
-                    <button class="btn btn-danger" v-on:click="handleDelete(user)">移除參賽者</button>
+                    <button class="btn btn-danger" v-my-click="async()=>await handleDelete(user)">移除參賽者</button>
                 </td>
             </tr>
             </tbody>

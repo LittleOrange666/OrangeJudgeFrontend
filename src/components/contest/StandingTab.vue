@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-auto">
-                <button class="btn btn-primary" v-on:click="refresh" :disabled="standingLoading">刷新</button>
+                <button class="btn btn-primary" v-my-click="refresh" :disabled="standingLoading">刷新</button>
             </div>
             <div class="form-check col-auto">
                 <input class="form-check-input" type="checkbox" value="" v-model="autoRefresh"

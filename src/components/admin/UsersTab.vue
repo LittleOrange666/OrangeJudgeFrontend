@@ -5,7 +5,7 @@
                 <input type="text" class="form-control" placeholder="username" v-model="username">
             </div>
             <div class="col-auto">
-                <button class="btn btn-primary" v-on:click="refresh" :disabled="loading">刷新/篩選</button>
+                <button class="btn btn-primary" v-my-click="refresh" :disabled="loading">刷新/篩選</button>
             </div>
         </div>
     </div>

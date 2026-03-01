@@ -74,7 +74,6 @@
                     <span>目前狀態：</span>
                     <span v-if="data.is_public">公開</span>
                     <span v-else>不公開</span>
-                    <span v-else>不公開</span>
                 </p>
             </div>
             <button class="btn btn-primary" v-if="data.is_public" v-my-click="un_public_problem">保密題目</button>

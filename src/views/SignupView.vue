@@ -4,7 +4,7 @@
             <label for="email" class="form-label">電子信箱</label>
             <div class="input-group mb-3">
                 <input type="email" class="form-control" id="email" v-model="email" placeholder="email" required>
-                <button class="btn btn-outline-secondary" type="button" v-on:click="getCode" v-if="need_verify">
+                <button class="btn btn-outline-secondary" type="button" v-my-click="getCode" v-if="need_verify">
                     取得驗證碼
                 </button>
             </div>

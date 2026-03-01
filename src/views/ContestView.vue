@@ -14,8 +14,8 @@
                 <p class="h2 text-secondary">{{ timer_text }}</p>
             </div>
             <div class="col-auto" v-if="can_register">
-                <button class="btn btn-danger" v-if="is_registered" v-on:click="handleUnregister">取消註冊</button>
-                <button class="btn btn-primary" v-else v-on:click="handleRegister">註冊</button>
+                <button class="btn btn-danger" v-if="is_registered" v-my-click="handleUnregister">取消註冊</button>
+                <button class="btn btn-primary" v-else v-my-click="handleRegister">註冊</button>
             </div>
         </div>
         <ul class="nav nav-tabs">

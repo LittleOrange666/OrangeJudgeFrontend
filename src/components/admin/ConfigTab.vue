@@ -2,7 +2,7 @@
     <div>
         <p>部分設定可能要重啟後才生效</p>
         <p>以下按鈕可以停止伺服器，若設置正確則會自動重啟</p>
-        <button class="btn btn-danger" v-on:click="stopServer">停止伺服器</button>
+        <button class="btn btn-danger" v-my-click="stopServer">停止伺服器</button>
         <div v-if="loading" class="text-center">
             <p>Loading...</p>
         </div>

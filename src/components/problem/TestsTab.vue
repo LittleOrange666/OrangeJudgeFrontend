@@ -39,11 +39,11 @@
                                 <div class="col-auto btn-group" v-if="Object.keys(data.data.groups).some(k0=>k0!=k && !group.dependency.includes(k0 as string))">
                                     <select class="form-select" aria-label="select dependency" v-model="dependencies[k]">
                                         <option value="undefined">選擇一個分組</option>
-                                        <template v-for="(_, k0) in data.data.groups" :key="k0">
+                                        <template v-for="k0 in Object.keys(data.data.groups)" :key="k0">
                                             <option v-if="k0!=k && !group.dependency.includes(k0 as string)" :value="k0">{{ k0 }}</option>
                                         </template>
                                     </select>
-                                    <button type="button" class="btn btn-primary btn-sm" v-on:click="async ()=>addDependency(k as string)" :disabled="dependencies[k]=='undefined'||dependencies[k]==undefined">+</button>
+                                    <button type="button" class="btn btn-primary btn-sm" v-my-click="async ()=>addDependency(k as string)" :disabled="dependencies[k]=='undefined'||dependencies[k]==undefined">+</button>
                                 </div>
                             </div>
                         </td>
@@ -158,7 +158,7 @@
                     <td>
                         <select class="form-select form-control" name="group_{{ i }}"
                                 v-model="testcase.group">
-                            <option :value="k" v-for="(_, k) in data.data.groups" :key="k">{{ k }}</option>
+                            <option :value="k" v-for="k in Object.keys(data.data.groups)" :key="k">{{ k }}</option>
                         </select>
                     </td>
                     <td>

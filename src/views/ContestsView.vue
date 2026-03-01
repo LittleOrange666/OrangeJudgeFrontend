@@ -8,7 +8,7 @@
                        required>
             </div>
             <div class="col-auto">
-                <button class="btn btn-primary">建立新的競賽</button>
+                <button class="btn btn-primary" :disabled="contest_name==''">建立新的競賽</button>
             </div>
         </div>
     </form>
@@ -33,9 +33,9 @@
                     <div class="row">
                         <div class="col-auto" v-if="content['can_register']">
                             <button class="btn btn-danger" v-if="content.is_registered"
-                                    v-on:click="handleUnregister(content.cid)">取消註冊
+                                    v-my-click="async()=>await handleUnregister(content.cid)">取消註冊
                             </button>
-                            <button class="btn btn-primary" v-else v-on:click="handleRegister(content.cid)">註冊
+                            <button class="btn btn-primary" v-else v-my-click="async()=>await handleRegister(content.cid)">註冊
                             </button>
                         </div>
                         <div class="col-auto" v-if="content.can_virtual">

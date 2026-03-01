@@ -20,10 +20,10 @@
             </select>
         </div>
         <div class="col-auto">
-            <button class="btn btn-primary" v-on:click="refresh" :disabled="loading">刷新/篩選</button>
+            <button class="btn btn-primary" v-my-click="refresh" :disabled="loading">刷新/篩選</button>
         </div>
         <div class="col-auto" v-if="hasAdminPermission">
-            <button class="btn btn-primary" v-on:click="rejudge" :disabled="loading">Rejudge</button>
+            <button class="btn btn-primary" v-my-click="rejudge" :disabled="loading">Rejudge</button>
         </div>
     </div>
     <table class="table table-hover table-striped" v-if="ok">

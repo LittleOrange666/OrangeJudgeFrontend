@@ -39,6 +39,7 @@ export interface Statement{
 export interface ProgramFile{
     name: string;
     type: string;
+    loaded?: boolean;
 }
 
 export interface ProgramPtr{
