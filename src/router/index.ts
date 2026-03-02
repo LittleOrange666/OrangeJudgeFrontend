@@ -76,6 +76,14 @@ router.beforeEach(async (to: RouteLocation, from: RouteLocation) => {
         await authStore.checkLoginStatus();
     }
     if (to.meta.requiresAuth && !authStore.isLoggedIn) {
+        if (authStore.error){
+            return {
+                name: 'home',
+                query: {
+                    msg: "Login error when visiting " + to.fullPath
+                }
+            };
+        }
         return {
             name: 'login',
             query: {
