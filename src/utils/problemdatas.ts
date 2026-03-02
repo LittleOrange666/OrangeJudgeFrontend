@@ -4,12 +4,12 @@ export type TestcaseRule = "min" | "avg";
 export type CodecheckerMode = "disabled" | "public" | "private";
 export type GenType = "sol" | "gen";
 
-export interface BackGroundAction{
+export interface BackGroundAction {
     log: string;
     action_name: string;
 }
 
-export interface ProblemManageLoading{
+export interface ProblemManageLoading {
     pid: string;
     background_action: BackGroundAction
 }
@@ -25,7 +25,7 @@ export interface Testcase {
     old_idx: number;
 }
 
-export interface Statement{
+export interface Statement {
     main: string;
     input: string;
     output: string;
@@ -36,34 +36,34 @@ export interface Statement{
     type: StatementType;
 }
 
-export interface ProgramFile{
+export interface ProgramFile {
     name: string;
     type: string;
     loaded?: boolean;
 }
 
-export interface ProgramPtr{
+export interface ProgramPtr {
     type: ProgramType
     name: string
 }
 
-export interface ExecPtr{
+export interface ExecPtr {
     name: string;
     lang: string;
 }
 
-export interface TestcaseGroup{
+export interface TestcaseGroup {
     score: number;
     rule: TestcaseRule;
     dependency: string[];
 }
 
-export interface ManualSample{
+export interface ManualSample {
     in_txt: string;
     out_txt: string;
 }
 
-export interface GenGroup{
+export interface GenGroup {
     file1: string;
     file2: string;
     type: GenType;
@@ -72,12 +72,12 @@ export interface GenGroup{
     status: string;
 }
 
-export interface ProblemVersion{
+export interface ProblemVersion {
     description: string;
     time: number;
 }
 
-export interface ProblemManageData{
+export interface ProblemManageData {
     name: string;
     timelimit: string;
     memorylimit: string;
@@ -89,34 +89,34 @@ export interface ProblemManageData{
     checker_source: ProgramPtr;
     checker: ExecPtr;
     is_interact: boolean;
-    groups: {[lang: string]: TestcaseGroup };
+    groups: { [lang: string]: TestcaseGroup };
     interactor_source: string;
     interactor: ExecPtr;
     manual_samples: ManualSample[];
     codechecker_source: string;
     codechecker: ExecPtr;
     codechecker_mode: CodecheckerMode;
-    languages: {[lang: string]: boolean };
-    language_multipliers: {[lang: string]: number };
+    languages: { [lang: string]: boolean };
+    language_multipliers: { [lang: string]: number };
     public_testcase: boolean;
     public_checker: boolean;
     gen_groups: GenGroup[];
-    runner_source: {[lang: string]: string };
+    runner_source: { [lang: string]: string };
     runner_enabled: boolean
     library: string[];
     versions: ProblemVersion[];
     top_score: number;
     ac_info: string;
-    default_code: {[lang: string]: string };
+    default_code: { [lang: string]: string };
 }
 
-export interface ProblemManageVersion{
+export interface ProblemManageVersion {
     date: number;
     message: string;
     id: string
 }
 
-export interface ProblemManageDetail{
+export interface ProblemManageDetail {
     pid: string;
     name: string;
     is_public: boolean;

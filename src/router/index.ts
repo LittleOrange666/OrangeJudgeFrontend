@@ -70,7 +70,7 @@ export function clearNav() {
 
 router.beforeEach(async (to: RouteLocation, from: RouteLocation) => {
     const clientState = useClientStore();
-    if(to.path !== from.path)clientState.setLoading(true);
+    if (to.path !== from.path) clientState.setLoading(true);
     const authStore = useAuthStore();
     if (!authStore.statusChecked) {
         await authStore.checkLoginStatus();
@@ -86,7 +86,7 @@ router.beforeEach(async (to: RouteLocation, from: RouteLocation) => {
     if (to.meta.requiredPermission && !hasPermission(to.meta.requiredPermission)) {
         return {
             name: 'home',
-            query:{
+            query: {
                 msg: "You don't have permission to visit " + to.fullPath
             }
         };
@@ -94,7 +94,7 @@ router.beforeEach(async (to: RouteLocation, from: RouteLocation) => {
     if (to.meta.redirectIfLoggedIn && authStore.isLoggedIn) {
         return {
             name: 'home',
-            query:{
+            query: {
                 msg: "Already have logged in"
             }
         };

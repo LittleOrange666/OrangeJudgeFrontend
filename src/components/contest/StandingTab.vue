@@ -48,6 +48,7 @@ import {computed, defineProps, onMounted, ref, watch} from 'vue';
 import {ContestDetail, ContestStanding} from "@/utils/datatypes";
 import {getParam, useLoader} from "@/utils/tools";
 import {resolveICPC, resolveIOI, StandingDisplay} from "@/utils/standing";
+import {show_modal} from "@/utils/modal";
 
 interface Props {
     data: ContestDetail;
@@ -72,9 +73,13 @@ const headLine = computed(() => contents.value.headLine);
 const content = computed(() => contents.value.content);
 
 async function refreshStanding() {
-    const data = standing.data.value;
-    if (data.rule === "ioi") contents.value = resolveIOI(data, officialOnly.value);
-    else contents.value = resolveICPC(data, officialOnly.value);
+    try{
+        const data = standing.data.value;
+        if (data.rule === "ioi") contents.value = resolveIOI(data, officialOnly.value);
+        else contents.value = resolveICPC(data, officialOnly.value);
+    }catch (err){
+        await show_modal("錯誤","無法載入記分板");
+    }
 }
 
 async function refresh() {

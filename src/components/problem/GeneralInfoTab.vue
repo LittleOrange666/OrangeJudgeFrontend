@@ -89,7 +89,7 @@ import {OnOff, yesNo, YesNo} from "@/utils/datatypes";
 import {show_modal} from "@/utils/modal";
 import {api, getParam} from "@/utils/tools";
 
-const data = defineModel<ProblemManageDetail>({ required: true });
+const data = defineModel<ProblemManageDetail>({required: true});
 
 const pid = getParam("pid");
 
@@ -100,7 +100,7 @@ const show_testcase = ref<YesNo>("no");
 const show_checker = ref<YesNo>("no");
 const ac_info = ref("");
 
-async function init(){
+async function init() {
     title.value = data.value.name;
     time_limit.value = data.value.data.timelimit;
     memory_limit.value = data.value.data.memorylimit;
@@ -108,18 +108,19 @@ async function init(){
     show_checker.value = yesNo(data.value.data.public_checker);
     ac_info.value = data.value.data.ac_info;
 }
-async function save_to_data(){
+
+async function save_to_data() {
     data.value.name = title.value;
     data.value.data.timelimit = time_limit.value;
     data.value.data.memorylimit = memory_limit.value;
-    data.value.data.public_testcase = show_testcase.value==='yes';
-    data.value.data.public_checker = show_checker.value==='yes';
+    data.value.data.public_testcase = show_testcase.value === 'yes';
+    data.value.data.public_checker = show_checker.value === 'yes';
     data.value.data.ac_info = ac_info.value;
 }
 
-async function save_general_info(){
-    try{
-        await api.put("/problem/"+pid+"/manage/general",{
+async function save_general_info() {
+    try {
+        await api.put("/problem/" + pid + "/manage/general", {
             title: title.value,
             timelimit: time_limit.value,
             memorylimit: memory_limit.value,
@@ -129,30 +130,30 @@ async function save_general_info(){
         });
         await show_modal("成功", "成功儲存設置");
         await save_to_data();
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
-async function save_public(val: OnOff, txt: string){
-    try{
-        await api.put("/problem/"+pid+"/manage/public",{
+async function save_public(val: OnOff, txt: string) {
+    try {
+        await api.put("/problem/" + pid + "/manage/public", {
             public: val
         });
-        data.value.is_public = val==="on";
-        await show_modal("成功", "成功"+txt);
+        data.value.is_public = val === "on";
+        await show_modal("成功", "成功" + txt);
         await save_to_data();
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
-async function public_problem(){
-    await save_public('on','公開題目');
+async function public_problem() {
+    await save_public('on', '公開題目');
 }
 
-async function un_public_problem(){
-    await save_public('off','保密題目');
+async function un_public_problem() {
+    await save_public('off', '保密題目');
 }
 
 onMounted(async () => {

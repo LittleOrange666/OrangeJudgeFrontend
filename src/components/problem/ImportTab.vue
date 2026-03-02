@@ -5,7 +5,8 @@
             <h3>匯入Polygon題目</h3>
             <form v-my-submit="importPolygon">
                 <div class="mb-3">
-                    <input type="file" class="form-control" accept=".zip" name="zip_file" id="file_input_polygon" required>
+                    <input type="file" class="form-control" accept=".zip" name="zip_file" id="file_input_polygon"
+                           required>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary submitter">
@@ -25,7 +26,8 @@
             <h3>匯入題目</h3>
             <form v-my-submit="importStandard">
                 <div class="mb-3">
-                    <input type="file" class="form-control" accept=".zip" name="zip_file" id="file_input_standard" required>
+                    <input type="file" class="form-control" accept=".zip" name="zip_file" id="file_input_standard"
+                           required>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-primary submitter">
@@ -45,7 +47,7 @@ import {show_modal} from "@/utils/modal";
 import {useRouter} from "vue-router";
 import axios from "axios";
 
-interface Props{
+interface Props {
     data: ProblemManageDetail;
 }
 
@@ -53,32 +55,32 @@ defineProps<Props>();
 const pid = getParam("pid");
 const router = useRouter();
 
-async function importPolygon(){
+async function importPolygon() {
     const files = document.getElementById("file_input_polygon") as HTMLInputElement;
-    try{
-        await api.post("/problem/"+pid+"/manage/import/polygon",{
+    try {
+        await api.post("/problem/" + pid + "/manage/import/polygon", {
             zip_file: files.files[0]
         });
         await show_modal("成功", "上傳成功");
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
-async function importStandard(){
+async function importStandard() {
     const files = document.getElementById("file_input_standard") as HTMLInputElement;
-    try{
-        await api.post("/problem/"+pid+"/manage/import/standard",{
+    try {
+        await api.post("/problem/" + pid + "/manage/import/standard", {
             zip_file: files.files[0]
         });
         await show_modal("成功", "上傳成功");
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
-async function exportStandard(){
-    const response = await axios.get("/api/problem/"+pid+"/manage/export/standard", {
+async function exportStandard() {
+    const response = await axios.get("/api/problem/" + pid + "/manage/export/standard", {
         responseType: 'blob'
     });
     const href = URL.createObjectURL(response.data);

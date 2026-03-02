@@ -17,7 +17,8 @@
                     <router-link :to="`/contest/${cid}/problem/${problem.pid}`">{{ problem.name }}</router-link>
                 </td>
                 <td>
-                    <button class="btn btn-danger" v-my-click="async()=>await handleDeleteProblem(problem)">刪除題目</button>
+                    <button class="btn btn-danger" v-my-click="async()=>await handleDeleteProblem(problem)">刪除題目
+                    </button>
                 </td>
             </tr>
             </tbody>

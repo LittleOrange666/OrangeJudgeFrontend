@@ -24,7 +24,7 @@
             <tr v-for="(version, i) in data.versions" :key="i">
                 <th scope="row">{{ version.id }}</th>
                 <td>{{ version.message }}</td>
-                <td class="date-string">{{ useDateFormat(version.date*1000, 'YYYY/MM/DD HH:mm:ss') }}</td>
+                <td class="date-string">{{ useDateFormat(version.date * 1000, 'YYYY/MM/DD HH:mm:ss') }}</td>
             </tr>
             </tbody>
         </table>
@@ -39,7 +39,7 @@ import {api, getParam} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
 import {useRouter} from "vue-router";
 
-interface Props{
+interface Props {
     data: ProblemManageDetail;
 }
 
@@ -50,7 +50,7 @@ const name = ref("");
 const router = useRouter();
 const pid = getParam("pid");
 
-async function createVersion(){
+async function createVersion() {
     try {
         await api.post("/problem/" + pid + "/manage/version", {
             description: name.value

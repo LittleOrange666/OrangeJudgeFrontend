@@ -33,17 +33,25 @@
                                 <div class="col-auto" v-for="(parent, i) in group.dependency" :key="i">
                                     <div class="alert alert-primary alert-sm-border btn-group" role="alert">
                                         <span>{{ parent }}</span>
-                                        <button type="button" class="btn-close close-sm" aria-label="Close" v-my-click="async ()=>removeDependency(k as string,parent)"></button>
+                                        <button type="button" class="btn-close close-sm" aria-label="Close"
+                                                v-my-click="async ()=>removeDependency(k as string,parent)"></button>
                                     </div>
                                 </div>
-                                <div class="col-auto btn-group" v-if="Object.keys(data.data.groups).some(k0=>k0!=k && !group.dependency.includes(k0 as string))">
-                                    <select class="form-select" aria-label="select dependency" v-model="dependencies[k]">
+                                <div class="col-auto btn-group"
+                                     v-if="Object.keys(data.data.groups).some(k0=>k0!=k && !group.dependency.includes(k0 as string))">
+                                    <select class="form-select" aria-label="select dependency"
+                                            v-model="dependencies[k]">
                                         <option value="undefined">選擇一個分組</option>
                                         <template v-for="k0 in Object.keys(data.data.groups)" :key="k0">
-                                            <option v-if="k0!=k && !group.dependency.includes(k0 as string)" :value="k0">{{ k0 }}</option>
+                                            <option v-if="k0!=k && !group.dependency.includes(k0 as string)"
+                                                    :value="k0">{{ k0 }}
+                                            </option>
                                         </template>
                                     </select>
-                                    <button type="button" class="btn btn-primary btn-sm" v-my-click="async ()=>addDependency(k as string)" :disabled="dependencies[k]=='undefined'||dependencies[k]==undefined">+</button>
+                                    <button type="button" class="btn btn-primary btn-sm"
+                                            v-my-click="async ()=>addDependency(k as string)"
+                                            :disabled="dependencies[k]=='undefined'||dependencies[k]==undefined">+
+                                    </button>
                                 </div>
                             </div>
                         </td>
@@ -59,7 +67,8 @@
                                    class="form-control">
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger" v-my-click="async ()=>await removeGroup(k as string)"
+                            <button type="button" class="btn btn-danger"
+                                    v-my-click="async ()=>await removeGroup(k as string)"
                                     :disabled="'default' == k">刪除
                             </button>
                         </td>
@@ -108,7 +117,8 @@
                         </div>
                         <div class="col">
                             <label for="testcase_output_name" class="form-label">輸出檔名</label>
-                            <input class="form-control" v-model="testcase_output_name" id="testcase_output_name" required>
+                            <input class="form-control" v-model="testcase_output_name" id="testcase_output_name"
+                                   required>
                         </div>
                     </div>
                     <div class="row">
@@ -172,7 +182,9 @@
                                v-model="testcase.pretest">
                     </td>
                     <td>
-                        <button class="btn btn-danger testcase-deleter" v-my-click="async ()=>await removeTestcase(testcase.old_idx, i)">刪除</button>
+                        <button class="btn btn-danger testcase-deleter"
+                                v-my-click="async ()=>await removeTestcase(testcase.old_idx, i)">刪除
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -200,17 +212,17 @@ const props = defineProps<Props>();
 const data = defineModel<ProblemManageDetail>({required: true});
 const pid = getParam("pid");
 
-const testcases = computed(()=>data.value.data.testcases);
+const testcases = computed(() => data.value.data.testcases);
 
 const new_group_name = ref("");
 
-const dependencies: Ref<{[k: string]: string}> = ref({});
+const dependencies: Ref<{ [k: string]: string }> = ref({});
 
-function addDependency(k: string){
+function addDependency(k: string) {
     data.value.data.groups[k].dependency.push(dependencies.value[k]);
 }
 
-function removeDependency(k: string, k0: string){
+function removeDependency(k: string, k0: string) {
     data.value.data.groups[k].dependency.splice(data.value.data.groups[k].dependency.indexOf(k0), 1);
 }
 
@@ -246,11 +258,11 @@ async function saveGroup() {
     try {
         const obj = {};
         const order = Object.keys(data.value.data.groups);
-        for(const k in data.value.data.groups){
-            obj["rule_"+k] = data.value.data.groups[k].rule;
-            obj["score_"+k] = data.value.data.groups[k].score;
-            for(const k0 of data.value.data.groups[k].dependency){
-                obj["dependency_"+order.indexOf(k)+"_"+order.indexOf(k0)] = "yes";
+        for (const k in data.value.data.groups) {
+            obj["rule_" + k] = data.value.data.groups[k].rule;
+            obj["score_" + k] = data.value.data.groups[k].score;
+            for (const k0 of data.value.data.groups[k].dependency) {
+                obj["dependency_" + order.indexOf(k) + "_" + order.indexOf(k0)] = "yes";
             }
         }
         await api.put("/problem/" + pid + "/manage/group", obj);
@@ -264,17 +276,17 @@ async function saveGroup() {
 const input_ext = ref(".in");
 const output_ext = ref(".out");
 
-async function uploadZip(){
+async function uploadZip() {
     const files = document.getElementById("private_file_upload") as HTMLInputElement;
-    try{
-        await api.post("/problem/"+pid+"/manage/testcases",{
+    try {
+        await api.post("/problem/" + pid + "/manage/testcases", {
             zip_file: files.files[0],
             input_ext: input_ext.value,
             output_ext: output_ext.value
         });
         await show_modal("成功", "上傳成功");
         await props.do_load();
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
@@ -284,9 +296,9 @@ const testcase_output_name = ref("");
 const testcase_input_content = ref("");
 const testcase_output_content = ref("");
 
-async function uploadTestcase(){
-    try{
-        await api.post("/problem/"+pid+"/manage/testcase",{
+async function uploadTestcase() {
+    try {
+        await api.post("/problem/" + pid + "/manage/testcase", {
             input_name: testcase_input_name.value,
             output_name: testcase_output_name.value,
             input_content: testcase_input_content.value,
@@ -303,24 +315,24 @@ async function uploadTestcase(){
             gen: false,
             old_idx: testcases.value.length
         });
-    }catch(err){
-        await show_modal("失敗", err.message);
-    }
-}
-
-async function removeTestcase(idx: number, curidx: number){
-    try {
-        await api.delete("/problem/" + pid + "/manage/testcase", {
-            idx: idx
-        });
-        await show_modal("成功", "刪除成功");
-        testcases.value.splice(+curidx,1);
     } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
-async function removeAllTestcase(){
+async function removeTestcase(idx: number, curidx: number) {
+    try {
+        await api.delete("/problem/" + pid + "/manage/testcase", {
+            idx: idx
+        });
+        await show_modal("成功", "刪除成功");
+        testcases.value.splice(+curidx, 1);
+    } catch (err) {
+        await show_modal("失敗", err.message);
+    }
+}
+
+async function removeAllTestcase() {
     if (!await double_check("刪除全部測資")) return;
     try {
         await api.delete("/problem/" + pid + "/manage/testcases");
@@ -331,10 +343,10 @@ async function removeAllTestcase(){
     }
 }
 
-async function saveTestcase(){
+async function saveTestcase() {
     try {
         const res = testcases.value.map(function (o) {
-            return [o.old_idx, o.sample,o.pretest,o.group];
+            return [o.old_idx, o.sample, o.pretest, o.group];
         });
         await api.put("/problem/" + pid + "/manage/testcases", {
             modify: JSON.stringify(res)

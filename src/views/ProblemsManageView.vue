@@ -27,8 +27,8 @@ import {onMounted, ref} from "vue";
 import {ProblemSummary} from "@/utils/datatypes";
 
 const manageable = ref("true");
-const page_manager = usePage<ProblemSummary>("/problem",{
-    manageable:manageable
+const page_manager = usePage<ProblemSummary>("/problem", {
+    manageable: manageable
 });
 const ok = page_manager.ok;
 const contents = page_manager.contents;

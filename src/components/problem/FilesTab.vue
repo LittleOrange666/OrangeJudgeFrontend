@@ -228,7 +228,7 @@ async function saveFile(i: number) {
     const el = document.querySelector(`#collapse_file_edit_${i} textarea`) as HTMLTextAreaElement;
     console.log(el);
     try {
-        await api.put("/problem/" + pid + "/manage/file/private",{
+        await api.put("/problem/" + pid + "/manage/file/private", {
             filename: fn,
             content: el.value,
             type: data.value.data.files[i].type

@@ -65,7 +65,7 @@
             </tr>
             </tbody>
         </table>
-        <PageBar :page_manager="page_manager" />
+        <PageBar :page_manager="page_manager"/>
     </div>
 </template>
 <script setup lang="ts">

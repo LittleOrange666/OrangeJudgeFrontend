@@ -37,23 +37,24 @@ const router = useRouter();
 const old_password = ref("");
 const new_password = ref("");
 const new_password_again = ref("");
-async function changePassword(){
-    if (new_password_again.value != new_password.value){
+
+async function changePassword() {
+    if (new_password_again.value != new_password.value) {
         await show_modal("錯誤", "重複新密碼錯誤");
         return;
     }
-    if (new_password.value.length < 6){
+    if (new_password.value.length < 6) {
         await show_modal("錯誤", "新密碼太短");
         return;
     }
-    try{
+    try {
         await api.put(`/accounts/settings/password`, {
             old_password: old_password.value,
             new_password: new_password.value,
         });
         await show_modal("成功", "成功變更密碼")
         await router.go(0);
-    }catch(error){
+    } catch (error) {
         await show_modal("失敗", error.message);
     }
 }

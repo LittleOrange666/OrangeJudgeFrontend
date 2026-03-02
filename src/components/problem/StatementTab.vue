@@ -4,31 +4,31 @@
         <div class="container-fluid">
             <div class="mb-3">
                 <label class="form-label">題目敘述</label>
-                <VMarkdownEditor v-model="main" locale="zh" />
+                <VMarkdownEditor v-model="main" locale="zh"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">輸入說明</label>
-                <VMarkdownEditor v-model="input" locale="zh" />
+                <VMarkdownEditor v-model="input" locale="zh"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">輸出說明</label>
-                <VMarkdownEditor v-model="output" locale="zh" />
+                <VMarkdownEditor v-model="output" locale="zh"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">互動說明</label>
-                <VMarkdownEditor v-model="interaction" locale="zh" />
+                <VMarkdownEditor v-model="interaction" locale="zh"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">配分</label>
-                <VMarkdownEditor v-model="scoring" locale="zh" />
+                <VMarkdownEditor v-model="scoring" locale="zh"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Note</label>
-                <VMarkdownEditor v-model="note" locale="zh" />
+                <VMarkdownEditor v-model="note" locale="zh"/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Custom full Markdown</label>
-                <VMarkdownEditor v-model="full" locale="zh" />
+                <VMarkdownEditor v-model="full" locale="zh"/>
             </div>
             <div class="card card-body">
                 <div class="row" v-for="(sample,i) in samples" :key="i">
@@ -61,7 +61,7 @@ import {api, getParam} from "@/utils/tools";
 import {VMarkdownEditor} from 'vue3-markdown';
 import {show_modal} from "@/utils/modal";
 
-const data = defineModel<ProblemManageDetail>({ required: true });
+const data = defineModel<ProblemManageDetail>({required: true});
 
 const pid = getParam("pid");
 
@@ -74,7 +74,7 @@ const note = ref("");
 const full = ref("");
 const samples = ref<ManualSample[]>([]);
 
-async function save_to_data(){
+async function save_to_data() {
     data.value.data.statement.main = main.value;
     data.value.data.statement.input = input.value;
     data.value.data.statement.output = output.value;
@@ -86,8 +86,8 @@ async function save_to_data(){
 }
 
 async function handleSave() {
-    try{
-        await api.put("/problem/"+pid+"/manage/statement", {
+    try {
+        await api.put("/problem/" + pid + "/manage/statement", {
             statement_main: main.value,
             statement_input: input.value,
             statement_output: output.value,
@@ -98,19 +98,19 @@ async function handleSave() {
             statement_type: "md",
             samples: JSON.stringify(samples.value),
         });
-        await show_modal("成功","成功儲存");
+        await show_modal("成功", "成功儲存");
         await save_to_data();
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
-async function addSample(){
-    samples.value.push({"in_txt":"", "out_txt":""});
+async function addSample() {
+    samples.value.push({"in_txt": "", "out_txt": ""});
 }
 
-async function removeSample(i){
-    samples.value.splice(i,1);
+async function removeSample(i) {
+    samples.value.splice(i, 1);
 }
 
 onMounted(() => {

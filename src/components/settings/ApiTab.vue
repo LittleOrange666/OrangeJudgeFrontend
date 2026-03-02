@@ -25,15 +25,17 @@ import {useClipboard} from "@vueuse/core";
 
 
 const key = ref("UNKNOWN");
+
 async function genKey() {
-    try{
+    try {
         const data = await api.post(`/accounts/gen_key`);
         key.value = data.api_key;
         await show_modal("成功", "成功生成API KEY")
-    }catch(error){
+    } catch (error) {
         await show_modal("失敗", error.message);
     }
 }
+
 async function copyKey() {
     const {copy} = useClipboard();
     await copy(key.value);

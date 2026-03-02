@@ -48,37 +48,38 @@
                    aria-controls="versions" aria-selected="false">發布更新</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="import_tab" data-bs-toggle="tab" data-bs-target="#import" type="button" role="tab"
+                <a class="nav-link" id="import_tab" data-bs-toggle="tab" data-bs-target="#import" type="button"
+                   role="tab"
                    aria-controls="import" aria-selected="false">匯出與匯入</a>
             </li>
         </ul>
         <div class="tab-content">
             <div id="general_info" class="tab-pane fade show active">
-                <GeneralInfoTab v-model="data_" v-if="loaded('#general_info')" />
+                <GeneralInfoTab v-model="data_" v-if="loaded('#general_info')"/>
             </div>
             <div id="languages" class="tab-pane fade">
-                <LanguagesTab :data="data_" v-if="loaded('#languages')" />
+                <LanguagesTab :data="data_" v-if="loaded('#languages')"/>
             </div>
             <div id="statement" class="tab-pane fade">
-                <StatementTab v-model="data_" v-if="loaded('#statement')" />
+                <StatementTab v-model="data_" v-if="loaded('#statement')"/>
             </div>
             <div id="statement_preview" class="tab-pane fade">
-                <StatementPreviewTab v-if="loaded('#statement_preview')" />
+                <StatementPreviewTab v-if="loaded('#statement_preview')"/>
             </div>
             <div id="files" class="tab-pane fade">
-                <FilesTab v-model="data_" v-if="loaded('#files')" />
+                <FilesTab v-model="data_" v-if="loaded('#files')"/>
             </div>
             <div id="judge" class="tab-pane fade">
-                <JudgeTab v-model="data_" v-if="loaded('#judge')" />
+                <JudgeTab v-model="data_" v-if="loaded('#judge')"/>
             </div>
             <div id="tests" class="tab-pane fade">
-                <TestsTab v-model="data_" :do_load="do_load" v-if="loaded('#tests')" />
+                <TestsTab v-model="data_" :do_load="do_load" v-if="loaded('#tests')"/>
             </div>
             <div id="versions" class="tab-pane fade">
-                <VersionsTab :data="data_" v-if="loaded('#versions')" />
+                <VersionsTab :data="data_" v-if="loaded('#versions')"/>
             </div>
             <div id="import" class="tab-pane fade">
-                <ImportTab :data="data_" v-if="loaded('#import')" />
+                <ImportTab :data="data_" v-if="loaded('#import')"/>
             </div>
         </div>
     </div>
@@ -108,11 +109,12 @@ const pid = getParam("pid");
 async function do_load() {
     await load("/problem/" + pid + "/manage");
     const testcases = data_.value.data.testcases;
-    for(let i = 0;i<testcases.length;i++){
+    for (let i = 0; i < testcases.length; i++) {
         testcases[i].old_idx = i;
     }
     await updateTab();
 }
+
 onMounted(async () => {
     await do_load();
     await init();

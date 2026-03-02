@@ -1,40 +1,85 @@
 import {ContestPeriod, ContestStanding} from "@/utils/datatypes";
 
+/**
+ * Represents a line in the standings display.
+ */
 export interface Line {
+    /** The first column value (e.g., rank). */
     first: string;
+    /** The remaining column values. */
     last: string[];
 }
 
+/**
+ * Represents the structure of the standings display.
+ */
 export interface StandingDisplay {
+    /** The header line of the standings table. */
     headLine: string[];
+    /** The content lines of the standings table. */
     content: Line[];
 }
 
-type userType = "main" | "virtual" | "practice"
+/**
+ * Represents the type of user in the contest.
+ * - "main": Main participant.
+ * - "virtual": Virtual participant.
+ * - "practice": Practice participant.
+ */
+type userType = "main" | "virtual" | "practice";
 
+/**
+ * Represents the structure of an IOI user in the standings.
+ */
 interface IOIUser {
+    /** The total score of the user. */
     total_score: number;
+    /** The last update time of the user's score. */
     last_update: number;
+    /** The type of the user. */
     type: userType;
+    /** The scores of the user for each problem and group. */
     scores: { [pid: string]: { [group: string]: number } };
+    /** The username of the user (optional). */
     user?: string;
 }
 
+/**
+ * Represents the result structure for an ICPC problem.
+ */
 interface ICPCResult {
+    /** The score for the problem. */
     score: number;
+    /** The penalty count for the problem. */
     penalty_cnt: number;
+    /** The number of submissions for the problem. */
     cnt: number;
+    /** The penalty time for the problem. */
     penalty: number;
 }
 
+/**
+ * Represents the structure of an ICPC user in the standings.
+ */
 interface ICPCUser {
+    /** The total score of the user. */
     total_score: number;
+    /** The total penalty time of the user. */
     penalty: number;
+    /** The type of the user. */
     type: userType;
+    /** The scores of the user for each problem. */
     scores: { [pid: string]: ICPCResult };
+    /** The username of the user (optional). */
     user?: string;
 }
 
+/**
+ * Compares two IOI users for sorting.
+ * @param {IOIUser} a - The first user.
+ * @param {IOIUser} b - The second user.
+ * @returns {number} The comparison result.
+ */
 function IOIcmp(a: IOIUser, b: IOIUser): number {
     const pa = a.type === "practice";
     const pb = b.type === "practice";
@@ -45,6 +90,12 @@ function IOIcmp(a: IOIUser, b: IOIUser): number {
     return a.last_update - b.last_update;
 }
 
+/**
+ * Compares two ICPC users for sorting.
+ * @param {ICPCUser} a - The first user.
+ * @param {ICPCUser} b - The second user.
+ * @returns {number} The comparison result.
+ */
 function ICPCcmp(a: ICPCUser, b: ICPCUser): number {
     const pa = a.type === "practice";
     const pb = b.type === "practice";
@@ -55,6 +106,12 @@ function ICPCcmp(a: ICPCUser, b: ICPCUser): number {
     return a.penalty - b.penalty;
 }
 
+/**
+ * Resolves the IOI standings from the contest data.
+ * @param {ContestStanding} data - The contest standing data.
+ * @param {boolean} officialOnly - Whether to include only official participants.
+ * @returns {StandingDisplay} The resolved standings display.
+ */
 export function resolveIOI(data: ContestStanding, officialOnly: boolean): StandingDisplay {
     const perTable: { [idx: number]: ContestPeriod } = {};
     for (const pre of data.pers) {
@@ -138,7 +195,7 @@ export function resolveIOI(data: ContestStanding, officialOnly: boolean): Standi
             rank = "*"
         }
         const res: string[] = [];
-        res.push(username);
+        res.push(data.display_names[username] || username);
         res.push("" + obj.total_score);
         for (const pid of data.pids) {
             let cur = 0;
@@ -147,6 +204,8 @@ export function resolveIOI(data: ContestStanding, officialOnly: boolean): Standi
             }
             res.push("" + cur);
         }
+        if (obj.type === "practice") res.push("");
+        else res.push("" + (obj.last_update / 60).toFixed(2));
         content.push({
             first: rank,
             last: res
@@ -155,6 +214,12 @@ export function resolveIOI(data: ContestStanding, officialOnly: boolean): Standi
     return {headLine: headLine, content: content};
 }
 
+/**
+ * Resolves the ICPC standings from the contest data.
+ * @param {ContestStanding} data - The contest standing data.
+ * @param {boolean} officialOnly - Whether to include only official participants.
+ * @returns {StandingDisplay} The resolved standings display.
+ */
 export function resolveICPC(data: ContestStanding, officialOnly: boolean): StandingDisplay {
     const perTable: { [idx: number]: ContestPeriod } = {};
     for (const pre of data.pers) {
@@ -246,7 +311,7 @@ export function resolveICPC(data: ContestStanding, officialOnly: boolean): Stand
         } else if (obj.type === "practice") {
             rank = "*"
         }
-        res.push(username);
+        res.push(data.display_names[username] || username);
         res.push("" + obj.total_score);
         res.push("" + penalty);
         for (const pid of data.pids) {
@@ -257,6 +322,7 @@ export function resolveICPC(data: ContestStanding, officialOnly: boolean): Stand
             }
             res.push(line);
         }
+        res.push("" + penalty);
         content.push({
             first: rank,
             last: res

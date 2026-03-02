@@ -30,6 +30,7 @@
     align-items: center;
     z-index: 9999;
 }
+
 #top_area {
     position: fixed;
     left: 0;

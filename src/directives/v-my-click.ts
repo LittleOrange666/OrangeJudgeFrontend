@@ -1,4 +1,4 @@
-import { Directive, DirectiveBinding } from 'vue';
+import {Directive, DirectiveBinding} from 'vue';
 
 const myClick: Directive = {
     mounted(el: HTMLElement, binding: DirectiveBinding) {

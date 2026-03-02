@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed, onMounted, ref, defineProps} from "vue";
+import {computed, defineProps, onMounted, ref} from "vue";
 import {UserSettings} from "@/utils/datatypes";
 import {show_modal} from "@/utils/modal";
 import {api} from "@/utils/tools";
@@ -39,17 +39,18 @@ const username = computed(() => props.data.username);
 const email = computed(() => props.data.email);
 const display_name = ref("");
 
-async function handleSave(){
-    try{
+async function handleSave() {
+    try {
         await api.put(`/accounts/settings/profile`, {
             display_name: display_name.value,
         });
         await show_modal("成功", "成功儲存");
         await router.go(0);
-    }catch(error){
+    } catch (error) {
         await show_modal("失敗", error.message);
     }
 }
+
 onMounted(async () => {
     display_name.value = props.data.display_name;
 })

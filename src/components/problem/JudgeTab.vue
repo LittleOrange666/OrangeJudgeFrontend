@@ -17,7 +17,10 @@
                         </label>
                     </div>
                     <select class="form-select" name="default_checker" v-model="checker_name1">
-                        <option :value="checker" v-for="(checker,i) in data.default_checkers" :key="i">{{ checker }}</option>
+                        <option :value="checker" v-for="(checker,i) in data.default_checkers" :key="i">{{
+                                checker
+                            }}
+                        </option>
                     </select>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="checker_type" id="checker_type2"
@@ -30,7 +33,9 @@
                         <option selected value="unknown">選擇檔案</option>
                         <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
                     </select>
-                    <button class="btn btn-primary" :disabled="checker_name2=='unknown'&&checker_type=='my'">更換評分程式</button>
+                    <button class="btn btn-primary" :disabled="checker_name2=='unknown'&&checker_type=='my'">
+                        更換評分程式
+                    </button>
                 </div>
             </form>
         </div>
@@ -48,7 +53,8 @@
                     <option selected value="unknown">選擇檔案</option>
                     <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
                 </select>
-                <button class="btn btn-primary" :disabled="my_interactor=='unknown'&&enable_interactor">更換互動程式</button>
+                <button class="btn btn-primary" :disabled="my_interactor=='unknown'&&enable_interactor">更換互動程式
+                </button>
             </form>
         </div>
         <br>
@@ -72,7 +78,10 @@
                         <select class="form-select" name="my_runner_{{ lang }}"
                                 v-model="runner_source[lang.name]">
                             <option selected value="unknown">選擇檔案</option>
-                            <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
+                            <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{
+                                    file.name
+                                }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -95,7 +104,10 @@
                         <select class="form-select" name="my_runner_{{ lang }}"
                                 v-model="default_code[lang.name]">
                             <option selected value="unknown">選擇檔案</option>
-                            <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
+                            <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{
+                                    file.name
+                                }}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -118,7 +130,10 @@
                     <div class="col-auto">
                         <select class="form-select" name="library" v-model="new_library">
                             <option selected value="unknown">選擇檔案</option>
-                            <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
+                            <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{
+                                    file.name
+                                }}
+                            </option>
                         </select>
                     </div>
                     <div class="col-auto">
@@ -161,7 +176,8 @@
                     </div>
                 </div>
                 <button class="btn btn-primary" :disabled="my_codechecker=='unknown'&&codechecker_type!='disabled'"
-                v-my-click="choose_codechecker">儲存程式碼檢查器設定</button>
+                        v-my-click="choose_codechecker">儲存程式碼檢查器設定
+                </button>
             </form>
         </div>
     </div>
@@ -176,7 +192,7 @@ import {onOff} from "@/utils/datatypes";
 import {useJudgeInfoStore} from "@/stores/judgeInfo";
 import {storeToRefs} from "pinia";
 
-const data = defineModel<ProblemManageDetail>({ required: true });
+const data = defineModel<ProblemManageDetail>({required: true});
 
 const pid = getParam("pid");
 
@@ -191,9 +207,9 @@ const enable_interactor = ref<boolean>(false);
 const my_interactor = ref("unknown");
 
 const enable_runner = ref<boolean>(false);
-const runner_source = ref<{[lang: string]: string}>({});
+const runner_source = ref<{ [lang: string]: string }>({});
 
-const default_code = ref<{[lang: string]: string}>({});
+const default_code = ref<{ [lang: string]: string }>({});
 
 const new_library = ref("unknown");
 
@@ -201,112 +217,115 @@ const my_codechecker = ref("unknown");
 const codechecker_type = ref<CodecheckerMode>("disabled");
 
 async function choose_checker() {
-    try{
-        await api.put("/problem/"+pid+"/manage/checker",{
+    try {
+        await api.put("/problem/" + pid + "/manage/checker", {
             default_checker: checker_name1.value,
             my_checker: checker_name2.value,
             checker_type: checker_type.value,
         });
         data.value.data.checker_source.type = checker_type.value;
-        if(checker_type.value=="default"){
+        if (checker_type.value == "default") {
             data.value.data.checker_source.name = checker_name1.value;
-        }else{
+        } else {
             data.value.data.checker_source.name = checker_name2.value;
         }
         await show_modal("成功", "成功儲存checker");
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
 async function choose_interactor() {
-    try{
-        await api.put("/problem/"+pid+"/manage/interactor",{
+    try {
+        await api.put("/problem/" + pid + "/manage/interactor", {
             my_interactor: my_interactor.value,
             enable_interactor: onOff(enable_interactor.value),
         });
         data.value.data.is_interact = enable_interactor.value;
         data.value.data.interactor_source = my_interactor.value;
         await show_modal("成功", "成功儲存interactor");
-    }catch(err){
-        await show_modal("失敗", err.message);
-    }
-}
-async function choose_runner() {
-    try{
-        const dat = {
-            enable_runner: onOff(enable_runner.value),
-        }
-        for(const k in runner_source.value){
-            dat["my_runner_"+k] = runner_source.value[k];
-        }
-        await api.put("/problem/"+pid+"/manage/runner",dat);
-        data.value.data.runner_enabled = enable_runner.value;
-        for (const k in runner_source.value){
-            data.value.data.runner_source[k] = runner_source.value[k];
-        }
-        await show_modal("成功", "成功儲存runner");
-    }catch(err){
-        await show_modal("失敗", err.message);
-    }
-}
-async function choose_sample() {
-    try{
-        const dat = {};
-        for(const k in default_code.value){
-            dat["my_sample_"+k] = default_code.value[k];
-        }
-        await api.put("/problem/"+pid+"/manage/sample",dat);
-        for (const k in default_code.value){
-            data.value.data.default_code[k] = default_code.value[k];
-        }
-        await show_modal("成功", "成功儲存sample code");
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
-async function deleteLibrary(file: string){
-    try{
-        await api.delete("/problem/"+pid+"/manage/library",{
+async function choose_runner() {
+    try {
+        const dat = {
+            enable_runner: onOff(enable_runner.value),
+        }
+        for (const k in runner_source.value) {
+            dat["my_runner_" + k] = runner_source.value[k];
+        }
+        await api.put("/problem/" + pid + "/manage/runner", dat);
+        data.value.data.runner_enabled = enable_runner.value;
+        for (const k in runner_source.value) {
+            data.value.data.runner_source[k] = runner_source.value[k];
+        }
+        await show_modal("成功", "成功儲存runner");
+    } catch (err) {
+        await show_modal("失敗", err.message);
+    }
+}
+
+async function choose_sample() {
+    try {
+        const dat = {};
+        for (const k in default_code.value) {
+            dat["my_sample_" + k] = default_code.value[k];
+        }
+        await api.put("/problem/" + pid + "/manage/sample", dat);
+        for (const k in default_code.value) {
+            data.value.data.default_code[k] = default_code.value[k];
+        }
+        await show_modal("成功", "成功儲存sample code");
+    } catch (err) {
+        await show_modal("失敗", err.message);
+    }
+}
+
+async function deleteLibrary(file: string) {
+    try {
+        await api.delete("/problem/" + pid + "/manage/library", {
             name: file
         });
         data.value.data.library.splice(data.value.data.library.indexOf(file), 1);
         await show_modal("成功", "成功移除library");
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
-async function addLibrary(){
-    try{
-        await api.post("/problem/"+pid+"/manage/library",{
+async function addLibrary() {
+    try {
+        await api.post("/problem/" + pid + "/manage/library", {
             library: new_library.value
         });
         data.value.data.library.push(new_library.value);
         await show_modal("成功", "成功追加library");
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
-async function choose_codechecker(){
-    try{
-        await api.put("/problem/"+pid+"/manage/codechecker",{
+
+async function choose_codechecker() {
+    try {
+        await api.put("/problem/" + pid + "/manage/codechecker", {
             codechecker_mode: codechecker_type.value,
             my_codechecker: my_codechecker.value
         });
         data.value.data.codechecker_source = my_codechecker.value;
         await show_modal("成功", "成功儲存codechecker");
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
 onMounted(async () => {
     checker_type.value = data.value.data.checker_source.type;
-    if(checker_type.value=="default"){
+    if (checker_type.value == "default") {
         checker_name1.value = data.value.data.checker_source.name || "unknown";
-    }else{
+    } else {
         checker_name2.value = data.value.data.checker_source.name || "unknown";
     }
     enable_interactor.value = data.value.data.is_interact;
@@ -314,7 +333,7 @@ onMounted(async () => {
     enable_runner.value = data.value.data.runner_enabled;
     const dat = data.value.data.runner_source;
     const dat0 = data.value.data.default_code;
-    for (const k of lang_info.value){
+    for (const k of lang_info.value) {
         runner_source.value[k.name] = dat[k.name] || "unknown";
         default_code.value[k.name] = dat0[k.name] || "unknown";
     }

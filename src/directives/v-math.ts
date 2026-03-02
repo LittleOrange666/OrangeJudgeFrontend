@@ -1,4 +1,4 @@
-import { Directive, nextTick } from 'vue';
+import {Directive, nextTick} from 'vue';
 
 const vMath: Directive = {
     // 當元素掛載或更新時觸發

@@ -24,13 +24,13 @@
         </div>
         <div class="tab-content">
             <div id="general_info" class="tab-pane fade show active">
-                <ProfileTab :data="data" v-if="loaded('#general_info')" />
+                <ProfileTab :data="data" v-if="loaded('#general_info')"/>
             </div>
             <div id="password" class="tab-pane fade">
-                <PasswordTab v-if="loaded('#password')" />
+                <PasswordTab v-if="loaded('#password')"/>
             </div>
             <div id="api" class="tab-pane fade">
-                <ApiTab v-if="loaded('#api')" />
+                <ApiTab v-if="loaded('#api')"/>
             </div>
         </div>
     </div>
@@ -48,7 +48,8 @@ import ApiTab from "@/components/settings/ApiTab.vue";
 const {init, loaded} = useTab();
 
 const {load, data, loading, error} = useLoader<UserSettings>();
-async function do_load(){
+
+async function do_load() {
     await load("/accounts/settings");
 }
 

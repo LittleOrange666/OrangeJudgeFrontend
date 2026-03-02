@@ -1,4 +1,4 @@
-import { Directive, DirectiveBinding } from 'vue';
+import {Directive, DirectiveBinding} from 'vue';
 
 const mySubmit: Directive = {
     mounted(el: HTMLFormElement, binding: DirectiveBinding) {

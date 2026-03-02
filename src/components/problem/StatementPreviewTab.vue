@@ -21,10 +21,10 @@ const error = ref(null);
 const loading = ref(true);
 const pid = getParam("pid");
 onMounted(async () => {
-    try{
-        const res = await axios.get("/api/problem/"+pid+"/manage/preview?type=statement");
+    try {
+        const res = await axios.get("/api/problem/" + pid + "/manage/preview?type=statement");
         data.value = res.data;
-    }catch(error){
+    } catch (error) {
         error.value = error.message;
     }
     loading.value = false;

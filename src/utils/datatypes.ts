@@ -199,6 +199,7 @@ export interface ContestStanding {
     main_per: number;
     participants: string[];
     virtual_participants: { [user: string]: number };
+    display_names: { [user: string]: string };
 }
 
 export interface UserSettings {
@@ -208,7 +209,7 @@ export interface UserSettings {
     permissions: string
 }
 
-export interface ConfigSlot{
+export interface ConfigSlot {
     name: string;
     title: string;
     type: ConfigType;
@@ -221,7 +222,7 @@ export interface ConfigClass {
     slots: ConfigSlot[];
 }
 
-export interface UserInfo{
+export interface UserInfo {
     id: number;
     username: string;
     display_name: string;

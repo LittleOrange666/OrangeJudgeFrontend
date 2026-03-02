@@ -18,13 +18,13 @@
         </ul>
         <div class="tab-content">
             <div id="users" class="tab-pane fade show active">
-                <UsersTab v-if="loaded('#users')" />
+                <UsersTab v-if="loaded('#users')"/>
             </div>
             <div id="config" class="tab-pane fade">
-                <ConfigTab v-if="loaded('#config')" />
+                <ConfigTab v-if="loaded('#config')"/>
             </div>
             <div id="make_users" class="tab-pane fade">
-                <MakeUsersTab v-if="loaded('#make_users')" />
+                <MakeUsersTab v-if="loaded('#make_users')"/>
             </div>
         </div>
     </div>

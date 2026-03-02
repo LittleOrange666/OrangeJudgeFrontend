@@ -34,7 +34,7 @@ const router = useRouter();
 const route = useRoute();
 
 onMounted(async () => {
-    if (route.query.msg){
+    if (route.query.msg) {
         const msg = getQuery("msg");
         await router.replace({
             path: route.path,

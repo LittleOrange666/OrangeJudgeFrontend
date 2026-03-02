@@ -27,7 +27,7 @@ import {OnOff, onOff} from "@/utils/datatypes";
 import {show_modal} from "@/utils/modal";
 import {api, getParam} from "@/utils/tools";
 
-interface Props{
+interface Props {
     data: ProblemManageDetail;
 }
 
@@ -40,19 +40,19 @@ const lang_info = computed(() => {
     return judgeInfoStore.lang_info;
 })
 
-const lang_check = ref<{[lang: string]: boolean}>({});
-const lang_mul = ref<{[lang: string]: number}>({});
+const lang_check = ref<{ [lang: string]: boolean }>({});
+const lang_mul = ref<{ [lang: string]: number }>({});
 
-async function save_lang(){
-    const out: {[key: string]: number | OnOff} = {};
-    for(const lang of lang_info.value){
-        out["lang_check_"+lang.name] = onOff(lang_check.value[lang.name]);
-        out["lang_mul_"+lang.name] = lang_mul.value[lang.name];
+async function save_lang() {
+    const out: { [key: string]: number | OnOff } = {};
+    for (const lang of lang_info.value) {
+        out["lang_check_" + lang.name] = onOff(lang_check.value[lang.name]);
+        out["lang_mul_" + lang.name] = lang_mul.value[lang.name];
     }
-    try{
-        await api.put("/problem/"+pid+"/manage/language", out);
+    try {
+        await api.put("/problem/" + pid + "/manage/language", out);
         await show_modal("成功", "成功儲存設置");
-    }catch(err){
+    } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
@@ -60,7 +60,7 @@ async function save_lang(){
 onMounted(() => {
     const lang_check_tmp = props.data.data.languages;
     const lang_mul_tmp = props.data.data.language_multipliers;
-    for(const lang of lang_info.value) {
+    for (const lang of lang_info.value) {
         if (!(lang.name in lang_check_tmp)) {
             lang_check_tmp[lang.name] = true;
         }

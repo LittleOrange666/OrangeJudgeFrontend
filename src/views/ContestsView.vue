@@ -35,7 +35,8 @@
                             <button class="btn btn-danger" v-if="content.is_registered"
                                     v-my-click="async()=>await handleUnregister(content.cid)">取消註冊
                             </button>
-                            <button class="btn btn-primary" v-else v-my-click="async()=>await handleRegister(content.cid)">註冊
+                            <button class="btn btn-primary" v-else
+                                    v-my-click="async()=>await handleRegister(content.cid)">註冊
                             </button>
                         </div>
                         <div class="col-auto" v-if="content.can_virtual">
