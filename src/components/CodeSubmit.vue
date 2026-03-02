@@ -1,7 +1,9 @@
 <template>
     <form v-my-submit="handleSubmit">
         <select class="form-select" aria-label="Default select example" v-model="lang">
-            <option :value="lang.name" :key="lang.name" v-text="lang.name" v-for="lang in lang_info"></option>
+            <template v-for="lang in lang_info">
+                <option :value="lang.name" :key="lang.name" v-text="lang.name" v-if="!allowed_lang || allowed_lang.includes(lang.name)"></option>
+            </template>
         </select>
         <div class="mb-3">
             <label for="code-textarea" class="form-label">Code</label>
@@ -22,7 +24,7 @@
     </form>
 </template>
 <script setup lang="ts">
-import {defineProps, ref} from 'vue';
+import {defineProps, onMounted, ref} from 'vue';
 import {useJudgeInfoStore} from '@/stores/judgeInfo';
 import {default_lang} from "@/utils/constants";
 import {storeToRefs} from "pinia";
@@ -37,7 +39,8 @@ import {basicSetup} from "codemirror";
 interface Props {
     pid: string,
     cid?: string,
-    input?: string
+    input?: string,
+    allowed_lang?: string[]
 }
 
 const props = defineProps<Props>();
@@ -93,4 +96,9 @@ const getExt = () => {
     }
     return null;
 };
+onMounted(async ()=>{
+    if (props.allowed_lang && !props.allowed_lang.includes(lang.value)){
+        lang.value = props.allowed_lang[0];
+    }
+});
 </script>

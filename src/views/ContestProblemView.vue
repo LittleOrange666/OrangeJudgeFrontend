@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <CodeSubmit :pid="data.internal_pid" :cid="cid" v-if="isLoggedIn"/>
+        <CodeSubmit :pid="data.internal_pid" :cid="cid" v-if="isLoggedIn" :allowed_lang="data.allowed_languages"/>
         <div v-else class="alert alert-info">
             <p>需要登入才能提交程式碼</p>
         </div>
