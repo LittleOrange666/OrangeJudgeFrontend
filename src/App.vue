@@ -75,11 +75,6 @@
     text-align: center;
     font-size: small;
 }
-
-.alert-sm-border {
-    padding: 5px !important;
-    margin: 0 !important;
-}
 </style>
 
 <script setup lang="ts">

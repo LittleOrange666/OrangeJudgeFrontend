@@ -358,3 +358,10 @@ async function saveTestcase() {
     }
 }
 </script>
+
+<style scoped>
+.alert-sm-border {
+    padding: 5px !important;
+    margin: 0 !important;
+}
+</style>

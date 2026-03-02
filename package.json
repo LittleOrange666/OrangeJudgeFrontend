@@ -10,6 +10,7 @@
   "dependencies": {
     "@codemirror/lang-cpp": "^6.0.3",
     "@codemirror/lang-python": "^6.2.1",
+    "@microsoft/fetch-event-source": "^2.0.1",
     "@vueuse/core": "^14.1.0",
     "axios": "^1.13.5",
     "bootstrap": "^5.3.8",

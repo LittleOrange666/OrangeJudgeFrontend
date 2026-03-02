@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import {onMounted} from "vue";
+import {fetchEventSource} from "@microsoft/fetch-event-source"
 import {getParam, useLoader} from "@/utils/tools";
 import TestResult from "@/components/submission/TestResult.vue";
 import ProblemResult from "@/components/submission/ProblemResult.vue";
@@ -29,11 +30,33 @@ const do_load = async () => {
     });
 };
 
+async function resolve_waiter(){
+    const url = "/api/submission/wait?submission_id="+sub_id;
+    await fetchEventSource(url,{
+        onmessage(event) {
+            console.log(event.data);
+            if (event.data === "completed"){
+                console.log("評測完成");
+            }else if (event.data === "progress"){
+                console.log("評測部分完成");
+                do_load();
+            }
+        },
+        onclose() {
+            console.log("連線關閉");
+        },
+        onerror(err) {
+            console.error("發生錯誤", err);
+        }
+    });
+}
+
 onMounted(async () => {
     await do_load();
     if (data.value && data.value.cid) {
         addNavLink("競賽頁面(" + data.value.contest + ")", "/contest/" + data.value.cid);
     }
     addNavBtn("刷新", do_load);
+    await resolve_waiter();
 });
 </script>
