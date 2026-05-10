@@ -1,0 +1,84 @@
+<!--
+  - OrangeJudge, a competitive programming platform
+  -
+  - Copyright (C) 2024-2026 LittleOrange666 (orangeminecraft123@gmail.com)
+  -
+  - This program is free software: you can redistribute it and/or modify
+  - it under the terms of the GNU Affero General Public License as published
+  - by the Free Software Foundation, either version 3 of the License, or
+  - (at your option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful,
+  - but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  - GNU Affero General Public License for more details.
+  -->
+
+<template>
+    <form v-my-submit="handleLogin">
+        <div class="mb-3 col-5 offset-2">
+            <label for="user_id" class="form-label">User Id</label>
+            <input type="text" class="form-control" id="user_id" v-model="username" placeholder="user id" required>
+        </div>
+        <div class="mb-3 col-5 offset-2">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" v-model="password" placeholder="Password"
+                   required>
+        </div>
+        <div class="mb-3 col-5 offset-2">
+            <button type="submit" class="btn btn-primary" :disabled="isLoading">登入</button>
+            <span>&nbsp;</span>
+            <router-link to="/signup" class="btn btn-secondary">註冊</router-link>
+            <span>&nbsp;</span>
+            <router-link to="/forget_password" class="btn btn-secondary">忘記密碼</router-link>
+        </div>
+        <div v-if="error" class="alert alert-danger col-5 offset-2">{{ error }}</div>
+    </form>
+</template>
+
+<script setup lang="ts">
+import {onMounted, ref} from 'vue';
+import {useAuthStore} from '@/stores/auth';
+import {useRouter} from "vue-router";
+import {show_modal} from "@/utils/modal";
+import {getQuery} from "@/utils/tools";
+
+
+const username = ref('');
+const password = ref('');
+const isLoading = ref(false);
+const error = ref(null);
+const authStore = useAuthStore();
+const router = useRouter();
+
+const goNext = async () => {
+    if (authStore.isLoggedIn) {
+        const redirectPath = getQuery("redirect");
+        if (redirectPath) {
+            await router.push(redirectPath);
+        } else {
+            await router.push({name: 'home'});
+        }
+    }
+}
+
+const handleLogin = async () => {
+    isLoading.value = true;
+    error.value = null;
+
+    try {
+        await authStore.login(username.value, password.value);
+        await show_modal("成功", "登入成功");
+        await goNext();
+    } catch (err) {
+        error.value = err.message || '帳號或密碼錯誤，請重新嘗試。';
+        console.error('Login Error:', err);
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+onMounted(async () => {
+    await goNext();
+});
+</script>

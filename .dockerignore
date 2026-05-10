@@ -1,0 +1,16 @@
+node_modules
+.git
+.gitignore
+
+.DS_Store
+*.swp
+.vscode/
+
+dist
+build
+
+Dockerfile
+*.yml
+*.sh
+
+!tools/entrypoint.sh

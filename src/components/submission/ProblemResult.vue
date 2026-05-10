@@ -1,0 +1,107 @@
+<!--
+  - OrangeJudge, a competitive programming platform
+  -
+  - Copyright (C) 2024-2026 LittleOrange666 (orangeminecraft123@gmail.com)
+  -
+  - This program is free software: you can redistribute it and/or modify
+  - it under the terms of the GNU Affero General Public License as published
+  - by the Free Software Foundation, either version 3 of the License, or
+  - (at your option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful,
+  - but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  - GNU Affero General Public License for more details.
+  -->
+
+<template>
+    <div v-if="result">
+        <div class="test-case">Problem:
+            <router-link :to="`/problem/${result.pid}`">{{ problem_name }}</router-link>
+        </div>
+        <div class="test-case">Lang: {{ result.lang }}</div>
+        <div class="test-case">
+            <div>Source:</div>
+            <pre><code v-highlight>{{ result.source_code }}</code></pre>
+        </div>
+        <table class="table table-hover">
+            <thead>
+            <tr class="table-light">
+                <th scope="col">index</th>
+                <th scope="col">result</th>
+                <th scope="col">Time(ms)</th>
+                <th scope="col">Memory(KB)</th>
+                <th scope="col">Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(testcase, i) in results.detail" :key="i" :class="result_css_class(testcase.result)">
+                <th scope="row">{{ i }}</th>
+                <td>{{ testcase.result }}</td>
+                <td>{{ testcase.time }}</td>
+                <td>{{ testcase.mem }}</td>
+                <td>{{ testcase.score }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div v-if="result.completed">
+            <div class="test-case" v-if="results.CE">
+                <div>Compilation Error</div>
+                <pre>{{ result.ce_msg }}</pre>
+            </div>
+            <div v-else>
+                <div class="test-case">Total Score: {{ results.total_score }}</div>
+                <table class="table table-hover" v-if="results.group_result">
+                    <thead>
+                    <tr class="table-light">
+                        <th scope="col">Group</th>
+                        <th scope="col">result</th>
+                        <th scope="col">Time(ms)</th>
+                        <th scope="col">Memory(KB)</th>
+                        <th scope="col">Score</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(gp_result, name) in results.group_result" :key="name"
+                        :class="result_css_class(gp_result.result)">
+                        <th scope="row">{{ name }}</th>
+                        <td>{{ gp_result.result }}</td>
+                        <td>{{ gp_result.time }}</td>
+                        <td>{{ gp_result.mem }}</td>
+                        <td>{{ gp_result.gained_score }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div v-if="!result.completed">
+            Waiting in queue... ({{ result.pos }})
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+import {computed, defineProps, onMounted, ref} from 'vue';
+import {api} from "@/utils/tools";
+import {result_css_class} from "@/utils/constants";
+import {ProblemDetail, ProblemResult, SubmissionDetail} from "@/utils/datatypes";
+
+interface Props {
+    result: SubmissionDetail
+}
+
+const props = defineProps<Props>();
+const problem_name = ref("???");
+const results = computed(() => (props.result.result as ProblemResult));
+
+onMounted(async () => {
+    const pid = props.result.pid;
+    try {
+        const data: ProblemDetail = await api.get("/problem/" + pid);
+        problem_name.value = data.title;
+    } catch (err) {
+        console.log("無法載入題目名稱");
+    }
+});
+
+</script>

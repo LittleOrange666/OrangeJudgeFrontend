@@ -1,0 +1,77 @@
+{
+  "name": "orange-judge-frontend",
+  "version": "0.2.10",
+  "private": false,
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@codemirror/lang-cpp": "^6.0.3",
+    "@codemirror/lang-python": "^6.2.1",
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "@vueuse/core": "^14.1.0",
+    "axios": "^1.13.5",
+    "bootstrap": "^5.3.8",
+    "core-js": "^3.47.0",
+    "highlight.js": "^11.11.1",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.25",
+    "vue-class-component": "^8.0.0-0",
+    "vue-codemirror": "^6.1.1",
+    "vue-draggable-plus": "^0.6.0",
+    "vue-router": "^4.6.3",
+    "vue3-markdown": "^1.2.17",
+    "webpack": "^5.105.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/eslint-parser": "^7.28.5",
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@types/bootstrap": "^5.2.10",
+    "@types/core-js": "^2.5.8",
+    "@types/highlight.js": "^10.1.0",
+    "@types/vue-router": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "@typescript-eslint/typescript-estree": "^8.49.0",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "^5.0.9",
+    "@vue/cli-plugin-typescript": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "@vue/eslint-config-typescript": "^9.1.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-vue": "^8.7.1",
+    "typescript": "^5.9.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended",
+      "@vue/typescript"
+    ],
+    "parserOptions": {
+      "parser": "@typescript-eslint/parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "overrides": {
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/view": "^6.0.0",
+    "@codemirror/language": "^6.0.0",
+    "@codemirror/autocomplete": "^6.0.0"
+  }
+}

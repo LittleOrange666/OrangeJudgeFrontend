@@ -1,0 +1,105 @@
+<!--
+  - OrangeJudge, a competitive programming platform
+  -
+  - Copyright (C) 2024-2026 LittleOrange666 (orangeminecraft123@gmail.com)
+  -
+  - This program is free software: you can redistribute it and/or modify
+  - it under the terms of the GNU Affero General Public License as published
+  - by the Free Software Foundation, either version 3 of the License, or
+  - (at your option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful,
+  - but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  - GNU Affero General Public License for more details.
+  -->
+
+<template>
+    <div id="top_area">
+        <NavBar/>
+    </div>
+    <div id="main_area">
+        <div v-if="clientState.loading" class="global-loading-overlay">
+            載入中...
+        </div>
+        <router-view/>
+    </div>
+    <div class="footer">
+        <p>{{ serverInfoStore.server_info.site_name }}</p>
+        <p>Powered by <a href="https://github.com/LittleOrange666/OrangeJudge">OrangeJudge</a>
+            {{ serverInfoStore.server_info.version_info }}</p>
+    </div>
+    <MyModal/>
+    <CheckingModal/>
+</template>
+
+<style>
+.global-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#top_area {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+#main_area {
+    position: relative;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 76px;
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    float: left;
+    width: 80%;
+}
+
+/*noinspection CssUnusedSymbol*/
+.copy_btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 10px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+/*noinspection CssUnusedSymbol*/
+.test-case {
+    font-size: 1.1rem;
+}
+
+.test-case pre {
+    border: 1px solid #aaa;
+    background-color: #eee;
+    font-size: 0.9rem;
+}
+
+.footer {
+    text-align: center;
+    font-size: small;
+}
+</style>
+
+<script setup lang="ts">
+import NavBar from '@/components/NavBar.vue';
+import MyModal from "@/components/modals/MyModal.vue";
+import CheckingModal from "@/components/modals/CheckingModal.vue";
+import {useServerInfoStore} from "@/stores/serverInfo";
+import {useClientStore} from "@/stores/clientState";
+
+const serverInfoStore = useServerInfoStore();
+const clientState = useClientStore();
+</script>
