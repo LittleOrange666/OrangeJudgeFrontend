@@ -54,7 +54,7 @@ services:
             timeout: 3s
             retries: 5
     judge_backend:
-        image: littleorange666/orange_judge:1.11.0
+        image: littleorange666/orange_judge:1.11.1
         read_only: true
         restart: on-failure
         depends_on:
@@ -95,7 +95,7 @@ services:
             timeout: 3s
             retries: 5
     judge_frontend:
-        image: littleorange666/judge_frontend:0.2.10
+        image: littleorange666/judge_frontend:0.2.11
         restart: on-failure
         depends_on:
             judge_backend:
