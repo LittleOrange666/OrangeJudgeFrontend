@@ -129,6 +129,10 @@ export interface TestcaseResult {
     time: number;
     score: number;
     mem: number;
+    in_txt?: string;
+    out_txt?: string;
+    ans_txt?: string;
+    info?: string
 }
 
 export interface TestcaseGroupResult {
@@ -143,6 +147,7 @@ export interface ProblemResult {
     CE: boolean;
     total_score: number;
     group_result: TestcaseGroupResult[];
+    cc?: string;
 }
 
 export interface SubmissionDetail {
