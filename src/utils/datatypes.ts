@@ -242,7 +242,15 @@ export interface UserInfo {
     id: number;
     username: string;
     display_name: string;
+    email: string;
     permissions: Permission[];
+}
+
+export interface ParsedUsers {
+    /** [username, password, email, display_name] */
+    users: string[][];
+    /** [username, email] */
+    existed: string[][];
 }
 
 export interface LogInfo {
