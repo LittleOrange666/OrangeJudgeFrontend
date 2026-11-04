@@ -215,7 +215,7 @@
 <script setup lang="ts">
 import {vDraggable} from 'vue-draggable-plus'
 import {ProblemManageDetail} from "@/utils/problemdatas";
-import {computed, Ref, ref} from "vue";
+import {computed, Ref, ref, defineProps, defineModel} from "vue";
 import {api, getParam} from "@/utils/tools";
 import {double_check, show_modal} from "@/utils/modal";
 

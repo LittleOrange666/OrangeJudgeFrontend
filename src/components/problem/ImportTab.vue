@@ -60,7 +60,6 @@ import {defineProps} from "vue";
 import {ProblemManageDetail} from "@/utils/problemdatas";
 import {api, getParam} from "@/utils/tools";
 import {show_modal} from "@/utils/modal";
-import {useRouter} from "vue-router";
 import axios from "axios";
 
 interface Props {
@@ -69,7 +68,6 @@ interface Props {
 
 defineProps<Props>();
 const pid = getParam("pid");
-const router = useRouter();
 
 async function importPolygon() {
     const files = document.getElementById("file_input_polygon") as HTMLInputElement;
