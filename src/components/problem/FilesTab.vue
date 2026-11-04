@@ -242,12 +242,13 @@ async function loadFile(i: number) {
 async function saveFile(i: number) {
     const fn = data.value.data.files[i].name;
     const el = document.querySelector(`#collapse_file_edit_${i} textarea`) as HTMLTextAreaElement;
+    const sl = document.querySelector(`#collapse_file_edit_${i} select`) as HTMLSelectElement;
     console.log(el);
     try {
         await api.put("/problem/" + pid + "/manage/file/private", {
             filename: fn,
             content: el.value,
-            type: data.value.data.files[i].type
+            type: sl.value
         });
         await show_modal("成功", "成功儲存");
     } catch (err) {

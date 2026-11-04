@@ -54,7 +54,7 @@ services:
             timeout: 3s
             retries: 5
     judge_backend:
-        image: littleorange666/orange_judge:1.11.0
+        image: littleorange666/orange_judge:1.11.3
         read_only: true
         restart: on-failure
         depends_on:
@@ -79,7 +79,7 @@ services:
             - ./data:/app/data
             - ./langs:/app/langs:ro
         environment:
-            - ORANGEJUDGE_VERSION=1.11.0
+            - ORANGEJUDGE_VERSION=1.11.3
             - JUDGER_URL=http://judge_server:8000
             - REDIS_HOST=judge_redis
             - MYSQL_DB=orangejudge
@@ -95,7 +95,7 @@ services:
             timeout: 3s
             retries: 5
     judge_frontend:
-        image: littleorange666/judge_frontend:0.2.10
+        image: littleorange666/judge_frontend:0.2.13
         restart: on-failure
         depends_on:
             judge_backend:
@@ -104,7 +104,7 @@ services:
             - "0.0.0.0:8080:80"
         environment:
             - VUE_APP_TITLE=OrangeJudge
-            - BACKEND_LINK=http://judge_backend:8080
+            - BACKEND_LINK=judge_backend:8080
             - WORKER_PROCESSES=4
         healthcheck:
             test: [ "CMD", "curl", "-f", "http://localhost" ]

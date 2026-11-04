@@ -46,7 +46,7 @@
                         </label>
                     </div>
                     <select class="form-select" name="my_checker" v-model="checker_name2">
-                        <option selected value="unknown">選擇檔案</option>
+                        <option selected value="unknown">無</option>
                         <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
                     </select>
                     <button class="btn btn-primary" :disabled="checker_name2=='unknown'&&checker_type=='my'">
@@ -66,7 +66,7 @@
                     <label class="form-check-label" for="enable_interactor">啟用互動</label>
                 </div>
                 <select class="form-select" name="my_interactor" v-model="my_interactor">
-                    <option selected value="unknown">選擇檔案</option>
+                    <option selected value="unknown">無</option>
                     <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
                 </select>
                 <button class="btn btn-primary" :disabled="my_interactor=='unknown'&&enable_interactor">更換互動程式
@@ -93,7 +93,7 @@
                     <div class="col-auto">
                         <select class="form-select" name="my_runner_{{ lang }}"
                                 v-model="runner_source[lang.name]">
-                            <option selected value="unknown">選擇檔案</option>
+                            <option selected value="unknown">無</option>
                             <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{
                                     file.name
                                 }}
@@ -119,7 +119,7 @@
                     <div class="col-auto">
                         <select class="form-select" name="my_runner_{{ lang }}"
                                 v-model="default_code[lang.name]">
-                            <option selected value="unknown">選擇檔案</option>
+                            <option selected value="unknown">無</option>
                             <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{
                                     file.name
                                 }}
@@ -145,7 +145,7 @@
                 <div class="row">
                     <div class="col-auto">
                         <select class="form-select" name="library" v-model="new_library">
-                            <option selected value="unknown">選擇檔案</option>
+                            <option selected value="unknown">無</option>
                             <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{
                                     file.name
                                 }}
@@ -164,7 +164,7 @@
             <p>目前：{{ data.data.codechecker_source }}</p>
             <form v-my-submit="choose_codechecker">
                 <select class="form-select" name="my_codechecker" v-model="my_codechecker">
-                    <option selected value="unknown">選擇檔案</option>
+                    <option selected value="unknown">無</option>
                     <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
                 </select>
                 <div class="radio-selector">

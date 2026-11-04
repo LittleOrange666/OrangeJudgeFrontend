@@ -73,6 +73,28 @@
                     </tbody>
                 </table>
             </div>
+            <div class="test-case" v-if="results.cc">
+                <div>Code checker:</div>
+                <pre><code v-highlight>{{ results.cc }}</code></pre>
+            </div>
+            <template v-for="(testcase, i) in results.detail" :key="i">
+                <div class="test-case" v-if="testcase.in_txt">
+                    <div>Input {{ i + 1 }}:</div>
+                    <pre><code v-highlight>{{ testcase.in_txt }}</code></pre>
+                </div>
+                <div class="test-case" v-if="testcase.out_txt">
+                    <div>Output {{ i + 1 }}:</div>
+                    <pre><code v-highlight>{{ testcase.out_txt }}</code></pre>
+                </div>
+                <div class="test-case" v-if="testcase.ans_txt">
+                    <div>Answer {{ i + 1 }}:</div>
+                    <pre><code v-highlight>{{ testcase.ans_txt }}</code></pre>
+                </div>
+                <div class="test-case">
+                    <div v-if="testcase.result">Result {{ i + 1 }}: {{ testcase.result }}</div>
+                    <pre v-if="testcase.info"><code v-highlight>{{ testcase.info }}</code></pre>
+                </div>
+            </template>
         </div>
         <div v-if="!result.completed">
             Waiting in queue... ({{ result.pos }})
