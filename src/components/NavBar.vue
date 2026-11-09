@@ -50,7 +50,7 @@
                             <li>
                                 <router-link to="/about" class="dropdown-item">評測系統</router-link>
                             </li>
-                            <li><a class="dropdown-item" href="https://LittleOrange666.github.io/orangejudge/">教程</a>
+                            <li><a class="dropdown-item" href="https://github.com/LittleOrange666/OrangeJudge/wiki">教程</a>
                             </li>
                             <li><a class="dropdown-item" href="/api/api-docs">API</a></li>
                         </ul>
