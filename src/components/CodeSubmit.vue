@@ -23,15 +23,8 @@
         </select>
         <div class="mb-3">
             <label for="code-textarea" class="form-label">Code</label>
-            <input class="form-control" type="file" id="uploadFile" v-on:change="loadFile" :accept="getExt()"/>
-            <codemirror id="code-textarea"
-                        v-model="code"
-                        :style="{ height: '400px', width: '100%', border: '1px solid #ddd' }"
-                        :autofocus="true"
-                        :indent-with-tab="true"
-                        :tab-size="4"
-                        :extensions="extensions"
-            />
+            <input class="form-control" type="file" id="uploadFile" v-on:change="loadFile"/>
+            <CodeEditor id="code-textarea" v-model="code" :lang="lang" :autofocus="true"/>
         </div>
         <div class="mb-3">
             <button class="btn btn-primary mb-3">提交</button>
@@ -47,9 +40,8 @@ import {storeToRefs} from "pinia";
 import {api} from "@/utils/tools";
 import {useRouter} from "vue-router";
 import {useLocalStorage} from "@vueuse/core";
-import {Codemirror} from "vue-codemirror";
-import {cpp} from "@codemirror/lang-cpp";
-import {basicSetup} from "codemirror";
+import CodeEditor from "@/components/CodeEditor.vue";
+import {fileExt, langExt, langForFilename} from "@/utils/codeLang";
 
 
 interface Props {
@@ -60,11 +52,6 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-
-const extensions = [
-    basicSetup,
-    cpp(),
-];
 
 const router = useRouter();
 
@@ -93,25 +80,22 @@ const handleSubmit = async () => {
     }
 };
 
-function loadFile() {
-    const file = this.files[0];
+function loadFile(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (!file) return;
+    // switch to a language matching the file's extension unless the selected one already does
+    if (langExt(lang.value, lang_info.value) !== fileExt(file.name)) {
+        const detected = langForFilename(file.name, lang_info.value, props.allowed_lang);
+        if (detected) lang.value = detected;
+    }
     const reader = new FileReader();
-    const target = this;
-    reader.onload = function () {
-        code.value = this.result as string
-        target.value = null;
+    reader.onload = () => {
+        code.value = reader.result as string;
+        target.value = "";
     };
     reader.readAsText(file);
 }
-
-const getExt = () => {
-    for (let langs of lang_info.value) {
-        if (langs.name === lang.value) {
-            return langs.ext;
-        }
-    }
-    return null;
-};
 onMounted(async ()=>{
     if (props.allowed_lang && !props.allowed_lang.includes(lang.value)){
         lang.value = props.allowed_lang[0];

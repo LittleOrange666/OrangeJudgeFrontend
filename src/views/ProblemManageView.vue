@@ -83,7 +83,7 @@
                 <StatementPreviewTab v-if="loaded('#statement_preview')"/>
             </div>
             <div id="files" class="tab-pane fade">
-                <FilesTab v-model="data_" v-if="loaded('#files')"/>
+                <FilesTab v-model="data_" :do_load="do_load" v-if="loaded('#files')"/>
             </div>
             <div id="judge" class="tab-pane fade">
                 <JudgeTab v-model="data_" v-if="loaded('#judge')"/>

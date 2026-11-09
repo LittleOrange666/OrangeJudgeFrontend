@@ -71,7 +71,14 @@
                         <div class="col-auto">
                             <label for="create_file_input" class="visually-hidden">檔名</label>
                             <input type="text" class="form-control" id="create_file_input" placeholder="檔名"
-                                   name="filename" required>
+                                   name="filename" v-model="create_filename" required>
+                        </div>
+                        <div class="col-auto">
+                            <label for="create_file_type" class="visually-hidden">語言</label>
+                            <select class="form-select" id="create_file_type" v-model="create_type">
+                                <option :value="lang.name" :key="lang.name" v-text="lang.name"
+                                        v-for="lang in lang_info"></option>
+                            </select>
                         </div>
                         <div class="col-auto">
                             <button class="btn btn-primary mb-3">
@@ -115,14 +122,19 @@
                     </tr>
                     <tr class="collapse collapse_file_edit" :id="`collapse_file_edit_${ i }`">
                         <td colspan="5">
-                            <div class="card card-body">
-                                <select class="form-select" aria-label="Default select example" :value="file.type">
+                            <div class="card card-body" v-if="editors[file.name]">
+                                <select class="form-select mb-2" aria-label="file language"
+                                        v-model="editors[file.name].type">
                                     <option :value="lang.name" :key="lang.name" v-text="lang.name"
                                             v-for="lang in lang_info"></option>
                                 </select>
-                                <textarea class="form-control" rows="3"></textarea>
-                                <button class="btn btn-primary" v-my-click="async()=>await saveFile(i)">儲存</button>
+                                <CodeEditor v-model="editors[file.name].content" :lang="editors[file.name].type"
+                                            :filename="file.name" height="500px"/>
+                                <button class="btn btn-primary mt-2" v-my-click="async()=>await saveFile(file.name)">
+                                    儲存
+                                </button>
                             </div>
+                            <div v-else class="text-muted">載入中…</div>
                         </td>
                     </tr>
                 </template>
@@ -133,8 +145,10 @@
 </template>
 
 <script setup lang="ts">
-import {defineModel} from "vue";
+import {defineModel, defineProps, reactive, ref, watch} from "vue";
 import {ProblemManageDetail} from "@/utils/problemdatas";
+import CodeEditor from "@/components/CodeEditor.vue";
+import {langForFilename} from "@/utils/codeLang";
 import {storeToRefs} from "pinia";
 import {useJudgeInfoStore} from "@/stores/judgeInfo";
 import {api, getParam} from "@/utils/tools";
@@ -142,6 +156,11 @@ import {show_modal} from "@/utils/modal";
 import {default_lang} from "@/utils/constants";
 import axios from "axios";
 
+interface Props {
+    do_load: () => Promise<void>
+}
+
+const props = defineProps<Props>();
 const data = defineModel<ProblemManageDetail>({required: true});
 const store = useJudgeInfoStore();
 const {lang_info} = storeToRefs(store);
@@ -176,29 +195,33 @@ async function uploadPrivateFile() {
     const files = document.getElementById("private_file_upload") as HTMLInputElement;
     try {
         await api.post("/problem/" + pid + "/manage/file/private", {
-            files: files.files[0],
+            files: Array.from(files.files),
         });
         await show_modal("成功", "上傳成功");
-        data.value.data.files.push({
-            name: files.files[0].name,
-            type: default_lang
-        });
+        files.value = "";
+        await props.do_load();
     } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
+const create_filename = ref("");
+const create_type = ref(default_lang);
+// the initial language follows the extension typed so far (the user can still change it afterwards)
+watch(create_filename, (name) => {
+    const detected = langForFilename(name, lang_info.value);
+    if (detected) create_type.value = detected;
+});
+
 async function createPrivateFile() {
-    const filename = document.getElementById("create_file_input") as HTMLInputElement;
     try {
         await api.post("/problem/" + pid + "/manage/file/private", {
-            filename: filename.value
+            filename: create_filename.value,
+            type: create_type.value
         });
         await show_modal("成功", "建立成功");
-        data.value.data.files.push({
-            name: filename.value,
-            type: default_lang
-        });
+        create_filename.value = "";
+        await props.do_load();
     } catch (err) {
         await show_modal("失敗", err.message);
     }
@@ -215,41 +238,49 @@ async function removePrivateFile(fn: string) {
             i += 1;
         }
         data.value.data.files.splice(i, 1);
+        delete editors[fn];
     } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
+/** contents being edited, keyed by file name; an entry exists once the file has been loaded */
+const editors: { [name: string]: { content: string, type: string } } = reactive({});
+
 async function loadFile(i: number) {
-    const file_info = data.value.data.files;
-    if (file_info[i].loaded) return;
-    file_info[i].loaded = true;
-    const el = document.querySelector(`#collapse_file_edit_${i} textarea`) as HTMLTextAreaElement;
+    const file = data.value.data.files[i];
+    // keep unsaved edits: a file is fetched only once (file.loaded marks a request in flight)
+    if (file.name in editors || file.loaded) return;
+    file.loaded = true;
     try {
         const res = await axios.get("/api/problem/" + pid + "/manage/preview", {
             params: {
-                name: file_info[i].name,
+                name: file.name,
                 type: "file"
-            }
+            },
+            // keep the raw text: axios would otherwise parse files that look like JSON
+            responseType: "text",
+            transformResponse: [(raw: string) => raw],
         });
-        el.value = res.data;
+        editors[file.name] = {content: res.data, type: file.type};
     } catch (err) {
         await show_modal("讀取檔案失敗", err.message);
-        file_info[i].loaded = false;
+    } finally {
+        file.loaded = false;
     }
 }
 
-async function saveFile(i: number) {
-    const fn = data.value.data.files[i].name;
-    const el = document.querySelector(`#collapse_file_edit_${i} textarea`) as HTMLTextAreaElement;
-    const sl = document.querySelector(`#collapse_file_edit_${i} select`) as HTMLSelectElement;
-    console.log(el);
+async function saveFile(fn: string) {
+    const editor = editors[fn];
+    if (!editor) return;
     try {
         await api.put("/problem/" + pid + "/manage/file/private", {
             filename: fn,
-            content: el.value,
-            type: sl.value
+            content: editor.content,
+            type: editor.type
         });
+        const file = data.value.data.files.find(o => o.name === fn);
+        if (file) file.type = editor.type;
         await show_modal("成功", "成功儲存");
     } catch (err) {
         await show_modal("失敗", err.message);

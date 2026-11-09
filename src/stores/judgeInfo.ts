@@ -28,7 +28,9 @@ interface langInfo {
     /** The command or script used to run the language */
     run: string,
     /** The file extension associated with the language */
-    ext: string
+    ext: string,
+    /** Whether new files with this extension get this language by default */
+    ext_default?: boolean
 }
 
 /**
