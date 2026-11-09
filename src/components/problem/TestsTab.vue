@@ -73,13 +73,13 @@
                         </td>
                         <td>
                             <select class="form-select form-control"
-                                    :value="group.rule">
+                                    v-model="group.rule">
                                 <option value="min">最小值</option>
                                 <option value="avg">平均值</option>
                             </select>
                         </td>
                         <td>
-                            <input type="number" min="0" max="100" :value="group.score"
+                            <input type="number" min="0" max="100" v-model.number="group.score"
                                    class="form-control">
                         </td>
                         <td>
@@ -99,7 +99,7 @@
             <form v-my-submit="uploadZip">
                 <h4>快速新增</h4>
                 <div class="mb-3">
-                    <input type="file" class="form-control" accept=".zip" name="zip_file" required>
+                    <input type="file" class="form-control" accept=".zip" name="zip_file" id="testcase_zip_upload" required>
                 </div>
                 <div class="mb-3">
                     <div class="row">
@@ -176,10 +176,10 @@
                 <tr class="testcase testcase-normal" v-for="(testcase,i) in testcases" :key="i">
                     <th scope="row">{{ testcase.old_idx }}</th>
                     <td>
-                        <a :href="`/problemsetting_preview?pid=${ pid }&type=testcases&name=${ testcase.in_file }`"
+                        <a :href="`/api/problem/${ pid }/manage/preview?type=testcases&name=${ encodeURIComponent(testcase.in_file) }`"
                            target="_blank">{{ testcase.in_file }}</a></td>
                     <td>
-                        <a :href="`/problemsetting_preview?pid=${ pid }&type=testcases&name=${ testcase.out_file }`"
+                        <a :href="`/api/problem/${ pid }/manage/preview?type=testcases&name=${ encodeURIComponent(testcase.out_file) }`"
                            target="_blank">{{ testcase.out_file }}</a></td>
                     <td>
                         <select class="form-select form-control" name="group_{{ i }}"
@@ -199,7 +199,7 @@
                     </td>
                     <td>
                         <button class="btn btn-danger testcase-deleter"
-                                v-my-click="async ()=>await removeTestcase(testcase.old_idx, i)">刪除
+                                v-my-click="async ()=>await removeTestcase(testcase.old_idx)">刪除
                         </button>
                     </td>
                 </tr>
@@ -248,11 +248,8 @@ async function createGroup() {
             name: new_group_name.value
         });
         await show_modal("成功", "建立成功");
-        data.value.data.groups[new_group_name.value] = {
-            dependency: [],
-            rule: "min",
-            score: 100
-        };
+        new_group_name.value = "";
+        await props.do_load();
     } catch (err) {
         await show_modal("失敗", err.message);
     }
@@ -264,7 +261,7 @@ async function removeGroup(name: string) {
             name: name
         });
         await show_modal("成功", "刪除成功");
-        delete data.value.data.groups[name];
+        await props.do_load();
     } catch (err) {
         await show_modal("失敗", err.message);
     }
@@ -293,7 +290,11 @@ const input_ext = ref(".in");
 const output_ext = ref(".out");
 
 async function uploadZip() {
-    const files = document.getElementById("private_file_upload") as HTMLInputElement;
+    const files = document.getElementById("testcase_zip_upload") as HTMLInputElement;
+    if (!files || !files.files || files.files.length == 0) {
+        await show_modal("失敗", "請選擇zip檔");
+        return;
+    }
     try {
         await api.post("/problem/" + pid + "/manage/testcases", {
             zip_file: files.files[0],
@@ -321,28 +322,23 @@ async function uploadTestcase() {
             output_content: testcase_output_content.value
         });
         await show_modal("成功", "上傳成功");
-        testcases.value.push({
-            in_file: testcase_input_name.value,
-            out_file: testcase_output_name.value,
-            group: "default",
-            uncompleted: false,
-            sample: false,
-            pretest: false,
-            gen: false,
-            old_idx: testcases.value.length
-        });
+        testcase_input_name.value = "";
+        testcase_output_name.value = "";
+        testcase_input_content.value = "";
+        testcase_output_content.value = "";
+        await props.do_load();
     } catch (err) {
         await show_modal("失敗", err.message);
     }
 }
 
-async function removeTestcase(idx: number, curidx: number) {
+async function removeTestcase(idx: number) {
     try {
         await api.delete("/problem/" + pid + "/manage/testcase", {
             idx: idx
         });
         await show_modal("成功", "刪除成功");
-        testcases.value.splice(+curidx, 1);
+        await props.do_load();
     } catch (err) {
         await show_modal("失敗", err.message);
     }
