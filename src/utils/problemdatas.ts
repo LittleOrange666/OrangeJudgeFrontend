@@ -105,6 +105,8 @@ export interface ProblemManageData {
     checker_source: ProgramPtr;
     checker: ExecPtr;
     is_interact: boolean;
+    interact_num: number;
+    output_only: boolean;
     groups: { [lang: string]: TestcaseGroup };
     interactor_source: string;
     interactor: ExecPtr;

@@ -57,19 +57,45 @@
         </div>
         <br>
         <div class="container-fluid">
-            <h4>互動</h4>
-            <p>目前：{{ data.data.interactor_source }}</p>
-            <form v-my-submit="choose_interactor">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="enable_interactor"
-                           name="enable_interactor" v-model="enable_interactor">
-                    <label class="form-check-label" for="enable_interactor">啟用互動</label>
+            <h4>題目類型</h4>
+            <p>
+                目前：{{ problem_type_names[current_problem_type()] }}
+                <span v-if="data.data.is_interact">（互動程式：{{ data.data.interactor_source }}，
+                    {{ data.data.interact_num || 1 }} 個程式）</span>
+            </p>
+            <form v-my-submit="choose_problem_type">
+                <div class="form-check" v-for="(name, tp) in problem_type_names" :key="tp">
+                    <input class="form-check-input" type="radio" name="problem_type" :id="'problem_type_' + tp"
+                           v-model="problem_type" :value="tp">
+                    <label class="form-check-label" :for="'problem_type_' + tp">{{ name }}</label>
                 </div>
-                <select class="form-select" name="my_interactor" v-model="my_interactor">
-                    <option selected value="unknown">無</option>
-                    <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{ file.name }}</option>
-                </select>
-                <button class="btn btn-primary" :disabled="my_interactor=='unknown'&&enable_interactor">更換互動程式
+                <template v-if="problem_type == 'communication'">
+                    <label class="form-label" for="my_interactor">互動程式 (manager)</label>
+                    <select class="form-select" name="my_interactor" id="my_interactor" v-model="my_interactor">
+                        <option selected value="unknown">無</option>
+                        <option :value="file.name" v-for="(file,i) in data.data.files" :key="i">{{
+                                file.name
+                            }}
+                        </option>
+                    </select>
+                    <label class="form-label" for="interact_num">同時執行的使用者程式數量 (N)</label>
+                    <input class="form-control" type="number" min="1" max="64" id="interact_num"
+                           v-model.number="interact_num">
+                    <div class="form-text" v-if="interact_num > 1">
+                        互動程式會以 <code>interactor &lt;input&gt; &lt;output&gt; from_0 to_0 ... from_{{
+                            interact_num - 1 }} to_{{ interact_num - 1 }}</code> 執行，
+                        需依序開啟每一對 FIFO（先 from_i 讀取，再 to_i 寫入）；
+                        第 i 個使用者程式以 stdin/stdout 溝通，並收到參數 i；
+                        時間限制為所有使用者程式 CPU 時間總和。
+                    </div>
+                </template>
+                <div class="form-text" v-if="problem_type == 'output_only'">
+                    選手下載 input_k.txt 並上傳 output_k.txt（k 為依測資組別排序後的 1-based 編號），
+                    以評分程式檢查輸出。
+                </div>
+                <button class="btn btn-primary"
+                        :disabled="problem_type == 'communication' && my_interactor == 'unknown'">
+                    儲存題目類型
                 </button>
             </form>
         </div>
@@ -219,8 +245,22 @@ const checker_type = ref<ProgramType>("default");
 const checker_name1 = ref("unknown");
 const checker_name2 = ref("unknown");
 
-const enable_interactor = ref<boolean>(false);
+type ProblemType = "batch" | "communication" | "output_only";
+// eslint-disable-next-line no-unused-vars
+const problem_type_names: { [key in ProblemType]: string } = {
+    batch: "一般 (Batch)",
+    communication: "互動 (Communication)",
+    output_only: "只提交輸出 (Output Only)",
+};
+const problem_type = ref<ProblemType>("batch");
 const my_interactor = ref("unknown");
+const interact_num = ref<number>(1);
+
+function current_problem_type(): ProblemType {
+    if (data.value.data.output_only) return "output_only";
+    if (data.value.data.is_interact) return "communication";
+    return "batch";
+}
 
 const enable_runner = ref<boolean>(false);
 const runner_source = ref<{ [lang: string]: string }>({});
@@ -251,15 +291,24 @@ async function choose_checker() {
     }
 }
 
-async function choose_interactor() {
+async function choose_problem_type() {
     try {
-        await api.put("/problem/" + pid + "/manage/interactor", {
-            my_interactor: my_interactor.value,
-            enable_interactor: onOff(enable_interactor.value),
+        const is_interact = problem_type.value == "communication";
+        if (is_interact) {
+            await api.put("/problem/" + pid + "/manage/interactor", {
+                my_interactor: my_interactor.value,
+                enable_interactor: onOff(true),
+                interact_num: interact_num.value,
+            });
+            data.value.data.interactor_source = my_interactor.value;
+            data.value.data.interact_num = interact_num.value;
+        }
+        await api.put("/problem/" + pid + "/manage/problem_type", {
+            problem_type: problem_type.value,
         });
-        data.value.data.is_interact = enable_interactor.value;
-        data.value.data.interactor_source = my_interactor.value;
-        await show_modal("成功", "成功儲存interactor");
+        data.value.data.is_interact = is_interact;
+        data.value.data.output_only = problem_type.value == "output_only";
+        await show_modal("成功", "成功儲存題目類型");
     } catch (err) {
         await show_modal("失敗", err.message);
     }
@@ -344,8 +393,9 @@ onMounted(async () => {
     } else {
         checker_name2.value = data.value.data.checker_source.name || "unknown";
     }
-    enable_interactor.value = data.value.data.is_interact;
+    problem_type.value = current_problem_type();
     my_interactor.value = data.value.data.interactor_source || "unknown";
+    interact_num.value = data.value.data.interact_num || 1;
     enable_runner.value = data.value.data.runner_enabled;
     const dat = data.value.data.runner_source;
     const dat0 = data.value.data.default_code;

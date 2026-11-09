@@ -41,6 +41,10 @@ export const toForm = function (obj?: { [key: string]: any }) {
     if (!obj) return f;
     for (const key in obj) {
         if (obj[key] === undefined) continue;
+        if (Array.isArray(obj[key]) && obj[key].length && obj[key].every((o: any) => o instanceof Blob)) {
+            for (const o of obj[key]) f.append(key, o);
+            continue;
+        }
         f.append(key, obj[key]);
     }
     return f;

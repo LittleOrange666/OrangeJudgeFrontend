@@ -119,8 +119,13 @@ export interface ProblemDetail {
     samples: SampleTestcase[];
     default_code: { [key: string]: string };
     time_limit: number;
-    memory_limit: number
+    memory_limit: number;
+    problem_type: ProblemType;
+    interact_num: number;
+    testcase_count: number;
 }
+
+export type ProblemType = "batch" | "communication" | "output_only";
 
 export type TestResult = string;
 
@@ -175,7 +180,10 @@ export interface ContestProblemDetail {
     contest_cid: string;
     contest_name: string;
     time_limit: number;
-    memory_limit: number
+    memory_limit: number;
+    problem_type: ProblemType;
+    interact_num: number;
+    testcase_count: number;
     statement_html: string;
     samples: SampleTestcase[];
 }

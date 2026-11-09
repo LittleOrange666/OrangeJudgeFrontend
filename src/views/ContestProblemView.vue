@@ -19,6 +19,10 @@
         <h1 class="text-center">{{ data.name }}</h1>
         <p class="text-center">Time Limit:{{ data.time_limit }}ms</p>
         <p class="text-center">Memory Limit:{{ data.memory_limit }}MB</p>
+        <p class="text-center" v-if="data.problem_type === 'communication'">
+            互動題<span v-if="data.interact_num > 1">（{{ data.interact_num }} 個程式同時執行，時間限制為所有程式 CPU 時間總和）</span>
+        </p>
+        <p class="text-center" v-if="data.problem_type === 'output_only'">Output Only</p>
         <div v-html="data.statement_html" id="main_content" v-math></div>
         <div class="container test-case" v-for="(sample,i) in data.samples" :key="i">
             <div class="row">
@@ -34,7 +38,11 @@
                 </div>
             </div>
         </div>
-        <CodeSubmit :pid="data.internal_pid" :cid="cid" v-if="isLoggedIn" :allowed_lang="data.allowed_languages"/>
+        <template v-if="isLoggedIn">
+            <OutputSubmit :pid="data.internal_pid" :cid="cid" :testcase-count="data.testcase_count"
+                          v-if="data.problem_type === 'output_only'"/>
+            <CodeSubmit :pid="data.internal_pid" :cid="cid" :allowed_lang="data.allowed_languages" v-else/>
+        </template>
         <div v-else class="alert alert-info">
             <p>需要登入才能提交程式碼</p>
         </div>
@@ -51,6 +59,7 @@
 import {onMounted} from "vue";
 import {getParam, useLoader} from "@/utils/tools";
 import CodeSubmit from "@/components/CodeSubmit.vue";
+import OutputSubmit from "@/components/OutputSubmit.vue";
 import {isLoggedIn} from "@/utils/accounts";
 import {updateTitle} from "@/router";
 import {ContestProblemDetail} from "@/utils/datatypes";
